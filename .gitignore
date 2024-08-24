@@ -3,5 +3,7 @@
 
 backend/.gradle/
 backend/build/
+backend/src/main/resources/static/
 
+frontend/node/
 frontend/node_modules/
