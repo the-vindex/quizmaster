@@ -4,7 +4,7 @@ import type { World } from './common'
 
 
 Given('I navigate to the home page', async function (this: World) {
-    await this.page.goto('/')
+    await this.page.goto('/hello')
 })
 
 Then('I should see the title {string}', async function (this: World, title: string) {

@@ -1,6 +1,5 @@
 Feature: Hello World!
 
-  @ignore
   Scenario: Display hello message from the backend
     Given I navigate to the home page
     Then I should see the title "Quizmaster"
