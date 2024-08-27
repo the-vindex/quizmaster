@@ -1,26 +1,9 @@
-import { After, Before, Given, IWorld, Then } from '@cucumber/cucumber'
-import { Browser, BrowserContext, chromium, expect, Page } from '@playwright/test'
-import { baseUrl } from './common'
+import { Given, Then } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+import type { World } from './common'
 
-interface World extends IWorld {
-    browser: Browser
-    context: BrowserContext
-    page: Page
-}
-
-Before(async function (this: World) {
-    this.browser = await chromium.launch()
-    this.context = await this.browser.newContext({ baseURL: baseUrl })
-})
-
-After(async function (this: World) {
-    await this.page.close()
-    await this.context.close()
-    await this.browser.close()
-})
 
 Given('I navigate to the home page', async function (this: World) {
-    this.page = await this.context.newPage()
     await this.page.goto('/')
 })
 
