@@ -1,11 +1,22 @@
+import { For } from 'solid-js'
+
+interface QuizQuestion {
+    readonly question: string
+    readonly answers: readonly string[]
+}
+
 export const Quiz = () => {
+    const quizQuestion: QuizQuestion = {
+        question: 'What is the capital of Italy?',
+        answers: ['Rome', 'Naples', 'Florence', 'Palermo']
+    }
+
     return <>
-        <h1>What is the capital of Italy?</h1>
+        <h1>{ quizQuestion.question }</h1>
         <ul>
-            <li>Rome</li>
-            <li>Naples</li>
-            <li>Florence</li>
-            <li>Palermo</li>
+            <For each={ quizQuestion.answers }>
+                { answer => <li>{ answer }</li> }
+            </For>
         </ul>
     </>
 }
