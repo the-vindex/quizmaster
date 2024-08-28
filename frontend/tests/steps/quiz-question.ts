@@ -8,7 +8,7 @@ type Answers = string[]
 const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 
 Given('I visit the quiz-taking page', async function (this: World) {
-    await this.page.goto('/quiz')
+    await this.page.goto('/quiz/1')
 })
 
 Then('I should see the question {string}', async function (this: World, question: string) {
