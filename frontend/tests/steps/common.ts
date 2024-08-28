@@ -1,7 +1,8 @@
 import { After, Before, type IWorld } from '@cucumber/cucumber'
 import { type Browser, type BrowserContext, chromium, type Page } from '@playwright/test'
 
-export const baseUrl = 'http://localhost:8080'
+const port = process.env.FE_PORT || '8080'
+export const baseUrl = `http://localhost:${port}`
 
 export interface World extends IWorld {
     browser: Browser
