@@ -1,14 +1,19 @@
 package cz.scrumdojo.quizmaster.quiz;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class QuizQuestionControllerTest {
+
+    @Autowired
+    private QuizQuestionController quizQuestionController;
 
     @Test
     public void getQuestion() {
-        QuizQuestionController quizQuestionController = new QuizQuestionController();
         QuizQuestion result = quizQuestionController.getQuestion();
 
         assertEquals("What is the capital of Italy?", result.getQuestion());
