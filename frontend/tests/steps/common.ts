@@ -1,5 +1,5 @@
 import { After, Before, type IWorld } from '@cucumber/cucumber'
-import { type Browser, type BrowserContext, chromium, type Page } from '@playwright/test'
+import { type Browser, type BrowserContext, chromium, expect, type Locator, type Page } from '@playwright/test'
 
 const port = process.env.FE_PORT || '8080'
 export const baseUrl = `http://localhost:${port}`
@@ -23,3 +23,6 @@ After(async function (this: World) {
     await this.context.close()
     await this.browser.close()
 })
+
+export const expectTextToBe = async (locator: Locator, text: string) =>
+    expect(await locator.textContent()).toBe(text)

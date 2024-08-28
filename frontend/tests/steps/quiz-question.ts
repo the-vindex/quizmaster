@@ -1,6 +1,6 @@
 import { Given, Then } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import type { TableOf, World } from './common'
+import { expectTextToBe, type TableOf, type World } from './common'
 
 type AnswerRaw = [string]
 type Answers = string[]
@@ -13,7 +13,7 @@ Given('I visit the quiz-taking page', async function (this: World) {
 
 Then('I should see the question {string}', async function (this: World, question: string) {
     const questionLocator = this.page.locator('h1')
-    expect(await questionLocator.textContent()).toBe(question)
+    await expectTextToBe(questionLocator, question)
 })
 
 Then('I should see the answers', async function (this: World, table: TableOf<AnswerRaw>) {
@@ -24,6 +24,6 @@ Then('I should see the answers', async function (this: World, table: TableOf<Ans
 
     for (const [index, answer] of answers.entries()) {
         const answerLocator = answerLocators.nth(index)
-        expect(await answerLocator.textContent()).toBe(answer)
+        await expectTextToBe(answerLocator, answer)
     }
 })
