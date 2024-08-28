@@ -19,7 +19,7 @@ export const Quiz = () => {
     const [quizQuestion, setQuizQuestion] = createSignal<QuizQuestion | null>(null)
 
     onMount(async () => {
-        const response = await fetch('/api/quiz-question')
+        const response = await fetch('/api/quiz-question/1')
         const data = await response.json()
         setQuizQuestion(data)
     })

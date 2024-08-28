@@ -14,7 +14,7 @@ public class QuizQuestionControllerTest {
 
     @Test
     public void getQuestion() {
-        QuizQuestion result = quizQuestionController.getQuestion();
+        QuizQuestion result = quizQuestionController.getQuestion(1);
 
         assertEquals("What is the capital of Italy?", result.getQuestion());
 
