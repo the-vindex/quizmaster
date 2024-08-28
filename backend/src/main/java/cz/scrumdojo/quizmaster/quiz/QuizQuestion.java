@@ -1,11 +1,11 @@
 package cz.scrumdojo.quizmaster.quiz;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-@Data
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
 public class QuizQuestion {
     @Id

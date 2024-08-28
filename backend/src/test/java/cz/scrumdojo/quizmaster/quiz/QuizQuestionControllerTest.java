@@ -6,8 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class QuizQuestionControllerTest {
@@ -17,16 +16,18 @@ public class QuizQuestionControllerTest {
 
     @Test
     public void getQuestion() {
-        var result = quizQuestionController.getQuestion(1).getBody();
+        var question = QuizQuestion.builder()
+            .question("What is the capital of Italy?")
+            .answers(new String[]{"Rome", "Naples", "Florence", "Palermo"})
+            .build();
+
+        var questionId = quizQuestionController.saveQuestion(question);
+
+        var result = quizQuestionController.getQuestion(questionId).getBody();
 
         assertNotNull(result);
-        assertEquals("What is the capital of Italy?", result.getQuestion());
-
-        assertEquals(4, result.getAnswers().length);
-        assertEquals("Rome", result.getAnswers()[0]);
-        assertEquals("Naples", result.getAnswers()[1]);
-        assertEquals("Florence", result.getAnswers()[2]);
-        assertEquals("Palermo", result.getAnswers()[3]);
+        assertEquals(question.getQuestion(), result.getQuestion());
+        assertArrayEquals(question.getAnswers(), result.getAnswers());
     }
 
     @Test
