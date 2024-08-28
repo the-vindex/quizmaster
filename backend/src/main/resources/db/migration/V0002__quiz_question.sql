@@ -3,8 +3,3 @@ CREATE TABLE quiz_question (
     question TEXT NOT NULL,
     answers TEXT[] NOT NULL
 );
-
-INSERT INTO quiz_question (question, answers) VALUES (
-    'What is the capital of Italy?',
-    '{"Rome", "Naples", "Florence", "Palermo"}'
-);
