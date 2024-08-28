@@ -1,4 +1,4 @@
-import { For } from 'solid-js'
+import { createSignal, For, onMount, Show } from 'solid-js'
 
 interface QuizQuestion {
     readonly question: string
@@ -6,17 +6,20 @@ interface QuizQuestion {
 }
 
 export const Quiz = () => {
-    const quizQuestion: QuizQuestion = {
-        question: 'What is the capital of Italy?',
-        answers: ['Rome', 'Naples', 'Florence', 'Palermo']
-    }
+    const [quizQuestion, setQuizQuestion] = createSignal<QuizQuestion | null>(null)
 
-    return <>
-        <h1>{ quizQuestion.question }</h1>
+    onMount(async () => {
+        const response = await fetch('/api/quiz-question')
+        const data = await response.json()
+        setQuizQuestion(data)
+    });
+
+    return <Show when={ quizQuestion() }>
+        <h1>{ quizQuestion()!.question }</h1>
         <ul>
-            <For each={ quizQuestion.answers }>
+            <For each={ quizQuestion()!.answers }>
                 { answer => <li>{ answer }</li> }
             </For>
         </ul>
-    </>
+    </Show>
 }
