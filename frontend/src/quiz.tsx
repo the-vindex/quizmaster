@@ -1,9 +1,5 @@
 import { createSignal, For, onMount, Show } from 'solid-js'
-
-interface QuizQuestion {
-    readonly question: string
-    readonly answers: readonly string[]
-}
+import { QuizQuestion } from './model/quiz-question.ts'
 
 const Answer = (answer: string) =>
     <li>{ answer }</li>
