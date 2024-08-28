@@ -9,6 +9,8 @@ export interface World extends IWorld {
     page: Page
 }
 
+export type TableOf<T> = { raw: () => T[] }
+
 Before(async function (this: World) {
     this.browser = await chromium.launch()
     this.context = await this.browser.newContext({ baseURL: baseUrl })
