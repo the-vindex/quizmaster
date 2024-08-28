@@ -5,6 +5,16 @@ interface QuizQuestion {
     readonly answers: readonly string[]
 }
 
+const Answer = (answer: string) =>
+    <li>{ answer }</li>
+
+const Question = ({ question, answers }: QuizQuestion) => <>
+    <h1>{ question }</h1>
+    <ul>
+        <For each={ answers } children={ Answer }/>
+    </ul>
+</>
+
 export const Quiz = () => {
     const [quizQuestion, setQuizQuestion] = createSignal<QuizQuestion | null>(null)
 
@@ -12,14 +22,7 @@ export const Quiz = () => {
         const response = await fetch('/api/quiz-question')
         const data = await response.json()
         setQuizQuestion(data)
-    });
+    })
 
-    return <Show when={ quizQuestion() }>
-        <h1>{ quizQuestion()!.question }</h1>
-        <ul>
-            <For each={ quizQuestion()!.answers }>
-                { answer => <li>{ answer }</li> }
-            </For>
-        </ul>
-    </Show>
+    return <Show when={ quizQuestion() } children={ Question } keyed/>
 }
