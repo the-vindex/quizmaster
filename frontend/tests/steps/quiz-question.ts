@@ -1,6 +1,6 @@
 import { Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import { expectTextToBe, type TableOf, type World } from './common'
+import { expectTextToBe, type TableOf, worldAs } from './common.ts'
 
 import type { QuizQuestion } from '../../src/model/quiz-question.ts'
 
@@ -9,9 +9,10 @@ type Answers = string[]
 
 const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 
-interface QuizQuestionWorld extends World {
+interface QuizQuestionWorld {
     quizQuestion: QuizQuestion
 }
+const world = worldAs<QuizQuestionWorld>()
 
 const saveQuizQuestion = async (quizQuestion: QuizQuestion) =>
     await fetch('http://localhost:8080/api/quiz-question', {
@@ -22,28 +23,25 @@ const saveQuizQuestion = async (quizQuestion: QuizQuestion) =>
         .then(response => response.text())
         .then(Number.parseFloat)
 
-Given(
-    'I create a quiz question {string} with answers',
-    async function (this: QuizQuestionWorld, question: string, table: TableOf<AnswerRaw>) {
-        const quizQuestion = { question, answers: toAnswers(table.raw()) }
-        const id = await saveQuizQuestion(quizQuestion)
+Given('I create a quiz question {string} with answers', async (question: string, table: TableOf<AnswerRaw>) => {
+    const quizQuestion = { question, answers: toAnswers(table.raw()) }
+    const id = await saveQuizQuestion(quizQuestion)
 
-        this.quizQuestion = { id, ...quizQuestion }
-    },
-)
-
-When('I visit the quiz-taking page', async function (this: QuizQuestionWorld) {
-    await this.page.goto(`/quiz/${this.quizQuestion.id}`)
+    world.quizQuestion = { id, ...quizQuestion }
 })
 
-Then('I should see the question', async function (this: QuizQuestionWorld) {
-    const questionLocator = this.page.locator('h1')
-    await expectTextToBe(questionLocator, this.quizQuestion.question)
+When('I visit the quiz-taking page', async () => {
+    await world.page.goto(`/quiz/${world.quizQuestion.id}`)
 })
 
-Then('I should see the answers', async function (this: QuizQuestionWorld) {
-    const answers = this.quizQuestion.answers
-    const answerLocators = this.page.locator('li')
+Then('I should see the question', async () => {
+    const questionLocator = world.page.locator('h1')
+    await expectTextToBe(questionLocator, world.quizQuestion.question)
+})
+
+Then('I should see the answers', async () => {
+    const answers = world.quizQuestion.answers
+    const answerLocators = world.page.locator('li')
 
     expect(await answerLocators.count()).toBe(answers.length)
 
