@@ -17,18 +17,20 @@ const saveQuizQuestion = async (quizQuestion: QuizQuestion) =>
     await fetch('http://localhost:8080/api/quiz-question', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quizQuestion)
+        body: JSON.stringify(quizQuestion),
     })
         .then(response => response.text())
         .then(Number.parseFloat)
 
+Given(
+    'I create a quiz question {string} with answers',
+    async function (this: QuizQuestionWorld, question: string, table: TableOf<AnswerRaw>) {
+        const quizQuestion = { question, answers: toAnswers(table.raw()) }
+        const id = await saveQuizQuestion(quizQuestion)
 
-Given('I create a quiz question {string} with answers', async function (this: QuizQuestionWorld, question: string, table: TableOf<AnswerRaw>) {
-    const quizQuestion = { question, answers: toAnswers(table.raw()) }
-    const id = await saveQuizQuestion(quizQuestion)
-
-    this.quizQuestion = { id, ...quizQuestion }
-})
+        this.quizQuestion = { id, ...quizQuestion }
+    },
+)
 
 When('I visit the quiz-taking page', async function (this: QuizQuestionWorld) {
     await this.page.goto(`/quiz/${this.quizQuestion.id}`)

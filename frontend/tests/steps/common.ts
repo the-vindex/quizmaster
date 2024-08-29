@@ -24,5 +24,4 @@ After(async function (this: World) {
     await this.browser.close()
 })
 
-export const expectTextToBe = async (locator: Locator, text: string) =>
-    expect(await locator.textContent()).toBe(text)
+export const expectTextToBe = async (locator: Locator, text: string) => expect(await locator.textContent()).toBe(text)

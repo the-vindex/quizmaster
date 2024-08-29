@@ -2,15 +2,16 @@ import { createSignal, For, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 import type { QuizQuestion } from './model/quiz-question.ts'
 
-const Answer = (answer: string) =>
-    <li>{ answer }</li>
+const Answer = (answer: string) => <li>{answer}</li>
 
-const Question = ({ question, answers }: QuizQuestion) => <>
-    <h1>{ question }</h1>
-    <ul>
-        <For each={ answers } children={ Answer }/>
-    </ul>
-</>
+const Question = ({ question, answers }: QuizQuestion) => (
+    <>
+        <h1>{question}</h1>
+        <ul>
+            <For each={answers} children={Answer} />
+        </ul>
+    </>
+)
 
 export const Quiz = () => {
     const params = useParams()
@@ -22,5 +23,5 @@ export const Quiz = () => {
         setQuizQuestion(data)
     })
 
-    return <Show when={ quizQuestion() } children={ Question } keyed/>
+    return <Show when={quizQuestion()} children={Question} keyed />
 }
