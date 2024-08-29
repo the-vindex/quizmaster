@@ -1,6 +1,6 @@
 import { createSignal, For, onMount, Show } from 'solid-js'
-import { QuizQuestion } from './model/quiz-question.ts'
 import { useParams } from '@solidjs/router'
+import type { QuizQuestion } from './model/quiz-question.ts'
 
 const Answer = (answer: string) =>
     <li>{ answer }</li>
