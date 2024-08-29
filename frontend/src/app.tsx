@@ -1,5 +1,5 @@
 import { Route, Router } from '@solidjs/router'
-import { Quiz } from './quiz.tsx'
+import { Quiz } from 'quiz.tsx'
 
 export const App = () => (
     <Router>
