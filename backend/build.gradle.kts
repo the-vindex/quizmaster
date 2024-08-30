@@ -78,7 +78,8 @@ tasks.register("testE2E") {
         val backendJar = tasks.named<BootJar>("bootJar").get().archiveFile.get().asFile.absolutePath
 
         val backendProcess = ProcessBuilder("java", "-jar", backendJar).start()
-        Thread { redirectIO(backendProcess) }.start()
+        val backendThread = Thread { redirectIO(backendProcess) }
+        backendThread.start()
 
         val process = ProcessBuilder("pnpm", "run", "test:e2e")
             .directory(file("../frontend"))
@@ -88,5 +89,6 @@ tasks.register("testE2E") {
 
         process.waitFor()
         backendProcess.destroy()
+        backendThread.join()
     }
 }
