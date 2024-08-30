@@ -25,6 +25,7 @@ frontend {
     nodeInstallDirectory.set(project.layout.projectDirectory.dir("../frontend/node"))
     packageJsonDirectory.set(project.layout.projectDirectory.dir("../frontend"))
     assembleScript.set("run build")
+    checkScript.set("check")
 }
 
 configurations {
