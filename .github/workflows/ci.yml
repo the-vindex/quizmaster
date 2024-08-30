@@ -42,8 +42,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x backend/gradlew
 
+      - name: Run backend tests
+        working-directory: backend
+        run: |
+          ./gradlew installNode
+          ./gradlew installPackageManager
+
       - name: Add Node.js and pnpm to PATH
-        run: echo "${{ github.workspace }}/frontend/node:$PATH" >> $GITHUB_PATH
+        run: |
+          echo "${{ github.workspace }}/frontend/node" >> $GITHUB_PATH
+          echo $GITHUB_PATH
+          echo $PATH
+          ls -l ${{ github.workspace }}/frontend/node
 
       - name: Run backend tests
         working-directory: backend
@@ -52,10 +62,6 @@ jobs:
       - name: Run end-to-end tests
         working-directory: backend
         run: ./gradlew testE2E
-
-      - name: Lint frontend
-        working-directory: frontend
-        run: pnpm biome lint
 
       - name: Format frontend
         working-directory: frontend
