@@ -28,6 +28,13 @@ You need to have the following software installed on your machine:
 - [Java JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
 - [PostgreSQL 16](https://www.postgresql.org/download/)
 
+## IntelliJ IDEA recommended plugins
+
+Make sure you have the following plugins installed in IntelliJ IDEA:
+
+- [Cucumber.js](https://plugins.jetbrains.com/plugin/7418-cucumber-js) for writing and running Cucumber tests
+- [Biome](https://plugins.jetbrains.com/plugin/22761-biome) for linting and auto-formatting TypeScript code
+
 ## 🔧 Setup
 
 ### PostgreSQL Database
