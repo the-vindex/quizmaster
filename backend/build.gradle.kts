@@ -87,8 +87,12 @@ tasks.register("testE2E") {
 
         redirectIO(process)
 
-        process.waitFor()
+        val exitCode = process.waitFor()
         backendProcess.destroy()
         backendThread.join()
+
+        if (exitCode != 0) {
+            throw RuntimeException("E2E tests failed")
+        }
     }
 }
