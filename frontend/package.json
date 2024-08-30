@@ -11,8 +11,8 @@
         "lint": "biome lint",
         "lint:fix": "biome lint --fix",
         "preview": "vite preview",
-        "test:e2e": "cucumber-js --tags \"not @ignore\"",
-        "test:e2e:vite": "cross-env FE_PORT=5173 cucumber-js --tags \"not @ignore\""
+        "test:e2e": "wait-on tcp:8080 && cucumber-js --tags \"not @ignore\"",
+        "test:e2e:vite": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"not @ignore\""
     },
     "dependencies": {
         "@solidjs/router": "0.14.3",
@@ -29,6 +29,7 @@
         "typescript": "5.5.4",
         "vite": "5.4.2",
         "vite-plugin-solid": "2.10.2",
-        "vite-tsconfig-paths": "5.0.1"
+        "vite-tsconfig-paths": "5.0.1",
+        "wait-on": "8.0.0"
     }
 }
