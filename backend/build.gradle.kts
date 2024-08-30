@@ -49,3 +49,20 @@ tasks.withType<Test> {
     useJUnitPlatform()
     jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
+
+tasks.register("testE2E") {
+    dependsOn("build")
+    doLast {
+        val backendProcess = ProcessBuilder("java", "-jar", "*.jar").start()
+
+        val process = ProcessBuilder("pnpm", "run", "test:e2e")
+            .directory(file("../frontend"))
+            .start()
+
+        process.inputStream.bufferedReader().lines().forEach { line -> println(line) }
+        process.errorStream.bufferedReader().lines().forEach { line -> println(line) }
+
+        process.waitFor()
+        backendProcess.destroy()
+    }
+}
