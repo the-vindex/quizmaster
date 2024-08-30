@@ -1,4 +1,4 @@
-import java.io.InputStream
+import java.io.BufferedReader
 
 import org.siouan.frontendgradleplugin.infrastructure.gradle.RunPnpm
 import org.springframework.boot.gradle.tasks.bundling.BootJar
@@ -63,36 +63,40 @@ tasks.register<RunPnpm>("installPlaywright") {
     script.set("playwright:install")
 }
 
-fun redirectIO(stream: InputStream) {
-    stream.bufferedReader().lines().forEach { line -> println(line) }
+var backendProcess: Process? = null
+var backendThread: Thread? = null
+
+fun redirectIO(reader: BufferedReader?) {
+    reader?.lines()?.forEach { line -> println(line) }
 }
 
-fun redirectIO(process: Process) {
-    redirectIO(process.inputStream)
-    redirectIO(process.errorStream)
-}
-
-tasks.register("testE2E") {
+tasks.register("runBackend") {
     dependsOn("build")
     doLast {
         val backendJar = tasks.named<BootJar>("bootJar").get().archiveFile.get().asFile.absolutePath
+        print("Starting the backend with $backendJar...")
+        backendProcess = ProcessBuilder("java", "-jar", backendJar).start()
 
-        val backendProcess = ProcessBuilder("java", "-jar", backendJar).start()
-        val backendThread = Thread { redirectIO(backendProcess) }
-        backendThread.start()
-
-        val process = ProcessBuilder("pnpm", "run", "test:e2e")
-            .directory(file("../frontend"))
-            .start()
-
-        redirectIO(process)
-
-        val exitCode = process.waitFor()
-        backendProcess.destroy()
-        backendThread.join()
-
-        if (exitCode != 0) {
-            throw RuntimeException("E2E tests failed")
+        backendThread = Thread {
+            redirectIO(backendProcess?.inputReader())
+            redirectIO(backendProcess?.errorReader())
         }
+        backendThread?.start()
     }
+}
+
+tasks.register<RunPnpm>("runE2ETests") {
+    script.set("run test:e2e")
+    finalizedBy("killBackend")
+}
+
+tasks.register("killBackend") {
+    doLast {
+        backendProcess?.destroy()
+        backendThread?.join()
+    }
+}
+
+tasks.register("testE2E") {
+    dependsOn("runBackend", "runE2ETests")
 }
