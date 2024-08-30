@@ -58,15 +58,17 @@ cd backend
 
 Setup Node.js and pnpm in IntelliJ IDEA in **Settings > Languages & Frameworks > Node.js**:
 
-- Node interpreter: `<project dir>/frontend/node/node`
-- Package manager: `<project dir>/frontend/node/pnpm`
+| OS      | Settings                                                                                                               |
+|---------|------------------------------------------------------------------------------------------------------------------------|
+| Windows | Node interpreter: `<project dir>\frontend\node\node.exe` <br/> Package manager: `<project dir>\frontend\node\pnpm.cmd` |
+| Linux   | Node interpreter: `<project dir>/frontend/node/bin/node` <br/> Package manager: `<project dir>/frontend/node/bin/pnpm` |
 
 To run `node` or `pnpm` from the terminal, add it to your `PATH`:
 
 | OS      | Command                                      |
 |---------|----------------------------------------------|
 | Windows | `$env:Path = $pwd\frontend\node + $env:Path` |
-| Linux   | `export PATH=$PWD/frontend/node:$PATH`       |
+| Linux   | `export PATH=$PWD/frontend/node/bin:$PATH`   |
 
 ### Install Node.js Dependencies
 
@@ -100,7 +102,7 @@ This command does not build the front end, so you need to run `assembleFrontend`
 ## <img src="https://vitejs.dev/logo.svg" height="24"> Running Vite Development Server
 
 To avoid rebuilding frontend and backend every time you make a change, you can run the [Vite](https://vitejs.dev/guide/)
-development server  in the `frontend` directory:
+development server in the `frontend` directory:
 
 ```
 pnpm vite
