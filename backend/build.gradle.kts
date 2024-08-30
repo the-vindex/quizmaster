@@ -1,3 +1,5 @@
+import org.siouan.frontendgradleplugin.infrastructure.gradle.RunPnpm
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.3"
@@ -48,6 +50,14 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
     jvmArgs("-XX:+EnableDynamicAgentLoading")
+}
+
+tasks.named("installFrontend") {
+    finalizedBy("installPlaywright")
+}
+
+tasks.register<RunPnpm>("installPlaywright") {
+    script.set("playwright:install")
 }
 
 tasks.register("testE2E") {

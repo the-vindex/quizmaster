@@ -5,6 +5,7 @@
     "type": "module",
     "packageManager": "pnpm@9.8.0",
     "scripts": {
+        "playwright:install": "playwright install --with-deps",
         "dev": "vite",
         "build": "tsc -b && vite build",
         "format": "biome format --write",
