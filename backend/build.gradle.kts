@@ -1,4 +1,5 @@
 import org.siouan.frontendgradleplugin.infrastructure.gradle.RunPnpm
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     java
@@ -63,7 +64,13 @@ tasks.register<RunPnpm>("installPlaywright") {
 tasks.register("testE2E") {
     dependsOn("build")
     doLast {
-        val backendProcess = ProcessBuilder("java", "-jar", "*.jar").start()
+        val backendJar = tasks.named<BootJar>("bootJar").get().archiveFile.get().asFile.absolutePath
+
+        val backendProcess = ProcessBuilder("java", "-jar", backendJar).start()
+        Thread {
+            backendProcess.inputStream.bufferedReader().lines().forEach { line -> println(line) }
+            backendProcess.errorStream.bufferedReader().lines().forEach { line -> println(line) }
+        }.start()
 
         val process = ProcessBuilder("pnpm", "run", "test:e2e")
             .directory(file("../frontend"))
