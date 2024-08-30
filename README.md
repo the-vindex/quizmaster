@@ -49,11 +49,11 @@ psql -U postgres -f backend/create_db.sql
 
 The following installs Node.js and [pnpm](https://pnpm.io/pnpm-cli) locally to `frontend/node`
 (using a [org.siouan.frontend](https://siouan.github.io/frontend-gradle-plugin/) Gradle plugin)
+and Node.js dependencies to `frontend/node_modules`, including Playwright browsers:
 
 ```
 cd backend
-./gradlew installNode
-./gradlew installPackageManager
+./gradlew installFrontend
 ```
 
 Setup Node.js and pnpm in IntelliJ IDEA in **Settings > Languages & Frameworks > Node.js**:
@@ -69,13 +69,6 @@ To run `node` or `pnpm` from the terminal, add it to your `PATH`:
 |---------|----------------------------------------------|
 | Windows | `$env:Path = $pwd\frontend\node + $env:Path` |
 | Linux   | `export PATH=$PWD/frontend/node/bin:$PATH`   |
-
-### Install Node.js Dependencies
-
-```
-cd frontend
-pnpm install
-```
 
 ## 🚀 Running the Application
 
