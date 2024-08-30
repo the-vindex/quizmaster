@@ -47,8 +47,8 @@ jobs:
         run: ./gradlew test
 
       - name: Run end-to-end tests
-        working-directory: frontend
-        run: pnpm run test:e2e
+        working-directory: backend
+        run: ./gradlew testE2E
 
       - name: Lint frontend
         working-directory: frontend
