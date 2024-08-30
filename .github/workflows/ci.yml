@@ -50,10 +50,9 @@ jobs:
 
       - name: Add Node.js and pnpm to PATH
         run: |
-          echo "${{ github.workspace }}/frontend/node" >> $GITHUB_PATH
-          echo $GITHUB_PATH
-          echo $PATH
-          ls -l ${{ github.workspace }}/frontend/node
+          echo "${{ github.workspace }}/frontend/node/bin" >> $GITHUB_PATH
+          cat $GITHUB_PATH
+          ls -l ${{ github.workspace }}/frontend/node/bin
 
       - name: Run backend tests
         working-directory: backend
@@ -62,6 +61,10 @@ jobs:
       - name: Run end-to-end tests
         working-directory: backend
         run: ./gradlew testE2E
+
+      - name: Lint frontend
+        working-directory: frontend
+        run: pnpm biome lint
 
       - name: Format frontend
         working-directory: frontend
