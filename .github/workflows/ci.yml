@@ -52,8 +52,8 @@ jobs:
 
       - name: Lint frontend
         working-directory: frontend
-        run: pnpm biome lint
+        run: ./node/pnpm biome lint
 
       - name: Format frontend
         working-directory: frontend
-        run: pnpm biome format --check
+        run: ./node/pnpm biome format --check
