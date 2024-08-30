@@ -34,14 +34,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Lint frontend
-        working-directory: frontend
-        run: pnpm biome lint
-
-      - name: Format frontend
-        working-directory: frontend
-        run: pnpm biome format --check
-
       - name: Create quizmaster database
         run: psql -U postgres -h localhost -f backend/create_db.sql
         env:
@@ -54,3 +46,11 @@ jobs:
       - name: Run end-to-end tests
         working-directory: frontend
         run: pnpm run test:e2e
+
+      - name: Lint frontend
+        working-directory: frontend
+        run: pnpm biome lint
+
+      - name: Format frontend
+        working-directory: frontend
+        run: pnpm biome format --check
