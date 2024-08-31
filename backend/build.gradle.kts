@@ -64,6 +64,10 @@ tasks.register<RunPnpm>("installPlaywright") {
     script.set("playwright:install")
 }
 
+fun jarFile(): String {
+    return tasks.named<BootJar>("bootJar").get().archiveFile.get().asFile.relativeTo(projectDir).path
+}
+
 var backendProcess: Process? = null
 var backendThread: Thread? = null
 
@@ -74,9 +78,7 @@ fun redirectIO(reader: BufferedReader?) {
 tasks.register("runBackend") {
     dependsOn("build")
     doLast {
-        val backendJar = tasks.named<BootJar>("bootJar").get().archiveFile.get().asFile.absolutePath
-        print("Starting the backend with $backendJar...")
-        backendProcess = ProcessBuilder("java", "-jar", backendJar).start()
+        backendProcess = ProcessBuilder("java", "-jar", jarFile()).start()
 
         backendThread = Thread {
             redirectIO(backendProcess?.inputReader())
@@ -100,4 +102,10 @@ tasks.register("killBackend") {
 
 tasks.register("testE2E") {
     dependsOn("runBackend", "runE2ETests")
+}
+
+tasks.register<Exec>("buildDockerImage") {
+    dependsOn("bootJar")
+    val jarFile = jarFile().replace("\\", "/")
+    commandLine("docker", "build", "--build-arg", "JAR_FILE=$jarFile", "-t", "quizmaster:latest", ".")
 }
