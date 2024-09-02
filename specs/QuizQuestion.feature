@@ -9,3 +9,14 @@ Feature: Answering a quiz question
     When I visit the quiz-taking page
     Then I should see the question
     And I should see the answers
+
+  Scenario:
+    Given I create a quiz question "What is the capital of France?" with answers
+      | Marseille |         |
+      | Lyon      |         |
+      | Paris     | correct |
+      | Toulouse  |         |
+    When I visit the quiz-taking page
+    And I select the answer "Paris"
+    And I submit the quiz
+    Then I should see "Correct!"

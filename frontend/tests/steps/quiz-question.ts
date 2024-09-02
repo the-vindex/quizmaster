@@ -34,6 +34,16 @@ When('I visit the quiz-taking page', async () => {
     await world.page.goto(`/quiz/${world.quizQuestion.id}`)
 })
 
+When('I select the answer {string}', async (answer: string) => {
+    const answerLocator = world.page.locator(`input[type="radio"][value="${answer}"]`)
+    await answerLocator.check()
+})
+
+When('I submit the quiz', async () => {
+    const submitLocator = world.page.locator('input[type="submit"]')
+    await submitLocator.click()
+})
+
 Then('I should see the question', async () => {
     const questionLocator = world.page.locator('h1')
     await expectTextToBe(questionLocator, world.quizQuestion.question)
@@ -49,4 +59,9 @@ Then('I should see the answers', async () => {
         const answerLocator = answerLocators.nth(index)
         await expectTextToBe(answerLocator, answer)
     }
+})
+
+Then('I should see {string}', async (feedback: string) => {
+    const feedbackLocator = world.page.locator('p.feedback')
+    await expectTextToBe(feedbackLocator, feedback)
 })
