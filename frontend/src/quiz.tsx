@@ -5,12 +5,19 @@ import { preventDefault } from 'helpers.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
-const Question = ({ question, answers }: QuizQuestion) => {
+const Question = ({ id, question, answers }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
-    const isCorrect = () => selectedAnswer() === 2
+    const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
 
     const [submitted, setSubmitted] = createSignal(false)
-    const submit = preventDefault(() => setSubmitted(true))
+
+    const submit = preventDefault(() => {
+        if (selectedAnswer() === null) return
+        setSubmitted(true)
+        fetch(`/api/quiz-question/${id}/answer/${selectedAnswer()}`)
+            .then((response) => response.json())
+            .then((data) => setIsAnswerCorrect(data))
+    })
 
     const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
 
@@ -28,7 +35,7 @@ const Question = ({ question, answers }: QuizQuestion) => {
                 <For each={answers} children={Answer} />
             </ul>
             <input type="submit" value={'Submit'} />
-            <Show when={submitted()} children={Feedback(isCorrect())} keyed />
+            <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
         </form>
     )
 }
