@@ -29,4 +29,10 @@ public class QuizQuestionController {
     public Integer saveQuestion(@RequestBody QuizQuestion question) {
         return quizQuestionRepository.save(question).getId();
     }
+
+    public Boolean answerQuestion(@PathVariable Integer id, @PathVariable int index) {
+        return quizQuestionRepository.findById(id)
+            .map(quizQuestion -> quizQuestion.getCorrectAnswer() == index)
+            .get();
+    }
 }

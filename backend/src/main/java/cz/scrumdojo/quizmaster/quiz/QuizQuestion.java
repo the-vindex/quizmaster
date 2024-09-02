@@ -17,4 +17,6 @@ public class QuizQuestion {
     @Column(name = "answers", columnDefinition = "text[]")
     @JdbcTypeCode(SqlTypes.ARRAY)
     private String[] answers;
+
+    private Integer correctAnswer;
 }
