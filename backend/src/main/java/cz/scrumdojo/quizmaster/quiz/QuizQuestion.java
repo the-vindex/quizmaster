@@ -1,5 +1,7 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import java.util.function.Function;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -19,4 +21,8 @@ public class QuizQuestion {
     private String[] answers;
 
     private Integer correctAnswer;
+
+    public static Function<QuizQuestion, Boolean> isCorrectAnswer(int index) {
+        return quizQuestion -> quizQuestion.getCorrectAnswer() == index;
+    }
 }

@@ -1,5 +1,7 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +21,7 @@ public class QuizQuestionController {
     @Transactional
     @GetMapping("/quiz-question/{id}")
     public ResponseEntity<QuizQuestion> getQuestion(@PathVariable Integer id) {
-        return quizQuestionRepository.findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        return response(findQuestion(id));
     }
 
     @Transactional
@@ -31,8 +31,15 @@ public class QuizQuestionController {
     }
 
     public ResponseEntity<Boolean> answerQuestion(@PathVariable Integer id, @PathVariable int index) {
-        return quizQuestionRepository.findById(id)
-            .map(quizQuestion -> quizQuestion.getCorrectAnswer() == index)
+        return response(findQuestion(id).map(QuizQuestion.isCorrectAnswer(index)));
+    }
+
+    private Optional<QuizQuestion> findQuestion(Integer id) {
+        return quizQuestionRepository.findById(id);
+    }
+
+    private <T> ResponseEntity<T> response(Optional<T> entity) {
+        return entity
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
