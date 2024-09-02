@@ -30,9 +30,10 @@ public class QuizQuestionController {
         return quizQuestionRepository.save(question).getId();
     }
 
-    public Boolean answerQuestion(@PathVariable Integer id, @PathVariable int index) {
+    public ResponseEntity<Boolean> answerQuestion(@PathVariable Integer id, @PathVariable int index) {
         return quizQuestionRepository.findById(id)
             .map(quizQuestion -> quizQuestion.getCorrectAnswer() == index)
-            .get();
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 }

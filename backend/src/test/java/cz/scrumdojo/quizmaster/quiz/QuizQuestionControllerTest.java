@@ -41,17 +41,29 @@ public class QuizQuestionControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
-    @Test
-    public void answerQuestionCorrectly() {
+    public void answerQuestion(int answerIdx, boolean isCorrect) {
         var questionId = quizQuestionController.saveQuestion(createQuestion());
 
-        assertTrue(quizQuestionController.answerQuestion(questionId, 1));
+        var result = quizQuestionController.answerQuestion(questionId, answerIdx).getBody();
+
+        assertNotNull(result);
+        assertEquals(isCorrect, result);
+    }
+
+    @Test
+    public void answerQuestionCorrectly() {
+        answerQuestion(1, true);
     }
 
     @Test
     public void answerQuestionIncorrectly() {
-        var questionId = quizQuestionController.saveQuestion(createQuestion());
+        answerQuestion(0, false);
+    }
 
-        assertFalse(quizQuestionController.answerQuestion(questionId, 0));
+    @Test
+    public void answerNonExistingQuestion() {
+        ResponseEntity<?> response = quizQuestionController.answerQuestion(-1, 0);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }
