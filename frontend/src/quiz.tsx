@@ -24,12 +24,15 @@ const Question = ({ id, question, answers }: QuizQuestion) => {
 
     const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
 
-    const Answer = (answer: string, idx: Accessor<number>) => (
-        <li>
-            <input type={'radio'} name={'answer'} value={answer} onClick={selectAnswer(idx())} />
-            {answer}
-        </li>
-    )
+    const Answer = (answer: string, idx: Accessor<number>) => {
+        const answerId = `answer-${idx()}`
+        return (
+            <li>
+                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
+                <label for={answerId}>{answer}</label>
+            </li>
+        )
+    }
 
     return (
         <form onSubmit={submit}>
