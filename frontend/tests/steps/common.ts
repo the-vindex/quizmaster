@@ -1,16 +1,16 @@
-import { After, Before, type IWorld, world } from '@cucumber/cucumber'
+import { After, Before, world } from '@cucumber/cucumber'
 import { type Browser, type BrowserContext, chromium, expect, type Locator, type Page } from '@playwright/test'
 
 const port = process.env.FE_PORT || '8080'
 export const baseUrl = `http://localhost:${port}`
 
-export interface World extends IWorld {
+export interface World {
     browser: Browser
     context: BrowserContext
     page: Page
 }
 
-export const worldAs = <T>(): T & World => world as T & World
+export const worldAs = <T>(): T & World => world as unknown as T & World
 
 export type TableOf<T> = { raw: () => T[] }
 
