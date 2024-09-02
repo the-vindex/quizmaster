@@ -1,3 +1,5 @@
+import './quiz.scss'
+
 import { type Accessor, createSignal, For, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 
