@@ -10,13 +10,19 @@ Feature: Answering a quiz question
     Then I should see the question
     And I should see the answers
 
-  Scenario:
+  Scenario Outline:
     Given I create a quiz question "What is the capital of France?" with answers
       | Marseille |         |
       | Lyon      |         |
       | Paris     | correct |
       | Toulouse  |         |
     When I visit the quiz-taking page
-    And I select the answer "Paris"
+    And I select the answer "<answer>"
     And I submit the quiz
-    Then I should see "Correct!"
+    Then I should see "<feedback>"
+    Examples:
+      | answer    | feedback   |
+      | Marseille | Incorrect! |
+      | Lyon      | Incorrect! |
+      | Paris     | Correct!   |
+      | Toulouse  | Incorrect! |
