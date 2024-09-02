@@ -1,6 +1,7 @@
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 import type { QuizQuestion } from 'model/quiz-question.ts'
+import { preventDefault } from 'helpers.ts'
 
 const Answer = (answer: string) => (
     <li>
@@ -11,11 +12,7 @@ const Answer = (answer: string) => (
 
 const Question = ({ question, answers }: QuizQuestion) => {
     const [submitted, setSubmitted] = createSignal(false)
-
-    const submit = (e: SubmitEvent) => {
-        e.preventDefault()
-        setSubmitted(true)
-    }
+    const submit = preventDefault(() => setSubmitted(true))
 
     return (
         <form onSubmit={submit} >
