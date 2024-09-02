@@ -2,14 +2,20 @@ import { Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { expectTextToBe, type TableOf, worldAs } from './common.ts'
 
-import type { QuizQuestion } from '../../src/model/quiz-question.ts'
+interface QuizQuestion {
+    readonly question: string
+    readonly answers: readonly string[]
+    readonly correctAnswer: number
+}
 
-type AnswerRaw = [string]
+type AnswerRaw = [string, string]
 type Answers = string[]
 
 const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
+const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
 
 interface QuizQuestionWorld {
+    quizQuestionId: number
     quizQuestion: QuizQuestion
 }
 const world = worldAs<QuizQuestionWorld>()
@@ -24,14 +30,18 @@ const saveQuizQuestion = async (quizQuestion: QuizQuestion) =>
         .then(Number.parseFloat)
 
 Given('I create a quiz question {string} with answers', async (question: string, table: TableOf<AnswerRaw>) => {
-    const quizQuestion = { question, answers: toAnswers(table.raw()) }
-    const id = await saveQuizQuestion(quizQuestion)
+    const quizQuestion = {
+        question,
+        answers: toAnswers(table.raw()),
+        correctAnswer: toCorrectAnswer(table.raw()),
+    }
 
-    world.quizQuestion = { id, ...quizQuestion }
+    world.quizQuestionId = await saveQuizQuestion(quizQuestion)
+    world.quizQuestion = quizQuestion
 })
 
 When('I visit the quiz-taking page', async () => {
-    await world.page.goto(`/quiz/${world.quizQuestion.id}`)
+    await world.page.goto(`/quiz/${world.quizQuestionId}`)
 })
 
 When('I select the answer {string}', async (answer: string) => {
