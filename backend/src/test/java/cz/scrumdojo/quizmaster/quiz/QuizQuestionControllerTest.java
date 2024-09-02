@@ -14,14 +14,17 @@ public class QuizQuestionControllerTest {
     @Autowired
     private QuizQuestionController quizQuestionController;
 
+    private QuizQuestion createQuestion() {
+        return QuizQuestion.builder()
+            .question("What is the capital of Italy?")
+            .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
+            .correctAnswer(1)
+            .build();
+    }
+
     @Test
     public void getQuestion() {
-        var question = QuizQuestion.builder()
-            .question("What is the capital of Italy?")
-            .answers(new String[]{"Rome", "Naples", "Florence", "Palermo"})
-            .correctAnswer(0)
-            .build();
-
+        var question = createQuestion();
         var questionId = quizQuestionController.saveQuestion(question);
 
         var result = quizQuestionController.getQuestion(questionId).getBody();
@@ -40,31 +43,15 @@ public class QuizQuestionControllerTest {
 
     @Test
     public void answerQuestionCorrectly() {
-        var question = QuizQuestion.builder()
-            .question("What is the capital of Italy?")
-            .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
-            .correctAnswer(1)
-            .build();
+        var questionId = quizQuestionController.saveQuestion(createQuestion());
 
-        var questionId = quizQuestionController.saveQuestion(question);
-
-        var result = quizQuestionController.answerQuestion(questionId, 1);
-
-        assertTrue(result);
+        assertTrue(quizQuestionController.answerQuestion(questionId, 1));
     }
 
     @Test
     public void answerQuestionIncorrectly() {
-        var question = QuizQuestion.builder()
-            .question("What is the capital of Italy?")
-            .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
-            .correctAnswer(1)
-            .build();
+        var questionId = quizQuestionController.saveQuestion(createQuestion());
 
-        var questionId = quizQuestionController.saveQuestion(question);
-
-        var result = quizQuestionController.answerQuestion(questionId, 0);
-
-        assertFalse(result);
+        assertFalse(quizQuestionController.answerQuestion(questionId, 0));
     }
 }
