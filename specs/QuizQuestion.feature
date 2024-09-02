@@ -1,28 +1,31 @@
 Feature: Answering a quiz question
 
-  Scenario:
-    Given I create a quiz question "What is the capital of Italy?" with answers
+  Background:
+    Given a quiz question "What is the capital of Italy?" bookmarked as "Italy" with answers
       | Rome     | correct |
       | Naples   |         |
       | Florence |         |
       | Palermo  |         |
-    When I visit the quiz-taking page
-    Then I should see the question
-    And I should see the answers
-
-  Scenario Outline:
-    Given I create a quiz question "What is the capital of France?" with answers
+    And a quiz question "What is the capital of France?" bookmarked as "France" with answers
       | Marseille |         |
       | Lyon      |         |
       | Paris     | correct |
       | Toulouse  |         |
-    When I visit the quiz-taking page
+
+
+  Scenario:
+    When I visit the "Italy" quiz-taking page
+    Then I should see the question
+    And I should see the answers
+
+  Scenario Outline:
+    When I visit the "<question>" quiz-taking page
     And I select the answer "<answer>"
     And I submit the quiz
     Then I should see "<feedback>"
     Examples:
-      | answer    | feedback   |
-      | Marseille | Incorrect! |
-      | Lyon      | Incorrect! |
-      | Paris     | Correct!   |
-      | Toulouse  | Incorrect! |
+      | question | answer   | feedback   |
+      | Italy    | Rome     | Correct!   |
+      | Italy    | Palermo  | Incorrect! |
+      | France   | Paris    | Correct!   |
+      | France   | Toulouse | Incorrect! |
