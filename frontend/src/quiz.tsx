@@ -18,8 +18,10 @@ const Question = ({ id, question, answers }: QuizQuestion) => {
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()
         if (selectedAnswerIdx === null) return
-        setSubmitted(true)
-        setIsAnswerCorrect(await api.isAnswerCorrect(id, selectedAnswerIdx))
+        api.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
+            setSubmitted(true)
+            setIsAnswerCorrect(isCorrect)
+        })
     })
 
     const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
