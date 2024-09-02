@@ -1,6 +1,7 @@
-import { Given, Then, When } from '@cucumber/cucumber'
+import { Before, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { expectTextToBe, type TableOf, worldAs } from './common.ts'
+import QuizTakingPage from '../pages/quiz-taking-page'
 
 interface QuizQuestionData {
     readonly question: string
@@ -20,6 +21,7 @@ const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
 
 interface QuizQuestionWorld {
+    quizTakingPage: QuizTakingPage
     bookmarks: Record<string, QuizQuestion>
     activeBookmark: string
 }
@@ -35,19 +37,22 @@ const saveQuizQuestion = async (quizQuestion: QuizQuestionData) =>
         .then(Number.parseFloat)
 
 const bookmarkQuizQuestion = async (bookmark: string, quizQuestion: QuizQuestionData) => {
-    if (world.bookmarks === undefined) world.bookmarks = {}
-
     world.bookmarks[bookmark] = {
         quizQuestionId: await saveQuizQuestion(quizQuestion),
         quizQuestion,
     }
 }
 
+const activeQuizQuestion = () => world.bookmarks[world.activeBookmark].quizQuestion
+
+Before(() => {
+    world.quizTakingPage = new QuizTakingPage(world.page)
+    world.bookmarks = {}
+})
+
 Given(
     'a quiz question {string} bookmarked as {string} with answers',
     async (question: string, bookmark: string, table: TableOf<AnswerRaw>) => {
-        if (world.bookmarks === undefined) world.bookmarks = {}
-
         await bookmarkQuizQuestion(bookmark, {
             question,
             answers: toAnswers(table.raw()),
@@ -58,27 +63,25 @@ Given(
 
 When('I visit the {string} quiz-taking page', async (bookmark: string) => {
     world.activeBookmark = bookmark
-    await world.page.goto(`/quiz/${world.bookmarks[bookmark].quizQuestionId}`)
+    await world.quizTakingPage.goto(world.bookmarks[bookmark].quizQuestionId)
 })
 
 When('I select the answer {string}', async (answer: string) => {
-    const answerLocator = world.page.locator(`input[type="radio"][value="${answer}"]`)
-    await answerLocator.check()
+    await world.quizTakingPage.selectAnswer(answer)
 })
 
 When('I submit the quiz', async () => {
-    const submitLocator = world.page.locator('input[type="submit"]')
-    await submitLocator.click()
+    await world.quizTakingPage.submit()
 })
 
 Then('I should see the question', async () => {
-    const questionLocator = world.page.locator('h1')
-    await expectTextToBe(questionLocator, world.bookmarks[world.activeBookmark].quizQuestion.question)
+    const questionLocator = world.quizTakingPage.questionLocator()
+    await expectTextToBe(questionLocator, activeQuizQuestion().question)
 })
 
 Then('I should see the answers', async () => {
-    const answers = world.bookmarks[world.activeBookmark].quizQuestion.answers
-    const answerLocators = world.page.locator('li')
+    const answers = activeQuizQuestion().answers
+    const answerLocators = world.quizTakingPage.answersLocator()
 
     expect(await answerLocators.count()).toBe(answers.length)
 
@@ -89,6 +92,6 @@ Then('I should see the answers', async () => {
 })
 
 Then('I should see {string}', async (feedback: string) => {
-    const feedbackLocator = world.page.locator('p.feedback')
+    const feedbackLocator = world.quizTakingPage.feedbackLocator()
     await expectTextToBe(feedbackLocator, feedback)
 })
