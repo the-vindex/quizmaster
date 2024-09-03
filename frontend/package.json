@@ -14,6 +14,7 @@
         "lint:fix": "biome lint --fix",
         "preview": "vite preview",
         "test:e2e": "wait-on tcp:8080 && cucumber-js --tags \"not @ignore\"",
+        "test:e2e:focus": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"@focus\"",
         "test:e2e:vite": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"not @ignore\""
     },
     "dependencies": {
