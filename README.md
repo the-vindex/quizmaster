@@ -112,3 +112,18 @@ You can run the end-to-end [Cucumber](https://cucumber.io/docs/guides/) + [Playw
 
 - `pnpm run test:e2e` against the running app on `http://localhost:8080` (requires building the frontend first)
 - `pnpm run test:e2e:vite` against the Vite development server on `http://localhost:5173`
+
+## 🚩 Feature Flag
+
+You can hide an unfinished feature behind a feature flag.
+
+- on the frontend, the feature flag is a constant `FEATURE_FLAG_ENABLED`
+- on the backend, the feature flag is a static method `FeatureFlag.isEnabled()`
+
+To enable the feature flag, set the `FEATURE_FLAG` environment variable to `true` and rebuild both the frontend and
+the backend:
+
+| OS      | Command                    |
+|---------|----------------------------|
+| Windows | `$env:FEATURE_FLAG="true"` |
+| Linux   | `export FEATURE_FLAG=true` |
