@@ -51,6 +51,18 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+fun featureFlag(): Boolean {
+    return System.getenv("FEATURE_FLAG")?.toBoolean() ?: false
+}
+
+sourceSets {
+    main {
+        resources {
+            if (!featureFlag()) exclude("feature-flag.properties")
+        }
+    }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
     jvmArgs("-XX:+EnableDynamicAgentLoading")
