@@ -5,6 +5,9 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
     plugins: [solid(), tsconfigPaths()],
+    define: {
+        FEATURE_FLAG_ENABLED: process.env.FEATURE_FLAG === 'true',
+    },
     build: {
         outDir: '../backend/src/main/resources/static',
         emptyOutDir: true,
