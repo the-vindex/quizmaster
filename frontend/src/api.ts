@@ -20,3 +20,11 @@ export const isMultipleAnswersCorrect = async (questionId: number, answersList: 
         },
     })
 }
+export const getQuestions = async () =>
+    await fetchJson<QuizQuestion[]>(`/api/quiz-question/all`)
+
+export const createQuiz = async (list: number[]) =>
+    await fetchJson<number>(`/api/quiz`, {
+        body: JSON.stringify(list),
+        method: 'POST'
+    })
