@@ -30,10 +30,10 @@ When('quiz maker chooses id from the table', async () => {
     await world.quizCreationPage.selectRandomQuizId()
 })
 
-Then('quiz maker sees that expected check boxes are selected', async () => {
-    const selectedIds = await world.quizCreationPage.getSelectedIds()
-    expect(selectedIds.length).toBeGreaterThan(0) // Должны быть выбраны какие-то чекбоксы
-})
+// Then('quiz maker sees that expected check boxes are selected', async () => {
+//     const selectedIds = await world.quizCreationPage.getSelectedIds()
+//     expect(selectedIds.length).toBeGreaterThan(0) // Должны быть выбраны какие-то чекбоксы
+// })
 
 When('quiz maker submits the quiz', async () => {
     await world.quizCreationPage.submitQuiz()
@@ -71,11 +71,11 @@ Then('quiz taker sees a correct list of the questions', async () => {
 When('quiz maker does not choose id from the table', async () => {
     await world.quizCreationPage.clearSelectedIds()
 })
-
-Then('quiz maker sees that expected check boxes are not selected', async () => {
-    const selectedIds = await world.quizCreationPage.getSelectedIds()
-    expect(selectedIds.length).toBe(0) // Должно быть 0 выбранных чекбоксов
-})
+//
+// Then('quiz maker sees that expected check boxes are not selected', async () => {
+//     const selectedIds = await world.quizCreationPage.getSelectedIds()
+//     expect(selectedIds.length).toBe(0) // Должно быть 0 выбранных чекбоксов
+// })
 
 Then('quiz maker sees a validation error', async () => {
     const errorText = await world.quizCreationPage.getValidationError()

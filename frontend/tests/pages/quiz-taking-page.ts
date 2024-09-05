@@ -1,8 +1,7 @@
-import type {Page} from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 export default class QuizTakingPage {
-    constructor(private page: Page) {
-    }
+    constructor(private page: Page) {}
 
     goto = async (id: number) => this.page.goto(`/quiz/${id}`)
 
