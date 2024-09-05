@@ -1,6 +1,6 @@
 import { Route, Router } from '@solidjs/router'
 import { Quiz } from 'quiz.tsx'
-import QuizForm from "./pages/CreateQuestion/CreateQuestion.tsx";
+import QuizForm from './pages/CreateQuestion/CreateQuestion.tsx'
 
 export const App = () => (
     <Router>

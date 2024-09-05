@@ -1,6 +1,6 @@
-import {Before, Given, Then, When} from '@cucumber/cucumber'
-import {expect} from '@playwright/test'
-import {expectInputToBe, expectTextToBe, expectThatIsVisible, type TableOf, worldAs} from './common.ts'
+import { Before, Given, Then, When } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+import { expectInputToBe, expectTextToBe, expectThatIsVisible, type TableOf, worldAs } from './common.ts'
 import QuizTakingPage from '../pages/quiz-taking-page'
 import QuestionCreationPage from '../pages/question-creation-page'
 
@@ -33,7 +33,7 @@ const world = worldAs<QuizQuestionWorld>()
 const saveQuizQuestion = async (quizQuestion: QuizQuestionData) =>
     await fetch('http://localhost:8080/api/quiz-question', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(quizQuestion),
     })
         .then(response => response.text())
@@ -114,4 +114,3 @@ Then('I enter question {string}', async (question: string) => {
     const questionLocator = world.questionCreationPage.questionLocator()
     await expectInputToBe(questionLocator, question)
 })
-
