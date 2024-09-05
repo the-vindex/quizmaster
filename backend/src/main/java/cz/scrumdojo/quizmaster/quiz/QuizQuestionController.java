@@ -21,7 +21,12 @@ public class QuizQuestionController {
     @Transactional
     @GetMapping("/quiz-question/{id}")
     public ResponseEntity<QuizQuestion> getQuestion(@PathVariable Integer id) {
-        return response(findQuestion(id));
+
+        Optional<QuizQuestion> question = findQuestion(id);
+        if (question.isPresent() && question.get().getQuestion().contains("Europe")) {
+            question.get().setQuizType(QuizType.MULTIPLE);
+        }
+        return response(question);
     }
 
     @Transactional

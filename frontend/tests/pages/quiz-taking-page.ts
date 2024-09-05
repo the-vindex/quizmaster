@@ -17,7 +17,8 @@ export default class QuizTakingPage {
 
     answersLocator = () => this.page.locator('li')
 
-    answerLocator = (answer: string) => this.page.locator(`input[type="radio"][value="${answer}"]`)
+    answerLocator = (answer: string) =>
+        this.page.locator(`input[type="checkbox"][value="${answer}"],input[type="radio"][value="${answer}"]`)
 
     selectAnswer = (answer: string) => this.answerLocator(answer).check()
 
