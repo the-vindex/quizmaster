@@ -1,6 +1,6 @@
-import {Before, Given, Then, When} from '@cucumber/cucumber'
-import {expect} from '@playwright/test'
-import {worldAs} from './common.ts'
+import { Before, Given, Then, When } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+import { worldAs } from './common.ts'
 import QuizCreationPage from '../pages/quiz-creation-page'
 import QuizTakingPage from '../pages/quiz-taking-page'
 
