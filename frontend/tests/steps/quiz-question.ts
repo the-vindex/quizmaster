@@ -76,8 +76,10 @@ When('I visit the {string} quiz-taking page', async (bookmark: string) => {
     await world.quizTakingPage.goto(quizId)
 })
 
-When('I select the answer {string}', async (answer: string) => {
-    await world.quizTakingPage.selectAnswer(answer)
+When('I select the answer {string}', async (answerList: string) => {
+    for (const answer of answerList.split(',')) {
+        await world.quizTakingPage.selectAnswer(answer)
+    }
 })
 
 When('I submit the quiz', async () => {

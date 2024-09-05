@@ -8,12 +8,19 @@ Feature: Answering a quiz question with multiple choice
       | Spain   |         |
 
 
-  Scenario:
+  Scenario Outline:
     When I visit the "Europe" quiz-taking page
-    Then I select the answer "France"
-    Then I select the answer "Italy"
+    Then I select the answer "<answer>"
     When I submit the quiz
-    Then I should see "Correct!"
+    Then I should see "<response>"
+
+    Examples:
+      | answer                     | response   |
+      | Italy                      | Incorrect! |
+      | Italy,France               | Correct!   |
+      | Italy,France,Morocco       | Incorrect! |
+#      | Italy,France,Morocco,Spain | Incorrect! |
+
 
 #  Scenario Outline:
 #    When I visit the "<question>" quiz-taking page
