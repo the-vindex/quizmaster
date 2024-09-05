@@ -1,7 +1,8 @@
-import { Before, Given, Then, When } from '@cucumber/cucumber'
-import { expect } from '@playwright/test'
-import { expectTextToBe, type TableOf, worldAs } from './common.ts'
+import {Before, Given, Then, When} from '@cucumber/cucumber'
+import {expect} from '@playwright/test'
+import {expectInputToBe, expectTextToBe, expectThatIsVisible, type TableOf, worldAs} from './common.ts'
 import QuizTakingPage from '../pages/quiz-taking-page'
+import QuestionCreationPage from '../pages/question-creation-page'
 
 interface QuizQuestionData {
     readonly question: string
@@ -21,16 +22,18 @@ const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
 
 interface QuizQuestionWorld {
+    questionCreationPage: QuestionCreationPage
     quizTakingPage: QuizTakingPage
     bookmarks: Record<string, QuizQuestion>
     activeBookmark: string
 }
+
 const world = worldAs<QuizQuestionWorld>()
 
 const saveQuizQuestion = async (quizQuestion: QuizQuestionData) =>
     await fetch('http://localhost:8080/api/quiz-question', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(quizQuestion),
     })
         .then(response => response.text())
@@ -47,6 +50,7 @@ const activeQuizQuestion = () => world.bookmarks[world.activeBookmark].quizQuest
 
 Before(() => {
     world.quizTakingPage = new QuizTakingPage(world.page)
+    world.questionCreationPage = new QuestionCreationPage(world.page)
     world.bookmarks = {}
 })
 
@@ -95,3 +99,19 @@ Then('I should see {string}', async (feedback: string) => {
     const feedbackLocator = world.quizTakingPage.feedbackLocator()
     await expectTextToBe(feedbackLocator, feedback)
 })
+
+When('I visit the create question page', async () => {
+    await world.questionCreationPage.goto()
+})
+
+Then('I should see the create question form', async () => {
+    const formLocator = world.questionCreationPage.formLocator()
+    await expectThatIsVisible(formLocator)
+})
+
+Then('I enter question {string}', async (question: string) => {
+    await world.questionCreationPage.enterQuestion(question)
+    const questionLocator = world.questionCreationPage.questionLocator()
+    await expectInputToBe(questionLocator, question)
+})
+
