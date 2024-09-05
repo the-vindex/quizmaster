@@ -1,6 +1,6 @@
-import { Before, Given, Then, When } from '@cucumber/cucumber'
-import { expect } from '@playwright/test'
-import { worldAs } from './common.ts'
+import {Before, Given, Then, When} from '@cucumber/cucumber'
+import {expect} from '@playwright/test'
+import {worldAs} from './common.ts'
 import QuizCreationPage from '../pages/quiz-creation-page'
 import QuizTakingPage from '../pages/quiz-taking-page'
 
@@ -55,7 +55,8 @@ When('quiz taker clicks the link', async () => {
         await world.quizTakingPage.gotoByLink(quizLink)
     } else {
         throw new Error('Quiz link is null')
-    }})
+    }
+})
 
 Then('quiz taker is on the quiz page', async () => {
     const pageTitle = await world.quizTakingPage.getTitle()

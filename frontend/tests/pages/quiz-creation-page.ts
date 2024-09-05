@@ -1,7 +1,8 @@
-import type { Page } from '@playwright/test'
+import type {Page} from '@playwright/test'
 
 export default class QuizCreationPage {
-    constructor(private page: Page) {}
+    constructor(private page: Page) {
+    }
 
     goto = async () => this.page.goto('/quiz/create')
 
@@ -14,7 +15,7 @@ export default class QuizCreationPage {
     getSelectedIds = () =>
         this.page
             .locator('input[type="checkbox"]:checked')
-            .evaluateAll(elements => elements.map(el => (el as any).value))
+            .evaluateAll(elements => elements.map(el => (el as HTMLInputElement).value))
 
     clearSelectedIds = async () => {
         const selectedCheckboxes = await this.page.locator('input[type="checkbox"]:checked')
