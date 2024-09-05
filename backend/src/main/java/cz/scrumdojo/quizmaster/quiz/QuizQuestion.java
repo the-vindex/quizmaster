@@ -22,6 +22,9 @@ public class QuizQuestion {
 
     private Integer correctAnswer;
 
+    @Transient
+    private QuizType quizType;
+
     public static Function<QuizQuestion, Boolean> isCorrectAnswer(int index) {
         return quizQuestion -> quizQuestion.getCorrectAnswer() == index;
     }

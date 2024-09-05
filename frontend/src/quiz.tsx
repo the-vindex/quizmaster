@@ -9,7 +9,7 @@ import { preventDefault } from 'helpers.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
-const Question = ({ id, question, answers }: QuizQuestion) => {
+const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
 
@@ -28,6 +28,22 @@ const Question = ({ id, question, answers }: QuizQuestion) => {
 
     const Answer = (answer: string, idx: Accessor<number>) => {
         const answerId = `answer-${idx()}`
+
+        if (quizType === 'MULTIPLE') {
+            return (
+                <li>
+                    <input
+                        type={'checkbox'}
+                        name={'answer'}
+                        id={answerId}
+                        value={answer}
+                        onClick={selectAnswer(idx())}
+                    />
+                    <label for={answerId}>{answer}</label>
+                </li>
+            )
+        }
+
         return (
             <li>
                 <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
