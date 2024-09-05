@@ -1,12 +1,49 @@
 import { createSignal } from 'solid-js'
 import './createQuestion.css'
 
+type Question = {
+    question: string
+    answers: string[]
+    correctAnswer: number | null
+    quizType: string
+}
+
 function QuizForm() {
     const [question, setQuestion] = createSignal<string>('')
     const [answers, setAnswers] = createSignal<string[]>(['', '', '', ''])
     const [correctAnswer, setCorrectAnswer] = createSignal<number | null>(null)
     const [questionExplanations, setQuestionExplanations] = createSignal<string[]>(['', '', '', ''])
     const [answerExplanation, setAnswerExplanation] = createSignal<string>('')
+    const [linkToQuestion, setLinkToQuestion] = createSignal<string>('')
+
+    const postData = (formData: Question) => {
+        const data = {
+            question: formData.question,
+            answers: formData.answers,
+            correctAnswer: formData.correctAnswer,
+            quizType: 'SINGLE',
+        }
+        fetch('/api/quiz-question', {
+            method: 'POST', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Set the content type to JSON
+            },
+            body: JSON.stringify(data), // Convert the object to a JSON string
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json() // Parse JSON response
+            })
+            .then(data => {
+                console.log('Success:', data) // Handle the response data
+                setLinkToQuestion(`http://localhost/quiz/${data}`)
+            })
+            .catch(error => {
+                console.error('Error:', error) // Handle errors
+            })
+    }
 
     const updateAnswer = (index: number, value: string) => {
         setAnswers(prev => {
@@ -29,10 +66,12 @@ function QuizForm() {
             question: question(),
             answers: answers(),
             correctAnswer: correctAnswer(),
-            questionExplanations: questionExplanations(),
-            generalExplanations: answerExplanation(),
+            quizType: 'SINGLE',
+            // questionExplanations: questionExplanations(),
+            // generalExplanations: answerExplanation(),
         }
         console.log(formData) // Handle form data submission
+        postData(formData)
     }
 
     {
@@ -50,7 +89,6 @@ function QuizForm() {
                         rows="3"
                     />
                 </div>
-
                 {/* Answer rows */}
                 {answersArray.map((_answer, index) => (
                     <div class="answerRow">
@@ -78,7 +116,6 @@ function QuizForm() {
                         }
                     </div>
                 ))}
-
                 {
                     <div>
                         <label>General explanation for the entire question:</label>
@@ -90,11 +127,12 @@ function QuizForm() {
                         />
                     </div>
                 }
-
                 {/* Submit button */}
                 <button type="submit" class="submitButton">
                     Submit
-                </button>
+                </button>{' '}
+                <br />
+                <span>{linkToQuestion()}</span>
             </form>
         )
     }
