@@ -1,6 +1,6 @@
 Feature: Question explanation
 
-    Background:
+  Background:
     Given a quiz question "What is the capital of Italy?" bookmarked as "Italy" with answers
       | Rome     | correct |
       | Naples   |         |
@@ -20,7 +20,7 @@ Feature: Question explanation
     And I should see question explanation "<question explanation>"
     Examples:
       | question | answer   | feedback   | question explanation |
-      | Italy    | Rome     | Correct!   | Question Explanation |
-      | Italy    | Palermo  | Incorrect! | Question Explanation |
-      | France   | Paris    | Correct!   | Question Explanation |
-      | France   | Toulouse | Incorrect! | Question Explanation |
+      | Italy    | Rome     | Correct!   |                      |
+      | Italy    | Palermo  | Incorrect! |                      |
+      | France   | Paris    | Correct!   |                      |
+      | France   | Toulouse | Incorrect! |                      |

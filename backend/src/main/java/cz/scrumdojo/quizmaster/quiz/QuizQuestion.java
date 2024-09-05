@@ -24,6 +24,8 @@ public class QuizQuestion {
     @JdbcTypeCode(SqlTypes.ARRAY)
     private String[] explanations;
 
+    private String questionExplanation;
+
     private Integer correctAnswer;
 
     @Transient

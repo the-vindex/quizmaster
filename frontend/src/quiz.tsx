@@ -12,9 +12,9 @@ const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!'
 
 const Explanation = (explanation: string) => <span class="explanation"> {explanation}</span>
 
-const QuestionExplanation = <p class="questionExplanation">{'Question Explanation'}</p>
+const QuestionExplanation = (questionExplanation: string) => <p class="questionExplanation">{questionExplanation}</p>
 
-const Question = ({ id, question, answers, quizType, explanations }: QuizQuestion) => {
+const Question = ({ id, question, answers, quizType, explanations, questionExplanation }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
@@ -97,7 +97,7 @@ const Question = ({ id, question, answers, quizType, explanations }: QuizQuestio
             </ul>
             <input type="submit" value={'Submit'} />
             <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
-            <Show when={submitted()} children={QuestionExplanation} />
+            <Show when={submitted()} children={QuestionExplanation(questionExplanation)} />
         </form>
     )
 }

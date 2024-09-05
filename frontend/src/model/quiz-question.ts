@@ -4,6 +4,7 @@ export interface QuizQuestion {
     readonly answers: readonly string[]
     readonly explanations: readonly string[]
     readonly quizType: string
+    readonly questionExplanation: string
 }
 
 export interface Quiz {
