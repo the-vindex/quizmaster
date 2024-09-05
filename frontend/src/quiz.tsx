@@ -6,14 +6,18 @@ import { useParams } from '@solidjs/router'
 import type { QuizQuestion } from 'model/quiz-question.ts'
 import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
+import { transformObjectToArray } from './utils/transformObjectToArray.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
 const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
+    const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
 
     const [submitted, setSubmitted] = createSignal(false)
+
+    const isMultiple = quizType === 'MULTIPLE'
 
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()
@@ -24,20 +28,40 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         })
     })
 
+    const submitMultiple = preventDefault(async () => {
+        if (Object.keys(selectedAnswers()).length === 0) return
+
+        const payload = transformObjectToArray(selectedAnswers())
+
+        api.isMultipleAnswersCorrect(id, payload).then(isCorrect => {
+            setSubmitted(true)
+            setIsAnswerCorrect(isCorrect)
+        })
+    })
+
     const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
 
-    const Answer = (answer: string, idx: Accessor<number>) => {
-        const answerId = `answer-${idx()}`
+    const handleCheckboxChange = (event: InputEvent) => {
+        const { name, checked } = event.target as HTMLInputElement
+        setSelectedAnswers(prevState => ({
+            ...prevState,
+            [name]: checked,
+        }))
+    }
 
-        if (quizType === 'MULTIPLE') {
+    const Answer = (answer: string, idx: Accessor<number>) => {
+        const answerId: string = `answer-${idx()}`
+
+        if (isMultiple) {
             return (
                 <li>
                     <input
                         type={'checkbox'}
-                        name={'answer'}
+                        name={`${idx()}`}
                         id={answerId}
                         value={answer}
-                        onClick={selectAnswer(idx())}
+                        checked={selectedAnswers()?.[idx()]}
+                        onInput={handleCheckboxChange}
                     />
                     <label for={answerId}>{answer}</label>
                 </li>
@@ -53,7 +77,7 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
     }
 
     return (
-        <form onSubmit={submit}>
+        <form onSubmit={isMultiple ? submitMultiple : submit}>
             <h1>{question}</h1>
             <ul>
                 <For each={answers} children={Answer} />

@@ -10,3 +10,13 @@ export const getQuestion = async (questionId: number) =>
 
 export const isAnswerCorrect = async (questionId: number, answerIdx: number) =>
     await fetchJson<boolean>(`/api/quiz-question/${questionId}/answer/${answerIdx}`)
+
+export const isMultipleAnswersCorrect = async (questionId: number, answersList: number[]) => {
+    return await fetchJson<boolean>(`/api/quiz-question/${questionId}/answer`, {
+        method: 'POST',
+        body: JSON.stringify(answersList),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+}
