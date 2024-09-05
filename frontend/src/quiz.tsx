@@ -16,7 +16,7 @@ const QuestionExplanation = <p class="questionExplanation">{'Question Explanatio
 const Question = ({ id, question, answers, quizType, explanations }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
-    const [explanation, setExplanation] = createSignal<string | "">("")
+    const [explanation, setExplanation] = createSignal<string | ''>('')
     const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
 
     const [submitted, setSubmitted] = createSignal(false)
