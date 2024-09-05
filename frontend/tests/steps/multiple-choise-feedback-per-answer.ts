@@ -9,11 +9,6 @@ interface MultipleChoiceWorld {
 
 const world = worldAs<MultipleChoiceWorld>()
 
-Then('quiz taker is on the quiz page', async () => {
-    const pageTitle = await world.quizTakingPage.getTitle()
-    expect(pageTitle).toBe('Take Quiz')
-})
-
 Then('quiz taker sees question with multiple choice', async () => {
     const questionType = await world.quizTakingPage.getQuestionType()
     expect(questionType).toBe('multiple choice')

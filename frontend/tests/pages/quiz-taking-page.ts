@@ -37,4 +37,6 @@ export default class QuizTakingPage {
     }
 
     questionExplanationLocator = () => this.page.locator('p.questionExplanation')
+
+    getUrl = () => this.page.url()
 }
