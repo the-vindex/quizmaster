@@ -71,7 +71,9 @@ Given(
 
 When('I visit the {string} quiz-taking page', async (bookmark: string) => {
     world.activeBookmark = bookmark
-    await world.quizTakingPage.goto(world.bookmarks[bookmark].quizQuestionId)
+    const quizId = world.bookmarks[bookmark].quizQuestionId
+    console.log(`Navigating to the quiz-taking page: ${quizId}`)
+    await world.quizTakingPage.goto(quizId)
 })
 
 When('I select the answer {string}', async (answer: string) => {
