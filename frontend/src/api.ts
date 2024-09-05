@@ -1,4 +1,4 @@
-import type { QuizQuestion } from './model/quiz-question.ts'
+import type { Quiz, QuizQuestion } from './model/quiz-question.ts'
 
 const fetchJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
     const response = await fetch(url, init)
@@ -20,11 +20,10 @@ export const isMultipleAnswersCorrect = async (questionId: number, answersList: 
         },
     })
 }
-export const getQuestions = async () =>
-    await fetchJson<QuizQuestion[]>(`/api/quiz-question/all`)
+export const getQuestions = async () => await fetchJson<QuizQuestion[]>('/api/quiz-question/all')
 
-export const createQuiz = async (list: number[]) =>
-    await fetchJson<number>(`/api/quiz`, {
-        body: JSON.stringify(list),
-        method: 'POST'
+export const createQuiz = async (quizObj: Quiz) =>
+    await fetchJson<number>('/api/quiz', {
+        body: JSON.stringify(quizObj),
+        method: 'POST',
     })

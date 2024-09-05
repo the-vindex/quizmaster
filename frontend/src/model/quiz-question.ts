@@ -5,3 +5,8 @@ export interface QuizQuestion {
     readonly explanations: readonly string[]
     readonly quizType: string
 }
+
+export interface Quiz {
+    readonly name: string
+    readonly answerIds: number[]
+}
