@@ -5,8 +5,9 @@ import type { QuizQuestion } from 'model/quiz-question.ts'
 import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
 
-const Feedback = (id: number) =>
+const Feedback = (id: number) => (
     <p class="feedback">{id ? `Congratulation, Quiz ID is ${id}` : 'Oops..something went wrong :('}</p>
+)
 
 const Questions = (list: QuizQuestion[]) => {
     const [selectedQuestions, setSelectedQuestions] = createSignal<number[]>([])
@@ -29,14 +30,15 @@ const Questions = (list: QuizQuestion[]) => {
     const selectQuestion = (questionIdx: number) => () => {
         const isQuestion = selectedQuestions().find(id => id === questionIdx)
 
-        if(isQuestion) { // remove question
+        if (isQuestion) {
+            // remove question
             const filteredQuestions = selectedQuestions().filter(id => id !== questionIdx)
             setSelectedQuestions(filteredQuestions)
-        } else { //add question
+        } else {
+            //add question
             setSelectedQuestions([...selectedQuestions(), questionIdx])
-        }      
+        }
     }
-
 
     const Question = ({ question, id }: QuizQuestion) => {
         const questionId = `answer-${id}`
@@ -54,7 +56,14 @@ const Questions = (list: QuizQuestion[]) => {
                 <div>
                     <label for={'quizName'}>Quiz name:</label>
                 </div>
-                <input type={'text'} name={'question'} id={'quizName'} value={quizName()} onInput={e => setQuizName(e.currentTarget.value)} required />
+                <input
+                    type={'text'}
+                    name={'question'}
+                    id={'quizName'}
+                    value={quizName()}
+                    onInput={e => setQuizName(e.currentTarget.value)}
+                    required
+                />
             </div>
         )
     }
