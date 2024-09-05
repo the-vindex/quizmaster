@@ -33,4 +33,6 @@ export default class QuizTakingPage {
     getQuestions = async () => {
         return this.page.locator('.quiz-questions li').allTextContents()
     }
+
+    questionExplanationLocator = () => this.page.locator('p.questionExplanation')
 }

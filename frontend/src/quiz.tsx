@@ -9,6 +9,8 @@ import { preventDefault } from 'helpers.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
+const QuestionExplanation = <p class="questionExplanation">{'Question Explanation'}</p>
+
 const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
@@ -60,6 +62,7 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
             </ul>
             <input type="submit" value={'Submit'} />
             <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
+            <Show when={submitted()} children={QuestionExplanation} />
         </form>
     )
 }
