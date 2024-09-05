@@ -8,7 +8,7 @@ type Question = {
     quizType: string
 }
 
-function QuizForm() {
+export function CreateQuestion() {
     const [question, setQuestion] = createSignal<string>('')
     const [answers, setAnswers] = createSignal<string[]>(['', '', '', ''])
     const [correctAnswer, setCorrectAnswer] = createSignal<number | null>(null)
@@ -38,7 +38,7 @@ function QuizForm() {
             })
             .then(data => {
                 console.log('Success:', data) // Handle the response data
-                setLinkToQuestion(`http://localhost/quiz/${data}`)
+                setLinkToQuestion(`${location.origin}/quiz/${data}`)
             })
             .catch(error => {
                 console.error('Error:', error) // Handle errors
@@ -132,10 +132,8 @@ function QuizForm() {
                     Submit
                 </button>{' '}
                 <br />
-                <span>{linkToQuestion()}</span>
+                <span id="question-link">{linkToQuestion()}</span>
             </form>
         )
     }
 }
-
-export default QuizForm
