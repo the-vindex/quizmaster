@@ -10,10 +10,16 @@ import { transformObjectToArray } from './utils/transformObjectToArray.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
-const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
+const Explanation = (explanation: string) => <span class="explanation"> {explanation}</span>
+
+const QuestionExplanation = <p class="questionExplanation">{'Question Explanation'}</p>
+
+const Question = ({ id, question, answers, quizType, explanations }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
+    const [explanation, setExplanation] = createSignal<string | ''>('')
+    const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
 
     const [submitted, setSubmitted] = createSignal(false)
 
@@ -25,6 +31,8 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         api.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
             setSubmitted(true)
             setIsAnswerCorrect(isCorrect)
+            setExplanation(explanations[selectedAnswerIdx])
+            setExplanationIdx(selectedAnswerIdx)
         })
     })
 
@@ -39,7 +47,9 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         })
     })
 
-    const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
+    const selectAnswer = (answerIdx: number) => () => {
+        setSelectedAnswer(answerIdx)
+    }
 
     const handleCheckboxChange = (event: InputEvent) => {
         const { name, checked } = event.target as HTMLInputElement
@@ -71,7 +81,10 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         return (
             <li>
                 <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
-                <label for={answerId}>{answer}</label>
+                <label for={answerId}>
+                    {answer}
+                    <Show when={explanationIdx() === idx()} children={Explanation(explanation())} keyed />
+                </label>
             </li>
         )
     }
@@ -84,6 +97,7 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
             </ul>
             <input type="submit" value={'Submit'} />
             <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
+            <Show when={submitted()} children={QuestionExplanation} />
         </form>
     )
 }

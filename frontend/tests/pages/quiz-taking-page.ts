@@ -26,6 +26,8 @@ export default class QuizTakingPage {
 
     feedbackLocator = () => this.page.locator('p.feedback')
 
+    explanationLocator = () => this.page.locator('span.explanation')
+
     getFeedback = async () => {
         return this.page.locator('.feedback').innerText()
     }
@@ -33,4 +35,8 @@ export default class QuizTakingPage {
     getQuestions = async () => {
         return this.page.locator('.quiz-questions li').allTextContents()
     }
+
+    questionExplanationLocator = () => this.page.locator('p.questionExplanation')
+
+    getUrl = () => this.page.url()
 }

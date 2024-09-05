@@ -59,8 +59,9 @@ When('quiz taker clicks the link', async () => {
 })
 
 Then('quiz taker is on the quiz page', async () => {
-    const pageTitle = await world.quizTakingPage.getTitle()
-    expect(pageTitle).toBe('Take Quiz')
+    const currentUrl = await world.quizTakingPage.getUrl()
+    const urlPattern = /^http:\/\/localhost:(5173|8080)\/quiz\/\d+$/
+    expect(currentUrl).toMatch(urlPattern)
 })
 
 Then('quiz taker sees a correct list of the questions', async () => {
