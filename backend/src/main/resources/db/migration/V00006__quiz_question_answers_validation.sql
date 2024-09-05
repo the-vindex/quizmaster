@@ -1,1 +1,1 @@
-ALTER TABLE quiz_question ADD COLUMN answers_validation boolean[] NOT NULL;
+ALTER TABLE quiz_question ADD COLUMN answers_validation boolean[] NULL;
