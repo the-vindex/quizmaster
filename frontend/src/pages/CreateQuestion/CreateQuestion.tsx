@@ -93,6 +93,7 @@ function QuizForm() {
                 {answersArray.map((_answer, index) => (
                     <div class="answerRow">
                         <input
+                            id={`answer-text-${index + 1}`}
                             type="text"
                             placeholder={`Answer ${index + 1}`}
                             value={answers()[index]}
@@ -100,6 +101,7 @@ function QuizForm() {
                             class="answerInput"
                         />
                         <input
+                            id={`answer-checkbox-${index + 1}`}
                             type="checkbox"
                             checked={correctAnswer() === index}
                             onChange={() => setCorrectAnswer(index)}
@@ -132,7 +134,7 @@ function QuizForm() {
                     Submit
                 </button>{' '}
                 <br />
-                <span>{linkToQuestion()}</span>
+                <span id="question-link">{linkToQuestion()}</span>
             </form>
         )
     }
