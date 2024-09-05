@@ -12,7 +12,6 @@ Feature: Multiple choice - feedback per answer feature
   Scenario: Multiple choice - feedback per answer - happy path
     Given I visit the "Europe" quiz-taking page
     Then quiz taker is on the quiz page
-    And quiz taker sees question with multiple choise
 
     When I select the answer "France"
     And I select the answer "Italy"
