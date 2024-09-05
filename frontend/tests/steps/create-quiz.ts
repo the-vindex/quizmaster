@@ -22,8 +22,9 @@ Given('quiz maker opens a quiz creation page', async () => {
 })
 
 Then('quiz maker is on the quiz creation page', async () => {
-    const pageTitle = await world.quizCreationPage.getTitle()
-    expect(pageTitle).toBe('Quiz Creation')
+    const currentUrl = await world.quizCreationPage.getUrl()
+    const urlPattern = /^http:\/\/localhost:(5173|8080)\/quiz-question\/all$/
+    expect(currentUrl).toMatch(urlPattern)
 })
 
 When('quiz maker chooses id from the table', async () => {
