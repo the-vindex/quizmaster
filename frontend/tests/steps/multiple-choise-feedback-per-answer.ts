@@ -1,7 +1,7 @@
-import {Then, When} from '@cucumber/cucumber'
-import {expect} from '@playwright/test'
-import {worldAs} from './common.ts'
-import QuizTakingPage from '../pages/quiz-taking-page'
+import { Then, When } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+import { worldAs } from './common.ts'
+import type QuizTakingPage from '../pages/quiz-taking-page'
 
 interface MultipleChoiceWorld {
     quizTakingPage: QuizTakingPage
