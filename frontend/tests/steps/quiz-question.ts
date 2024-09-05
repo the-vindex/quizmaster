@@ -126,6 +126,23 @@ Then('I enter question {string}', async (question: string) => {
     await expectInputToBe(questionLocator, question)
 })
 
+Then('I enter answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
+    const raw = answerRawTable.raw()
+    const correctIndex = toCorrectAnswer(raw)
+    for (let i = 0; i < raw.length; i++) {
+        await world.questionCreationPage.enterAnswer(i, toAnswers(raw)[i], correctIndex === i)
+    }
+})
+
+Then('I submit question', async () => {
+    await world.questionCreationPage.clickSubmitButton()
+})
+
+Then('I received question link', async () => {
+    const linkLocator = world.questionCreationPage.linkLocator()
+    await expectThatIsVisible(linkLocator)
+})
+
 Then('I should see question explanation {string}', async (questionExplanation: string) => {
     const questionExplanationLocator = world.quizTakingPage.questionExplanationLocator()
     await expectTextToBe(questionExplanationLocator, questionExplanation)
