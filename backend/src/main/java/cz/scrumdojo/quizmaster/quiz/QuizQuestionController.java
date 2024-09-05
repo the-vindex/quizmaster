@@ -1,5 +1,6 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class QuizQuestionController {
     @GetMapping("/quiz-question/{id}/answer/{index}")
     public ResponseEntity<Boolean> answerQuestion(@PathVariable Integer id, @PathVariable int index) {
         return response(findQuestion(id).map(QuizQuestion.isCorrectAnswer(index)));
+    }
+
+    @Transactional
+    @PostMapping("/quiz-question/{id}/answer")
+    public ResponseEntity<Boolean> answerQuestionV2(@PathVariable Integer id, @RequestBody List<Integer> answers) {
+        return response(findQuestion(id).map(quizQuestion -> answers.contains(quizQuestion.getCorrectAnswer())));
     }
 
     private Optional<QuizQuestion> findQuestion(Integer id) {

@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -50,6 +52,15 @@ public class QuizQuestionControllerTest {
         assertEquals(isCorrect, result);
     }
 
+    public void answerQuestionV2(List<Integer> answerIdx, boolean isCorrect) {
+        var questionId = quizQuestionController.saveQuestion(createQuestion());
+
+        var result = quizQuestionController.answerQuestionV2(questionId, answerIdx).getBody();
+
+        assertNotNull(result);
+        assertEquals(isCorrect, result);
+    }
+
     @Test
     public void answerQuestionCorrectly() {
         answerQuestion(1, true);
@@ -58,6 +69,16 @@ public class QuizQuestionControllerTest {
     @Test
     public void answerQuestionIncorrectly() {
         answerQuestion(0, false);
+    }
+
+    @Test
+    public void answerMultipleQuestionsCorrectly() {
+        answerQuestionV2(List.of(1), true);
+    }
+
+    @Test
+    public void answerMultipleQuestionsIncorrectly() {
+        answerQuestionV2(List.of(0), false);
     }
 
     @Test

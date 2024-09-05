@@ -11,7 +11,8 @@
         "rules": {
             "recommended": true,
             "correctness": {
-                "noChildrenProp": "off"
+                "noChildrenProp": "off",
+                "useJsxKeyInIterable": "off"
             }
         }
     },

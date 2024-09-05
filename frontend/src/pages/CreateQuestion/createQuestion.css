@@ -1,0 +1,40 @@
+.create {
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.answerRow {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.answerInput {
+    width: 40%;
+    margin-right: 10px;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+.explanationInput {
+    width: 40%;
+}
+
+.generalExplanation {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.submitButton {
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
