@@ -93,6 +93,7 @@ export function CreateQuestion() {
                 {answersArray.map((_answer, index) => (
                     <div class="answerRow">
                         <input
+                            id={`answer-text-${index + 1}`}
                             type="text"
                             placeholder={`Answer ${index + 1}`}
                             value={answers()[index]}
@@ -100,6 +101,7 @@ export function CreateQuestion() {
                             class="answerInput"
                         />
                         <input
+                            id={`answer-checkbox-${index + 1}`}
                             type="checkbox"
                             checked={correctAnswer() === index}
                             onChange={() => setCorrectAnswer(index)}

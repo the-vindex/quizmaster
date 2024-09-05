@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 export default class QuizCreationPage {
     constructor(private page: Page) {}
 
-    goto = async () => this.page.goto('/quiz/create')
+    goto = async () => this.page.goto('/quiz-question/all')
 
     getTitle = () => this.page.locator('h1').innerText()
 
@@ -44,4 +44,6 @@ export default class QuizCreationPage {
     getQuizLink = () => this.page.locator('a.quiz-link').getAttribute('href')
 
     getValidationError = () => this.page.locator('.validation-error').innerText()
+
+    getUrl = () => this.page.url()
 }
