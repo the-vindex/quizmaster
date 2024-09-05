@@ -8,6 +8,7 @@ interface QuizQuestionData {
     readonly question: string
     readonly answers: readonly string[]
     readonly correctAnswer: number
+    readonly explanations: readonly string[]
 }
 
 interface QuizQuestion {
@@ -15,11 +16,13 @@ interface QuizQuestion {
     readonly quizQuestion: QuizQuestionData
 }
 
-type AnswerRaw = [string, string]
+type AnswerRaw = [string, string, string]
 type Answers = string[]
+type Explanations = string[]
 
 const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
+const toExplanations = (raw: AnswerRaw[]): Explanations => raw.map(([, , explanation]) => explanation)
 
 interface QuizQuestionWorld {
     questionCreationPage: QuestionCreationPage
@@ -56,11 +59,12 @@ Before(() => {
 
 Given(
     'a quiz question {string} bookmarked as {string} with answers',
-    async (question: string, bookmark: string, table: TableOf<AnswerRaw>) => {
+    async (question: string, bookmark: string, answerRawTable: TableOf<AnswerRaw>) => {
         await bookmarkQuizQuestion(bookmark, {
             question,
-            answers: toAnswers(table.raw()),
-            correctAnswer: toCorrectAnswer(table.raw()),
+            answers: toAnswers(answerRawTable.raw()),
+            correctAnswer: toCorrectAnswer(answerRawTable.raw()),
+            explanations: toExplanations(answerRawTable.raw()),
         })
     },
 )
@@ -98,6 +102,11 @@ Then('I should see the answers', async () => {
 Then('I should see {string}', async (feedback: string) => {
     const feedbackLocator = world.quizTakingPage.feedbackLocator()
     await expectTextToBe(feedbackLocator, feedback)
+})
+
+Then('I should see the explanation {string}', async (explanation: string) => {
+    const explanationLocator = world.quizTakingPage.explanationLocator()
+    await expectTextToBe(explanationLocator, ` ${explanation}`)
 })
 
 When('I visit the create question page', async () => {

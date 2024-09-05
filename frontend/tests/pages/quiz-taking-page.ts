@@ -26,6 +26,8 @@ export default class QuizTakingPage {
 
     feedbackLocator = () => this.page.locator('p.feedback')
 
+    explanationLocator = () => this.page.locator('span.explanation')
+
     getFeedback = async () => {
         return this.page.locator('.feedback').innerText()
     }

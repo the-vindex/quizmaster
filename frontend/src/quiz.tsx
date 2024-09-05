@@ -9,11 +9,15 @@ import { preventDefault } from 'helpers.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
+const Explanation = (explanation: string) => <span class="explanation"> {explanation}</span>
+
 const QuestionExplanation = <p class="questionExplanation">{'Question Explanation'}</p>
 
-const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
+const Question = ({ id, question, answers, quizType, explanations }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
+    const [explanation, setExplanation] = createSignal<string | "">("")
+    const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
 
     const [submitted, setSubmitted] = createSignal(false)
 
@@ -23,10 +27,14 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         api.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
             setSubmitted(true)
             setIsAnswerCorrect(isCorrect)
+            setExplanation(explanations[selectedAnswerIdx])
+            setExplanationIdx(selectedAnswerIdx)
         })
     })
 
-    const selectAnswer = (answerIdx: number) => () => setSelectedAnswer(answerIdx)
+    const selectAnswer = (answerIdx: number) => () => {
+        setSelectedAnswer(answerIdx)
+    }
 
     const Answer = (answer: string, idx: Accessor<number>) => {
         const answerId = `answer-${idx()}`
@@ -49,7 +57,10 @@ const Question = ({ id, question, answers, quizType }: QuizQuestion) => {
         return (
             <li>
                 <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
-                <label for={answerId}>{answer}</label>
+                <label for={answerId}>
+                    {answer}
+                    <Show when={explanationIdx() === idx()} children={Explanation(explanation())} keyed />
+                </label>
             </li>
         )
     }

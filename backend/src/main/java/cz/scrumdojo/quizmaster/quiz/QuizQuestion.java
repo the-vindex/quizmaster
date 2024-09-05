@@ -20,6 +20,10 @@ public class QuizQuestion {
     @JdbcTypeCode(SqlTypes.ARRAY)
     private String[] answers;
 
+    @Column(name = "explanations", columnDefinition = "text[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    private String[] explanations;
+
     private Integer correctAnswer;
 
     @Transient
