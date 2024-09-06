@@ -24,7 +24,7 @@ export function CreateQuestionForm() {
             answers: formData.answers,
             correctAnswer: formData.correctAnswer,
             explanations: formData.explanations,
-            questionExplanations: formData.questionExplanation,
+            questionExplanation: formData.questionExplanation,
             quizType: 'SINGLE',
         }
         fetch('/api/quiz-question', {
