@@ -1,14 +1,20 @@
 package cz.scrumdojo.quizmaster.model;
 
+import cz.scrumdojo.quizmaster.quiz.QuizQuestion;
 import lombok.*;
 
+import java.util.List;
+
 @Data
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class QuizData {
 
-    @NonNull
     private String name;
 
-    private int[] questionIds;
+    private List<QuizQuestion> questions;
 
 }
