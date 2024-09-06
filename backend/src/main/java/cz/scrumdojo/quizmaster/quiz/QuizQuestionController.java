@@ -23,16 +23,16 @@ public class QuizQuestionController {
     @GetMapping("/quiz-question/{id}")
     public ResponseEntity<QuizQuestion> getQuestion(@PathVariable Integer id) {
 
-        Optional<QuizQuestion> question = findQuestion(id);
-        if (question.isPresent() && question.get().getQuestion().contains("Europe")) {
-            question.get().setQuizType(QuizType.MULTIPLE);
-        }
+        Optional<QuizQuestion> question = findQuestion(id).map(this::updateType);
         return response(question);
     }
 
     @Transactional
     @PostMapping("/quiz-question")
     public Integer saveQuestion(@RequestBody QuizQuestion question) {
+        if (question.getCorrectAnswers() == null || question.getCorrectAnswers().length > 0) {
+            question.setCorrectAnswers(new int[] {question.getCorrectAnswer()});
+        }
         return quizQuestionRepository.save(question).getId();
     }
 
@@ -45,7 +45,8 @@ public class QuizQuestionController {
     @Transactional
     @PostMapping("/quiz-question/{id}/answer")
     public ResponseEntity<Boolean> answerQuestionV2(@PathVariable Integer id, @RequestBody List<Integer> answers) {
-        return response(findQuestion(id).map(quizQuestion -> answers.contains(quizQuestion.getCorrectAnswer())));
+        int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
+        return response(findQuestion(id).map(QuizQuestion.isCorrectAnswers(answersArray)));
     }
 
     @Transactional
@@ -63,5 +64,14 @@ public class QuizQuestionController {
         return entity
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
+    }
+
+    private QuizQuestion updateType(QuizQuestion quizQuestion) {
+        if (quizQuestion.getCorrectAnswers().length > 1) {
+            quizQuestion.setQuizType(QuizType.MULTIPLE);
+        } else {
+            quizQuestion.setQuizType(QuizType.SINGLE);
+        }
+        return quizQuestion;
     }
 }

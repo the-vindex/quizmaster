@@ -68,7 +68,7 @@ public class QuizQuestionControllerTest {
 
     @Test
     public void answerQuestionIncorrectly() {
-        answerQuestion(0, false);
+        answerQuestionV2(List.of(0), false);
     }
 
     @Test
