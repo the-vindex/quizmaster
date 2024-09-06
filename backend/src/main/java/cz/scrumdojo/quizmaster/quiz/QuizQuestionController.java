@@ -14,9 +14,12 @@ public class QuizQuestionController {
 
     private final QuizQuestionRepository quizQuestionRepository;
 
+    private final QuizQuestionService quizQuestionService;
+
     @Autowired
-    public QuizQuestionController(QuizQuestionRepository quizQuestionRepository) {
+    public QuizQuestionController(QuizQuestionRepository quizQuestionRepository, QuizQuestionService quizQuestionService) {
         this.quizQuestionRepository = quizQuestionRepository;
+        this.quizQuestionService = quizQuestionService;
     }
 
     @Transactional
@@ -32,7 +35,7 @@ public class QuizQuestionController {
         if (question.getCorrectAnswers() == null) {
             question.setCorrectAnswers(new int[] {question.getCorrectAnswer()});
         }
-        return quizQuestionRepository.save(question).getId();
+        return quizQuestionService.saveQuestion(question);
     }
 
     @Transactional
