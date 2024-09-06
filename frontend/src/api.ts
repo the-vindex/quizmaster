@@ -26,4 +26,7 @@ export const createQuiz = async (quizObj: Quiz) =>
     await fetchJson<number>('/api/quiz', {
         body: JSON.stringify(quizObj),
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
     })

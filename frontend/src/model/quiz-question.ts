@@ -9,5 +9,5 @@ export interface QuizQuestion {
 
 export interface Quiz {
     readonly name: string
-    readonly answerIds: number[]
+    readonly questionIds: number[]
 }
