@@ -56,11 +56,14 @@ public class QuizController {
     @GetMapping("/quiz/{id}")
     public ResponseEntity<QuizData> getQuiz(@PathVariable Integer id) {
         Quiz quiz = quizRepository.findById(id).orElse(null);
+        if (quiz == null) {
+            return ResponseEntity.notFound().build();
+        }
         QuizData quizData = QuizData.builder()
-            .name(quiz.getName())
+            .name(quiz.getName() == null ? "" : quiz.getName())
             .questions(quizQuestionRepository.findAllById(List.of(quiz.getQuestions())))
             .build();
 
-        return quizData != null ? ResponseEntity.ok(quizData) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(quizData);
     }
 }

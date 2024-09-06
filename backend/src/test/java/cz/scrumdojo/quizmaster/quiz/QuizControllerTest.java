@@ -35,7 +35,7 @@ public class QuizControllerTest {
         ResponseEntity<QuizData> response = quizController.getQuiz(2);
 
         assertNotNull(response);
-        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertTrue(response.getStatusCode().is4xxClientError());
 
     }
 
