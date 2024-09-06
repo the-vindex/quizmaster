@@ -5,10 +5,12 @@ type Question = {
     question: string
     answers: string[]
     correctAnswer: number | null
+    explanations: string[]
+    questionExplanation: string
     quizType: string
 }
 
-export function CreateQuestion() {
+export function CreateQuestionForm() {
     const [question, setQuestion] = createSignal<string>('')
     const [answers, setAnswers] = createSignal<string[]>(['', '', '', ''])
     const [correctAnswer, setCorrectAnswer] = createSignal<number | null>(null)
@@ -21,6 +23,8 @@ export function CreateQuestion() {
             question: formData.question,
             answers: formData.answers,
             correctAnswer: formData.correctAnswer,
+            explanations: formData.explanations,
+            questionExplanations: formData.questionExplanation,
             quizType: 'SINGLE',
         }
         fetch('/api/quiz-question', {
@@ -67,8 +71,8 @@ export function CreateQuestion() {
             answers: answers(),
             correctAnswer: correctAnswer(),
             quizType: 'SINGLE',
-            // questionExplanations: questionExplanations(),
-            // generalExplanations: answerExplanation(),
+            explanations: questionExplanations(),
+            questionExplanation: answerExplanation(),
         }
         console.log(formData) // Handle form data submission
         postData(formData)
