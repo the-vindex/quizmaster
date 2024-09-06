@@ -21,7 +21,7 @@ public class QuizControllerTest {
 
     @Test
     public void shouldThrowErrorWhenNoQuestions() {
-        QuizData quizData = new QuizData("testQuiz");
+        QuizData quizData = new QuizData("testQuiz", null);
 
         ResponseEntity<String> response = quizController.createQuiz(quizData);
 
