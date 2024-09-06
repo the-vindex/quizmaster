@@ -9,6 +9,7 @@ interface QuizQuestionData {
     readonly answers: readonly string[]
     readonly correctAnswer: number
     readonly explanations: readonly string[]
+    readonly questionExplanation?: string
 }
 
 interface QuizQuestion {
@@ -58,13 +59,19 @@ Before(() => {
 })
 
 Given(
-    'a quiz question {string} bookmarked as {string} with answers',
-    async (question: string, bookmark: string, answerRawTable: TableOf<AnswerRaw>) => {
+    /^a quiz question "(.*)" bookmarked as "(.*)" with answers(?: and question explanation "(.*)")?$/,
+    async (
+        question: string,
+        bookmark: string,
+        questionExplanation: string | undefined,
+        answerRawTable: TableOf<AnswerRaw>,
+    ) => {
         await bookmarkQuizQuestion(bookmark, {
             question,
             answers: toAnswers(answerRawTable.raw()),
             correctAnswer: toCorrectAnswer(answerRawTable.raw()),
             explanations: toExplanations(answerRawTable.raw()),
+            questionExplanation: questionExplanation || undefined,
         })
     },
 )
