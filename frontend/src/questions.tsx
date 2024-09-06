@@ -12,9 +12,8 @@ const Feedback = (id: number) => {
                 Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
             </p>
         )
-    } else {
-        ;<p class="feedback">{'Oops..something went wrong :('}</p>
     }
+    return <p class="feedback">{'Oops..something went wrong :('}</p>
 }
 
 const Questions = (list: QuizQuestion[]) => {
