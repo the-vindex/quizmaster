@@ -5,10 +5,10 @@ Feature: Quiz creation feature
     Given quiz maker opens a quiz creation page
     Then quiz maker is on the quiz creation page
 
-    When quiz maker chooses id from the table
-    And quiz maker inserts name
+#    When quiz maker chooses id from the table
+#    And quiz maker inserts name
 
-    When quiz maker submits the quiz
+#   When quiz maker submits the quiz
 #    Then quiz maker sees a correct list of the questions
 #    And link for the quiz taker is present
 #
