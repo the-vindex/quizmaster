@@ -1,8 +1,8 @@
 
 .wrapper {
- padding: 10px 25px 30px;
- background: rgb(118,197,226);
-background: linear-gradient(180deg, rgba(118,197,226,1) 0%, rgba(123,123,182,1) 24%, rgba(0,212,255,1) 100%);
+    padding: 10px 25px 30px;
+    background: linear-gradient(180deg, rgb(182, 244, 146), rgb(51, 139, 147));
+
 }
 .create {
     display: flex;
