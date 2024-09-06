@@ -2,6 +2,7 @@ package cz.scrumdojo.quizmaster.quiz;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,19 +48,15 @@ public class QuizQuestion {
                 return false;
             }
 
-            // Step 2: Convert both arrays to sets
-            Set<Integer> set1 = new HashSet<>();
-            Set<Integer> set2 = new HashSet<>();
+            Set<Integer> correctAnswerSet = Arrays.stream(correctAnswers)
+                .boxed()
+                .collect(Collectors.toSet());
 
-            for (int num : correctAnswers) {
-                set1.add(num);
-            }
+            Set<Integer> userAnswerSet = Arrays.stream(userAnswers)
+                .boxed()
+                .collect(Collectors.toSet());
 
-            for (int num : userAnswers) {
-                set2.add(num);
-            }
-
-            return set1.equals(set2);
+            return correctAnswerSet.equals(userAnswerSet);
         };
     }
 }

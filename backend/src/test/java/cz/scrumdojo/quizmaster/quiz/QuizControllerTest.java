@@ -1,5 +1,6 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import cz.scrumdojo.quizmaster.model.QuizCreateData;
 import cz.scrumdojo.quizmaster.model.QuizData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,21 @@ public class QuizControllerTest {
 
     @Test
     public void shouldThrowErrorWhenNoQuestions() {
-        QuizData quizData = new QuizData("testQuiz", null);
+        QuizCreateData quizData = new QuizCreateData("testQuiz", null);
 
         ResponseEntity<String> response = quizController.createQuiz(quizData);
 
         assertNotNull(response);
         assertTrue(response.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenNoQuizFound() {
+        ResponseEntity<QuizData> response = quizController.getQuiz(2);
+
+        assertNotNull(response);
+        assertTrue(response.getStatusCode().is4xxClientError());
+
     }
 
 }

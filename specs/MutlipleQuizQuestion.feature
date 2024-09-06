@@ -7,7 +7,6 @@ Feature: Answering a quiz question with multiple choice
       | Morocco |         |
       | Spain   | correct |
 
-  @ignore
   Scenario Outline:
     When I visit the "Europe" quiz-taking page
     Then I select the answer "<answer>"
