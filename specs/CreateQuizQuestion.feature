@@ -14,7 +14,6 @@ Feature: Create a quiz question
     Then I received question link
 
 
-  @ignore
   Scenario: client see warning when trying to submit only one answer
     When I visit the create question page
     Then I should see the create question form
@@ -25,8 +24,7 @@ Feature: Create a quiz question
     When I submit question
     Then I see warning "Invalid question"
 
-
-  @ignore
+ @ignore
   Scenario: client see warning when trying to submit question without any correct answer
     When I visit the create question page
     Then I should see the create question form

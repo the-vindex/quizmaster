@@ -37,7 +37,8 @@ export function CreateQuestionForm() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok')
+                    setLinkToQuestion('Invalid question')
+                    throw new Error()
                 }
                 return response.json() // Parse JSON response
             })
