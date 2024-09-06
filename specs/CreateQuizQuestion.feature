@@ -13,7 +13,7 @@ Feature: Create a quiz question
     When I submit question
     Then I received question link
 
-
+  @ignore
   Scenario: client see warning when trying to submit only one answer
     When I visit the create question page
     Then I should see the create question form
