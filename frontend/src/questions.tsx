@@ -5,9 +5,17 @@ import type { QuizQuestion } from 'model/quiz-question.ts'
 import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
 
-const Feedback = (id: number) => (
-    <p class="feedback">{id ? `Congratulation, Quiz ID is ${id}` : 'Oops..something went wrong :('}</p>
-)
+const Feedback = (id: number) => {
+    if (id) {
+        return (
+            <p class="feedback">
+                Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
+            </p>
+        )
+    } else {
+        ;<p class="feedback">{'Oops..something went wrong :('}</p>
+    }
+}
 
 const Questions = (list: QuizQuestion[]) => {
     const [selectedQuestions, setSelectedQuestions] = createSignal<number[]>([])
