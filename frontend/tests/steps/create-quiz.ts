@@ -31,11 +31,6 @@ When('quiz maker chooses id from the table', async () => {
     await world.quizCreationPage.selectRandomQuizId()
 })
 
-// Then('quiz maker sees that expected check boxes are selected', async () => {
-//     const selectedIds = await world.quizCreationPage.getSelectedIds()
-//     expect(selectedIds.length).toBeGreaterThan(0) // Должны быть выбраны какие-то чекбоксы
-// })
-
 When('quiz maker submits the quiz', async () => {
     await world.quizCreationPage.submitQuiz()
 })
@@ -82,4 +77,15 @@ When('quiz maker does not choose id from the table', async () => {
 Then('quiz maker sees a validation error', async () => {
     const errorText = await world.quizCreationPage.getValidationError()
     expect(errorText).toBe('You must select at least one question.')
+})
+
+Then('quiz maker inserts name', async () => {
+    const { quizCreationPage } = world
+
+    await quizCreationPage.enterQuizName()
+
+    await quizCreationPage.submitQuiz()
+
+    const quizName = await quizCreationPage.getQuizName()
+    expect(quizName).toBe('Test name')
 })

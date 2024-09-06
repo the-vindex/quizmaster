@@ -46,4 +46,12 @@ export default class QuizCreationPage {
     getValidationError = () => this.page.locator('.validation-error').innerText()
 
     getUrl = () => this.page.url()
+
+    enterQuizName = async () => {
+        await this.page.fill('#quizName', 'Test name')
+    }
+
+    getQuizName = async () => {
+        return this.page.inputValue('#quizName')
+    }
 }
