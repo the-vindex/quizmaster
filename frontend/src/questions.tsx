@@ -18,7 +18,7 @@ const Questions = (list: QuizQuestion[]) => {
     const submit = preventDefault(async () => {
         const quizObj = {
             name: quizName(),
-            answerIds: selectedQuestions(),
+            questionIds: selectedQuestions(),
         }
 
         api.createQuiz(quizObj).then(id => {
@@ -70,13 +70,13 @@ const Questions = (list: QuizQuestion[]) => {
 
     return (
         <form onSubmit={submit}>
+            <Show when={submitted()} children={Feedback(quizId())} />
             <h1>Quiz: {quizName()}</h1>
             {QuizName()}
             <ul>
                 <For each={list} children={Question} fallback={<div>Loading...</div>} />
             </ul>
             <input type="submit" value={'Submit'} disabled={selectedQuestions().length < 1} />
-            <Show when={submitted()} children={Feedback(quizId())} />
         </form>
     )
 }

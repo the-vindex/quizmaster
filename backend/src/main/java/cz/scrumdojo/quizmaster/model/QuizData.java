@@ -1,9 +1,9 @@
 package cz.scrumdojo.quizmaster.model;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class QuizData {
 
     @NonNull

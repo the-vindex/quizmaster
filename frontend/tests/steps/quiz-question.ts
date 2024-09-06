@@ -160,3 +160,8 @@ Then('I should see question explanation {string}', async (questionExplanation: s
     const questionExplanationLocator = world.quizTakingPage.questionExplanationLocator()
     await expectTextToBe(questionExplanationLocator, questionExplanation)
 })
+
+Then('I see warning {string}', async (warningInformation: string) => {
+    const linkLocator = world.questionCreationPage.linkLocator()
+    await expectTextToBe(linkLocator, warningInformation)
+})
