@@ -43,7 +43,6 @@ export function CreateQuestionForm() {
                 return response.json() // Parse JSON response
             })
             .then(data => {
-                console.log('Success:', data) // Handle the response data
                 setLinkToQuestion(`${location.origin}/quiz/${data}`)
             })
             .catch(error => {
@@ -95,7 +94,6 @@ export function CreateQuestionForm() {
             explanations: questionExplanations(),
             questionExplanation: answerExplanation(),
         }
-        console.log(formData) // Handle form data submission
         postData(formData)
     }
 
