@@ -12,7 +12,6 @@ Feature: View explanations for answers after responding to a question
       | When the meeting lasts more than 15 minutes                 |         | Some meetings can last longer than 15 minutes, but their length should be reasonable. Running away won't fix it.   |
       | Never – the developer is responsible for team communication | correct | Developers are key to smooth teamwork, which means staying engaged in meetings and contributing to communication!  |
 
-  @focus
   Scenario Outline:
     When I visit the "<question>" quiz-taking page
     And I select the answer "<answer>"

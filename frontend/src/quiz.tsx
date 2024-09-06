@@ -10,7 +10,18 @@ import { transformObjectToArray } from './utils/transformObjectToArray.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
-const Explanation = (explanation: string) => <span class="explanation"> {explanation}</span>
+const Explanation = (correct: boolean, explanation: string) => {
+    return (
+        <span>
+            {' '}
+            <span class={correct ? 'greenSpan' : 'redSpan'}>{correct ? 'Correct!' : 'Incorrect!'}</span> <br />
+            {'Explanation: '}
+            <span class="explanation">
+                 {explanation}
+            </span>
+        </span>
+    )
+}
 
 const QuestionExplanation = (questionExplanation: string) => <p class="questionExplanation">{questionExplanation}</p>
 
@@ -64,7 +75,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
 
         if (isMultiple) {
             return (
-                <li>
+                <li class="answerOption">
                     <input
                         type={'checkbox'}
                         name={`${idx()}`}
@@ -83,7 +94,11 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
                 <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
                 <label for={answerId}>
                     {answer}
-                    <Show when={explanationIdx() === idx()} children={Explanation(explanation())} keyed />
+                    <Show
+                        when={explanationIdx() === idx()}
+                        children={Explanation(isAnswerCorrect(), explanation())}
+                        keyed
+                    />
                 </label>
             </li>
         )

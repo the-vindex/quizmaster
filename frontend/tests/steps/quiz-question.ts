@@ -117,7 +117,7 @@ Then('I should see {string}', async (feedback: string) => {
 
 Then('I should see the explanation {string}', async (explanation: string) => {
     const explanationLocator = world.quizTakingPage.explanationLocator()
-    await expectTextToBe(explanationLocator, ` ${explanation}`)
+    await expectTextToBe(explanationLocator, explanation)
 })
 
 When('I visit the create question page', async () => {
