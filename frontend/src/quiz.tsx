@@ -16,9 +16,7 @@ const Explanation = (correct: boolean, explanation: string) => {
             {' '}
             <span class={correct ? 'greenSpan' : 'redSpan'}>{correct ? 'Correct!' : 'Incorrect!'}</span> <br />
             {'Explanation: '}
-            <span class="explanation">
-                 {explanation}
-            </span>
+            <span class="explanation">{explanation}</span>
         </span>
     )
 }
