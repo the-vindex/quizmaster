@@ -1,4 +1,4 @@
-import type { Quiz, QuizQuestion } from './model/quiz-question.ts'
+import type { Quiz, QuizQuestion, SingleQuiz } from './model/quiz-question.ts'
 
 const fetchJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
     const response = await fetch(url, init)
@@ -30,3 +30,5 @@ export const createQuiz = async (quizObj: Quiz) =>
             'Content-Type': 'application/json',
         },
     })
+
+export const getQuizMaster = async (quizId: number) => await fetchJson<SingleQuiz>(`/api/quiz/${quizId}`)
