@@ -139,8 +139,12 @@ Then('I enter answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
     const raw = answerRawTable.raw()
     const correctIndex = toCorrectAnswer(raw)
     for (let i = 0; i < raw.length; i++) {
-        await world.questionCreationPage.enterAnswer(i, toAnswers(raw)[i], correctIndex === i)
+        await world.questionCreationPage.enterAnswer(i, toAnswers(raw)[i], correctIndex === i, toExplanations(raw)[i])
     }
+})
+
+Then('I enter general explanation {string}', async (generalExplanation: string) => {
+    await world.questionCreationPage.enterGeneralExplanation(generalExplanation)
 })
 
 Then('I submit question', async () => {

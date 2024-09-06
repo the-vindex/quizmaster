@@ -9,5 +9,6 @@ Feature: Create a quiz question
       | Naples   |         | Naples is not the capital of Italy   |
       | Florence |         | Florence is not the capital of Italy |
       | Palermo  |         | Palermo is not the capital of Italy  |
+    And I enter general explanation "Rome is the capital city of Italy. It is also the capital of the Lazio region"
     When I submit question
     Then I received question link

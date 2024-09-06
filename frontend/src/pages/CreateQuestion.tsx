@@ -113,6 +113,7 @@ export function CreateQuestionForm() {
                         />
                         {
                             <input
+                                id={`answer-explanation-${index + 1}`}
                                 type="text"
                                 placeholder="Explanations for wrong answer"
                                 value={questionExplanations()[index]}
