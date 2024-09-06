@@ -7,7 +7,7 @@ import QuestionCreationPage from '../pages/question-creation-page'
 interface QuizQuestionData {
     readonly question: string
     readonly answers: readonly string[]
-    readonly correctAnswer: number
+    readonly correctAnswers: number[]
     readonly explanations: readonly string[]
     readonly questionExplanation?: string
 }
@@ -23,6 +23,15 @@ type Explanations = string[]
 
 const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
 const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
+const toCorrectAnswers = (raw: AnswerRaw[]): number[] => {
+    const correctIndexes: number[] = []
+    raw.forEach(([, correct], index) => {
+        if (correct === 'correct') {
+            correctIndexes.push(index)
+        }
+    })
+    return correctIndexes
+}
 const toExplanations = (raw: AnswerRaw[]): Explanations => raw.map(([, , explanation]) => explanation)
 
 interface QuizQuestionWorld {
@@ -69,7 +78,7 @@ Given(
         await bookmarkQuizQuestion(bookmark, {
             question,
             answers: toAnswers(answerRawTable.raw()),
-            correctAnswer: toCorrectAnswer(answerRawTable.raw()),
+            correctAnswers: toCorrectAnswers(answerRawTable.raw()),
             explanations: toExplanations(answerRawTable.raw()),
             questionExplanation: questionExplanation || undefined,
         })
