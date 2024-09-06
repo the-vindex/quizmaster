@@ -1,3 +1,9 @@
+
+.wrapper {
+ padding: 10px 25px 30px;
+ background: rgb(118,197,226);
+background: linear-gradient(180deg, rgba(118,197,226,1) 0%, rgba(123,123,182,1) 24%, rgba(0,212,255,1) 100%);
+}
 .create {
     display: flex;
     flex-direction: column;
@@ -30,7 +36,8 @@
 
 .generalExplanation {
     width: 100%;
-    margin-bottom: 20px;
+    min-height: 60px;
+    margin: 15px 0 20px;
 }
 
 .submitButton {
@@ -38,3 +45,13 @@
     font-size: 1em;
 }
 
+.multipleQuestionsRow {
+    margin-bottom: 20px;
+    cursor: default;
+    max-width: fit-content;
+}
+
+.generalExplanationWrapper {
+    display: flex;
+    flex-direction: column;
+}

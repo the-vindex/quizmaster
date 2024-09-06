@@ -3,8 +3,8 @@ export interface QuizQuestion {
     readonly question: string
     readonly answers: readonly string[]
     readonly explanations: readonly string[]
-    readonly quizType: string
     readonly questionExplanation: string
+    readonly correctAnswers: number[]
 }
 
 export interface Quiz {

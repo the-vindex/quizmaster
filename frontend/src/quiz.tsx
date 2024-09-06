@@ -14,7 +14,7 @@ const Explanation = (explanation: string) => <span class="explanation"> {explana
 
 const QuestionExplanation = (questionExplanation: string) => <p class="questionExplanation">{questionExplanation}</p>
 
-const Question = ({ id, question, answers, quizType, explanations, questionExplanation }: QuizQuestion) => {
+const Question = ({ id, question, answers, explanations, correctAnswers, questionExplanation }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
@@ -23,7 +23,7 @@ const Question = ({ id, question, answers, quizType, explanations, questionExpla
 
     const [submitted, setSubmitted] = createSignal(false)
 
-    const isMultiple = quizType === 'MULTIPLE'
+    const isMultiple = correctAnswers.length > 1
 
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()

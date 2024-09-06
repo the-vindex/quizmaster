@@ -23,14 +23,13 @@ public class QuizQuestionController {
     @GetMapping("/quiz-question/{id}")
     public ResponseEntity<QuizQuestion> getQuestion(@PathVariable Integer id) {
 
-        Optional<QuizQuestion> question = findQuestion(id).map(this::updateType);
-        return response(question);
+        return response(findQuestion(id));
     }
 
     @Transactional
     @PostMapping("/quiz-question")
     public Integer saveQuestion(@RequestBody QuizQuestion question) {
-        if (question.getCorrectAnswers() == null || question.getCorrectAnswers().length > 0) {
+        if (question.getCorrectAnswers() == null) {
             question.setCorrectAnswers(new int[] {question.getCorrectAnswer()});
         }
         return quizQuestionRepository.save(question).getId();
@@ -65,13 +64,5 @@ public class QuizQuestionController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-
-    private QuizQuestion updateType(QuizQuestion quizQuestion) {
-        if (quizQuestion.getCorrectAnswers().length > 1) {
-            quizQuestion.setQuizType(QuizType.MULTIPLE);
-        } else {
-            quizQuestion.setQuizType(QuizType.SINGLE);
-        }
-        return quizQuestion;
-    }
 }
+

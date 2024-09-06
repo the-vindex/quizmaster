@@ -34,9 +34,6 @@ public class QuizQuestion {
     @Transient
     private int correctAnswer;
 
-    @Transient
-    private QuizType quizType;
-
     public static Function<QuizQuestion, Boolean> isCorrectAnswer(int index) {
         return quizQuestion -> quizQuestion.getCorrectAnswers().length == 1
             && quizQuestion.getCorrectAnswers()[0] == index;
