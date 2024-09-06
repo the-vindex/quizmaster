@@ -7,16 +7,16 @@ Feature: Multiple choice question explanation
       | Pardubice  |         |
       | Lednice    | correct |
 
-#    TODO in multiple question type in progress
+#    TODO missing question explanation for multiple choice
   @ignore
   Scenario Outline:
     When I visit the "<question>" quiz-taking page
     And I select the answer "<answer>"
     And I submit the quiz
     Then I should see "<feedback>"
-    And I should see question explanation "One city is famous for Sedlec Ossuary and St. Barbara Cathedral, and the other one located in South Moravia with unique architectural"
+#    And I should see question explanation "One city is famous for Sedlec Ossuary and St. Barbara Cathedral, and the other one located in South Moravia with unique architectural"
     Examples:
       | question | answer     | feedback   |
       | Czech    | Kutna Hora | Correct!   |
-#      | Czech    | Lednice    | Correct!   |
+      | Czech    | Lednice    | Correct!   |
       | Czech    | Pardubice  | Incorrect! |
