@@ -103,7 +103,7 @@ export function CreateQuestionForm() {
         const answersArray = answers()
         return (
             <div class="wrapper">
-                <h1>Quiz Question Creating Page</h1>
+                <h1>Quiz Question Creation Page</h1>
                 <h2>If you're happy and you know it create the question</h2>
                 <form class="question-create-form" onSubmit={handleSubmit}>
                     {/* Question input */}
