@@ -56,11 +56,11 @@ To avoid rebuilding frontend and backend every time you make a change, you can r
 development server in the `frontend` directory:
 
 ```
-pnpm vite
+pnpm vite --host
 ```
 
 Vite starts a development server on `http://localhost:5173` and proxies requests to the backend server
-on `http://localhost:8080`.
+on `http://localhost:8080`. "--host" is required so that it's accessible outside of container.
 
 It watches for changes in the `frontend` directory and reloads the browser automatically with HMR.
 
