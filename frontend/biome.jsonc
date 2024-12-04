@@ -1,5 +1,5 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
     "files": {
         "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts"]
     },
@@ -17,13 +17,7 @@
         }
     },
     "formatter": {
-        // TODO replace with useEditorconfig once new Biome.js version releases
-        // see https://github.com/biomejs/biome/issues/1724
-        "indentStyle": "space",
-        "indentWidth": 4,
-        "lineWidth": 120,
-        "lineEnding": "lf"
-        // "useEditorconfig": true
+        "useEditorconfig": true
     },
     "javascript": {
         "formatter": {

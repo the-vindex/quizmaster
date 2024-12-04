@@ -106,7 +106,7 @@ export function CreateQuestionForm() {
                 <form class="question-create-form" onSubmit={handleSubmit}>
                     {/* Question input */}
                     <div>
-                        <label>Enter your question:</label>
+                        <label for="question-text-area">Enter your question:</label>
                         <textarea
                             id="question-text-area"
                             class="textarea"
@@ -152,8 +152,9 @@ export function CreateQuestionForm() {
                     ))}
                     {
                         <div class="generalExplanationWrapper">
-                            <label>General explanation for the entire question:</label>
+                            <label for="general-explanation">General explanation for the entire question:</label>
                             <textarea
+                                id="general-explanation"
                                 class="generalExplanation"
                                 value={answerExplanation()}
                                 onInput={e => setAnswerExplanation((e.target as HTMLTextAreaElement).value)}
