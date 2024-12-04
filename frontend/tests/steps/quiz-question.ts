@@ -1,8 +1,8 @@
 import { Before, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import { expectInputToBe, expectTextToBe, expectThatIsVisible, type TableOf, worldAs } from './common.ts'
+import { expectTextToBe, type TableOf, worldAs } from './common.ts'
+import { type AnswerRaw, toAnswers, toCorrectAnswers, toExplanations } from './question-parse.ts'
 import QuizTakingPage from '../pages/quiz-taking-page'
-import QuestionCreationPage from '../pages/question-creation-page'
 
 interface QuizQuestionData {
     readonly question: string
@@ -17,26 +17,9 @@ interface QuizQuestion {
     readonly quizQuestion: QuizQuestionData
 }
 
-type AnswerRaw = [string, string, string]
-type Answers = string[]
-type Explanations = string[]
-
-const toAnswers = (raw: AnswerRaw[]): Answers => raw.map(([answer]) => answer)
-const toCorrectAnswer = (raw: AnswerRaw[]): number => raw.findIndex(([, correct]) => correct === 'correct')
-const toCorrectAnswers = (raw: AnswerRaw[]): number[] => {
-    const correctIndexes: number[] = []
-    raw.forEach(([, correct], index) => {
-        if (correct === 'correct') {
-            correctIndexes.push(index)
-        }
-    })
-    return correctIndexes
-}
-const toExplanations = (raw: AnswerRaw[]): Explanations => raw.map(([, , explanation]) => explanation)
-
 interface QuizQuestionWorld {
-    questionCreationPage: QuestionCreationPage
     quizTakingPage: QuizTakingPage
+    questionWip: QuizQuestionData
     bookmarks: Record<string, QuizQuestion>
     activeBookmark: string
 }
@@ -63,7 +46,6 @@ const activeQuizQuestion = () => world.bookmarks[world.activeBookmark].quizQuest
 
 Before(() => {
     world.quizTakingPage = new QuizTakingPage(world.page)
-    world.questionCreationPage = new QuestionCreationPage(world.page)
     world.bookmarks = {}
 })
 
@@ -84,6 +66,23 @@ Given(
         })
     },
 )
+
+Given('a quiz question {string}', (question: string) => {
+    world.questionWip = { question, answers: [], correctAnswers: [0], explanations: [] }
+})
+
+Given('with answers', (answerRawTable: TableOf<AnswerRaw>) => {
+    world.questionWip = {
+        ...world.questionWip,
+        answers: toAnswers(answerRawTable.raw()),
+        correctAnswers: toCorrectAnswers(answerRawTable.raw()),
+        explanations: toExplanations(answerRawTable.raw()),
+    }
+})
+
+Given('bookmarked as {string}', async (bookmark: string) => {
+    await bookmarkQuizQuestion(bookmark, world.questionWip)
+})
 
 When('I visit the {string} quiz-taking page', async (bookmark: string) => {
     world.activeBookmark = bookmark
@@ -129,48 +128,7 @@ Then('I should see the explanation {string}', async (explanation: string) => {
     await expectTextToBe(explanationLocator, explanation)
 })
 
-When('I visit the create question page', async () => {
-    await world.questionCreationPage.goto()
-})
-
-Then('I should see the create question form', async () => {
-    const formLocator = world.questionCreationPage.formLocator()
-    await expectThatIsVisible(formLocator)
-})
-
-Then('I enter question {string}', async (question: string) => {
-    await world.questionCreationPage.enterQuestion(question)
-    const questionLocator = world.questionCreationPage.questionLocator()
-    await expectInputToBe(questionLocator, question)
-})
-
-Then('I enter answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
-    const raw = answerRawTable.raw()
-    const correctIndex = toCorrectAnswer(raw)
-    for (let i = 0; i < raw.length; i++) {
-        await world.questionCreationPage.enterAnswer(i, toAnswers(raw)[i], correctIndex === i, toExplanations(raw)[i])
-    }
-})
-
-Then('I enter general explanation {string}', async (generalExplanation: string) => {
-    await world.questionCreationPage.enterGeneralExplanation(generalExplanation)
-})
-
-Then('I submit question', async () => {
-    await world.questionCreationPage.clickSubmitButton()
-})
-
-Then('I received question link', async () => {
-    const linkLocator = world.questionCreationPage.linkLocator()
-    await expectThatIsVisible(linkLocator)
-})
-
 Then('I should see question explanation {string}', async (questionExplanation: string) => {
     const questionExplanationLocator = world.quizTakingPage.questionExplanationLocator()
     await expectTextToBe(questionExplanationLocator, questionExplanation)
-})
-
-Then('I see warning {string}', async (warningInformation: string) => {
-    const linkLocator = world.questionCreationPage.linkLocator()
-    await expectTextToBe(linkLocator, warningInformation)
 })
