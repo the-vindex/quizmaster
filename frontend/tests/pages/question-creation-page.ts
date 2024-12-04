@@ -7,9 +7,7 @@ export default class QuestionCreationPage {
 
     questionLocator = () => this.page.locator('#question-text-area')
 
-    formLocator = () => this.page.locator('form.question-create-form')
-
-    enterQuestion = (question: string) => this.page.fill('#question-text-area', question)
+    enterQuestion = (question: string) => this.questionLocator().fill(question)
 
     enterAnswer = async (index: number, value: string, correct: boolean, explanation: string) => {
         const value1 = index + 1
@@ -22,7 +20,9 @@ export default class QuestionCreationPage {
 
     enterGeneralExplanation = (question: string) => this.page.fill('textArea.generalExplanation', question)
 
-    clickSubmitButton = async () => this.page.locator('button.submitButton').click()
+    submit = async () => this.page.locator('button.submitButton').click()
 
-    linkLocator = () => this.page.locator('#question-link')
+    questionUrlLocator = () => this.page.locator('#question-link')
+
+    questionUrl = () => this.questionUrlLocator().textContent()
 }

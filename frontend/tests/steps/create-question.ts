@@ -1,55 +1,67 @@
-import { Before, Then, When } from '@cucumber/cucumber'
-import { expectInputToBe, expectTextToBe, expectThatIsVisible, type TableOf, worldAs } from './common.ts'
-import { type AnswerRaw, toAnswers, toCorrectAnswer, toExplanations } from './question-parse.ts'
-import QuestionCreationPage from '../pages/question-creation-page.ts'
+import { Before, Given, Then, When } from '@cucumber/cucumber'
+import { expectTextToBe, type TableOf, worldAs } from './common.ts'
+import CreateQuestionPage from '../pages/question-creation-page.ts'
+
+type AnswerRaw = [string, '*' | '', string]
+
+interface Answer {
+    answer: string
+    isCorrect: boolean
+    explanation: string
+}
+
+interface Question {
+    url: string
+    question: string
+    answers: Answer[]
+    explanation: string
+}
 
 interface QuizQuestionWorld {
-    questionCreationPage: QuestionCreationPage
+    createQuestionPage: CreateQuestionPage
+    questionWip: Question
+    bookmarks: Record<string, Question>
+    activeBookmark: string
 }
 
 const world = worldAs<QuizQuestionWorld>()
 
 Before(() => {
-    world.questionCreationPage = new QuestionCreationPage(world.page)
+    world.createQuestionPage = new CreateQuestionPage(world.page)
 })
 
-When('I visit the create question page', async () => {
-    await world.questionCreationPage.goto()
+Given('a question {string}', async (question: string) => {
+    await world.createQuestionPage.goto()
+    await world.createQuestionPage.enterQuestion(question)
+    world.questionWip = { url: '', question, answers: [], explanation: '' }
 })
 
-Then('I should see the create question form', async () => {
-    const formLocator = world.questionCreationPage.formLocator()
-    await expectThatIsVisible(formLocator)
-})
-
-Then('I enter question {string}', async (question: string) => {
-    await world.questionCreationPage.enterQuestion(question)
-    const questionLocator = world.questionCreationPage.questionLocator()
-    await expectInputToBe(questionLocator, question)
-})
-
-Then('I enter answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
+Given('with answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
     const raw = answerRawTable.raw()
-    const correctIndex = toCorrectAnswer(raw)
     for (let i = 0; i < raw.length; i++) {
-        await world.questionCreationPage.enterAnswer(i, toAnswers(raw)[i], correctIndex === i, toExplanations(raw)[i])
+        const [answer, correct, explanation] = raw[i]
+        const isCorrect = correct === '*'
+        await world.createQuestionPage.enterAnswer(i, answer, isCorrect, explanation)
+        world.questionWip.answers[i] = { answer, isCorrect, explanation }
     }
 })
 
-Then('I enter general explanation {string}', async (generalExplanation: string) => {
-    await world.questionCreationPage.enterGeneralExplanation(generalExplanation)
+Given('with explanation {string}', async (explanation: string) => {
+    await world.createQuestionPage.enterGeneralExplanation(explanation)
+    world.questionWip.explanation = explanation
 })
 
-Then('I submit question', async () => {
-    await world.questionCreationPage.clickSubmitButton()
+Given('saved and bookmarked as {string}', async (bookmark: string) => {
+    await world.createQuestionPage.submit()
+    world.questionWip.url = (await world.createQuestionPage.questionUrl()) || ''
+    world.bookmarks[bookmark] = world.questionWip
 })
 
-Then('I received question link', async () => {
-    const linkLocator = world.questionCreationPage.linkLocator()
-    await expectThatIsVisible(linkLocator)
+When('I take question {string}', async (bookmark: string) => {
+    await world.page.goto(world.bookmarks[bookmark].url)
+    world.activeBookmark = bookmark
 })
 
-Then('I see warning {string}', async (warningInformation: string) => {
-    const linkLocator = world.questionCreationPage.linkLocator()
-    await expectTextToBe(linkLocator, warningInformation)
+Then('I see the question', async () => {
+    await expectTextToBe(world.page.locator('h1'), world.bookmarks[world.activeBookmark].question)
 })

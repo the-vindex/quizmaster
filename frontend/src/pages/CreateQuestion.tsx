@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import './createQuestion.css'
 
 type Question = {
@@ -167,7 +167,9 @@ export function CreateQuestionForm() {
                         Submit
                     </button>{' '}
                     <br />
-                    <span id="question-link">{linkToQuestion()}</span>
+                    <Show when={linkToQuestion()}>
+                        <span id="question-link">{linkToQuestion()}</span>
+                    </Show>
                 </form>
             </div>
         )
