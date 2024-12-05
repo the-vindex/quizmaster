@@ -50,9 +50,10 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
 
         const payload = transformObjectToArray(selectedAnswers())
 
-        api.isMultipleAnswersCorrect(id, payload).then(isCorrect => {
+        api.isMultipleAnswersCorrect(id, payload).then(result => {
+
             setSubmitted(true)
-            setIsAnswerCorrect(isCorrect)
+            setIsAnswerCorrect(result.questionAnsweredCorrectly)
         })
     })
 
