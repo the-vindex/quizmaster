@@ -56,10 +56,24 @@ public class QuizQuestionControllerTest {
     public void answerQuestionV2(List<Integer> answerIdx, boolean isCorrect) {
         var questionId = quizQuestionController.saveQuestion(createQuestion());
 
-        var result = quizQuestionController.answerQuestionV2(questionId, answerIdx).getBody();
+        Boolean result = quizQuestionController.answerQuestionV2(questionId, answerIdx).getBody();
 
         assertNotNull(result);
         assertEquals(isCorrect, result);
+    }
+
+    @Test
+    public void answerQuestionV3_CorrectAnswer() {
+        List<Integer> answerIdx = List.of(1);
+        boolean isCorrect = true;
+
+        var questionId = quizQuestionController.saveQuestion(createQuestion());
+
+        MultipleAnswersResult result = quizQuestionController.answerQuestionV3(questionId, answerIdx).getBody();
+
+        assertNotNull(result);
+        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
+        assertTrue(result.getWrongAnswers().isEmpty());
     }
 
     @Test

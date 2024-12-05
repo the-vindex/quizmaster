@@ -52,6 +52,14 @@ public class QuizQuestionController {
     }
 
     @Transactional
+    @PostMapping("/quiz-question/{id}/answerv3")
+    public ResponseEntity<MultipleAnswersResult> answerQuestionV3(@PathVariable Integer id, @RequestBody List<Integer> answers) {
+        int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
+        var answeredCorrectly = findQuestion(id).map(QuizQuestion.isCorrectAnswers(answersArray)).orElse(false);
+        return response(Optional.of(new MultipleAnswersResult(answeredCorrectly, List.of())));
+    }
+
+    @Transactional
     @GetMapping("/quiz-question/all")
     public ResponseEntity<List<QuizQuestion>> getAllQuestionList() {
         List<QuizQuestion> quizQuestions = quizQuestionRepository.findAll();
