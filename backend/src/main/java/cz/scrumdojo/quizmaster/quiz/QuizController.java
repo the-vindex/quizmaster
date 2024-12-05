@@ -66,4 +66,11 @@ public class QuizController {
 
         return ResponseEntity.ok(quizData);
     }
+
+    @Transactional
+    @PostMapping("/quiz_run/{id}")
+    public ResponseEntity<Integer> runQuiz(@PathVariable Integer id) {
+        return ResponseEntity.notFound().build();
+        
+    }
 }

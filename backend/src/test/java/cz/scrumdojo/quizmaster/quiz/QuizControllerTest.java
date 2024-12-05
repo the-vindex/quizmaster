@@ -39,4 +39,13 @@ public class QuizControllerTest {
 
     }
 
+    @Test
+    public void shouldThrowExceptionWhenNoQuizForRunFound() {
+        ResponseEntity<Integer> response = quizController.runQuiz(0);
+
+        assertNotNull(response);
+        assertTrue(response.getStatusCode().is4xxClientError());
+
+    }
+
 }
