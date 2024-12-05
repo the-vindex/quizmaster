@@ -39,15 +39,12 @@ export const QuizQuestionDetail = () => {
         const currentQuestionIdx = quiz()?.questions?.findIndex(q => q.id.toString() === questionId)
 
         if (currentQuestionIdx !== undefined && quiz()) {
-            const isFinalQuestion = currentQuestionIdx === quiz()?.questions?.length
+            const isFinalQuestion = currentQuestionIdx + 1 === quiz()?.questions?.length
 
             if (isFinalQuestion) {
-                console.log('IS FINAL QUESTION')
                 navigate(`/quiz/${quizId}/run/${quizRunId}/result`)
             } else {
                 const nextQuestionIdx = currentQuestionIdx > -1 ? currentQuestionIdx + 1 : -1
-                console.log('NEXT QUESTION IDX: ', nextQuestionIdx)
-                console.log('QUESTION', quiz()?.questions)
                 nextQuestionIdx > -1 &&
                     navigate(`/quiz/${quizId}/run/${quizRunId}/question/${quiz()?.questions[nextQuestionIdx].id}`)
                 setTimeout(() => window.location.reload())
