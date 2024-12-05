@@ -89,7 +89,7 @@ the backend:
 
 # Push access
 
-sudo apt-get install gh
-gh auth login
-generate personal access token in github (your profile, developer settings) and paste it to gh login
+* `sudo apt-get install gh`
+* `gh auth login`
+* generate personal access token in github (your profile, developer settings) and paste it to gh login
 
