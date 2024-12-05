@@ -10,4 +10,4 @@ Feature: Create a quiz question
     * with explanation "Rome is the capital city of Italy. It is also the capital of the Lazio region"
     * saved and bookmarked as "Italy"
     When I take question "Italy"
-    Then I see the question
+    Then I see the question and the answers

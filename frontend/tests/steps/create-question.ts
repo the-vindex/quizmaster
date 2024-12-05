@@ -1,6 +1,8 @@
 import { Before, Given, Then, When } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
 import { expectTextToBe, type TableOf, worldAs } from './common.ts'
 import CreateQuestionPage from '../pages/question-creation-page.ts'
+import QuizTakingPage from '../pages/quiz-taking-page.ts'
 
 type AnswerRaw = [string, '*' | '', string]
 
@@ -19,15 +21,18 @@ interface Question {
 
 interface QuizQuestionWorld {
     createQuestionPage: CreateQuestionPage
+    quizTakingPage: QuizTakingPage
     questionWip: Question
     bookmarks: Record<string, Question>
     activeBookmark: string
 }
 
 const world = worldAs<QuizQuestionWorld>()
+const activeQuestion = () => world.bookmarks[world.activeBookmark]
 
 Before(() => {
     world.createQuestionPage = new CreateQuestionPage(world.page)
+    world.quizTakingPage = new QuizTakingPage(world.page)
 })
 
 Given('a question {string}', async (question: string) => {
@@ -62,6 +67,16 @@ When('I take question {string}', async (bookmark: string) => {
     world.activeBookmark = bookmark
 })
 
-Then('I see the question', async () => {
-    await expectTextToBe(world.page.locator('h1'), world.bookmarks[world.activeBookmark].question)
+Then('I see the question and the answers', async () => {
+    await expectTextToBe(world.quizTakingPage.questionLocator(), activeQuestion().question)
+
+    const answers = activeQuestion().answers
+    const answerLocators = world.quizTakingPage.answersLocator()
+
+    expect(await answerLocators.count()).toBe(answers.length)
+
+    for (const [index, { answer }] of answers.entries()) {
+        const answerLocator = answerLocators.nth(index)
+        await expectTextToBe(answerLocator, answer)
+    }
 })
