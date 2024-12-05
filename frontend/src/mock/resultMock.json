@@ -3,7 +3,7 @@
     "quizId": 101,
     "quiz": {
         "name": "Sample Quiz",
-        "questionIds": [1, 2, 3, 4, 5, 6, 7]
+        "questionIds": [1, 2, 3, 4, 5, 6, 7, 8]
     },
     "questionResults": [
         {
@@ -112,7 +112,7 @@
             "selectedAnswers": [0, 2],
             "explanationToShowIds": [0, 2],
             "question": {
-                "id": 6,
+                "id": 7,
                 "question": "Which of the following are programming languages?",
                 "answers": ["Python", "HTML", "Java", "CSS"],
                 "explanations": [
@@ -129,7 +129,7 @@
             "selectedAnswers": [1],
             "explanationToShowIds": [1],
             "question": {
-                "id": 7,
+                "id": 8,
                 "question": "What is the boiling point of water at sea level?",
                 "answers": ["90°C", "100°C", "110°C", "120°C"],
                 "explanations": [
