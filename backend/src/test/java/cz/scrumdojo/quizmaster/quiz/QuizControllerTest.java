@@ -32,7 +32,7 @@ public class QuizControllerTest {
 
     @Test
     public void shouldThrowExceptionWhenNoQuizFound() {
-        ResponseEntity<QuizData> response = quizController.getQuiz(2);
+        ResponseEntity<QuizData> response = quizController.getQuiz(Integer.MAX_VALUE);
 
         assertNotNull(response);
         assertTrue(response.getStatusCode().is4xxClientError());
