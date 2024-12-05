@@ -1,5 +1,5 @@
 import type { Quiz, SingleQuiz } from '../model/quiz-question.ts'
-import { fetchJson } from '../api.ts'
+import { fetchJson } from '../utils/apiUtils.ts'
 
 export const createQuiz = async (quizObj: Quiz) =>
     await fetchJson<number>('/api/quiz', {
