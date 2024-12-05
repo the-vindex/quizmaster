@@ -4,11 +4,18 @@ import type { QuizRunResult } from '../../model/quiz-result.ts'
 import { getResults } from '../../services/QuizResultService.ts'
 
 const getAnswers = (ids: number[], list: string[]) => {
-    return (<>
-        {ids.map((id, index) => {
-            return (<div key={index}><span>{list[id]}</span><br/></div>)
-        })}
-    </>)
+    return (
+        <>
+            {ids.map((id, index) => {
+                return (
+                    <div>
+                        <span>{list[id]}</span>
+                        <br />
+                    </div>
+                )
+            })}
+        </>
+    )
 }
 
 export const QuizFeedbackSummary = () => {
