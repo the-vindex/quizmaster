@@ -1,7 +1,10 @@
-import type { Page } from '@playwright/test'
+import type {Page} from '@playwright/test'
 
 export class QuizIntroPage {
-    constructor(private page: Page, private quizId: string) {}
+    constructor(
+        private page: Page,
+        private quizId: string,
+    ) {}
 
     goto = () => this.page.goto(`/quizmaster/${this.quizId}/intro`)
 

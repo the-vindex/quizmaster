@@ -1,10 +1,10 @@
-import {Route, Router, type RouteSectionProps} from '@solidjs/router'
-import {Quiz} from 'quiz.tsx'
-import {CreateQuestionForm} from './pages/CreateQuestion.tsx'
-import {QuestionList} from 'questions.tsx'
-import {QuizMaster} from 'quizmaster.tsx'
-import {QuizResult} from './pages/QuizResult.tsx'
-import type {Component} from 'solid-js'
+import { Route, Router, type RouteSectionProps } from '@solidjs/router'
+import { Quiz } from 'quiz.tsx'
+import { CreateQuestionForm } from './pages/CreateQuestion.tsx'
+import { QuestionList } from 'questions.tsx'
+import { QuizMaster } from 'quizmaster.tsx'
+import { QuizResult } from './pages/QuizResult.tsx'
+import type { Component } from 'solid-js'
 
 // TODO placeholders for new pages
 const Question: Component<RouteSectionProps<unknown>> | undefined = undefined
