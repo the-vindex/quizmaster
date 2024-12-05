@@ -124,7 +124,7 @@ Then('I should see {string}', async (feedback: string) => {
 })
 
 Then('I should see the explanation {string}', async (explanation: string) => {
-    const explanationLocator = world.quizTakingPage.explanationLocator()
+    const explanationLocator = world.quizTakingPage.answerExplanationLocator()
     await expectTextToBe(explanationLocator, explanation)
 })
 

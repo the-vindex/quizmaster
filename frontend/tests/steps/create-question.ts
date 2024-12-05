@@ -80,3 +80,20 @@ Then('I see the question and the answers', async () => {
         await expectTextToBe(answerLocator, answer)
     }
 })
+
+When('I answer {string}', async (answer: string) => {
+    await world.quizTakingPage.selectAnswer(answer)
+    await world.quizTakingPage.submit()
+})
+
+Then('I see feedback {string}', async (feedback) => {
+    await expectTextToBe(world.quizTakingPage.feedbackLocator(), feedback)
+})
+
+Then('I see the answer explanation {string}', async (answerExplanation) => {
+    await expectTextToBe(world.quizTakingPage.answerExplanationLocator(), answerExplanation)
+})
+
+Then('I see the question explanation', async () => {
+    await expectTextToBe(world.quizTakingPage.questionExplanationLocator(), activeQuestion().explanation)
+})
