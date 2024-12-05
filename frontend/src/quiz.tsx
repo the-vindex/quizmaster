@@ -7,6 +7,7 @@ import type { QuizQuestion } from 'model/quiz-question.ts'
 import { preventDefault } from 'helpers.ts'
 import { transformObjectToArray } from './utils/transformObjectToArray.ts'
 import { getQuestion, isMultipleAnswersCorrect } from './services/QuizQuestionService.ts'
+import * as QuestionService from './services/QuizQuestionService.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
@@ -37,7 +38,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()
         if (selectedAnswerIdx === null) return
-        isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
+        QuestionService.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
             setSubmitted(true)
             setIsAnswerCorrect(isCorrect)
             setExplanation(explanations[selectedAnswerIdx])
