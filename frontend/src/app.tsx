@@ -3,7 +3,7 @@ import { Quiz } from 'quiz.tsx'
 import { CreateQuestionForm } from './pages/CreateQuestion.tsx'
 import { QuestionList } from 'questions.tsx'
 import { QuizMaster } from 'quizmaster.tsx'
-import { QuizResult } from "./pages/QuizResult.tsx";
+import { QuizResult } from './pages/QuizResult.tsx'
 
 export const App = () => (
     <Router>

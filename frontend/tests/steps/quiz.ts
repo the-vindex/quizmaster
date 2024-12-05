@@ -1,6 +1,6 @@
-import { Before, Then, When } from "@cucumber/cucumber";
-import { expectTextToBe, worldAs } from "./common.ts";
-import { QuizResultPage } from "../pages/quiz-result-page.ts";
+import { Before, Then, When } from '@cucumber/cucumber'
+import { expectTextToBe, worldAs } from './common.ts'
+import { QuizResultPage } from '../pages/quiz-result-page.ts'
 
 interface CreateQuizWorld {
     quizResultPage: QuizResultPage
