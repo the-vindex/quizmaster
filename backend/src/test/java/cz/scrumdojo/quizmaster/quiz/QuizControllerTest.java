@@ -5,10 +5,14 @@ import cz.scrumdojo.quizmaster.model.QuizData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 @SpringBootTest
 public class QuizControllerTest {
@@ -36,6 +40,21 @@ public class QuizControllerTest {
 
         assertNotNull(response);
         assertTrue(response.getStatusCode().is4xxClientError());
+
+    }
+
+    @Test
+    public void returnAllQuizes() {
+        int questionId[] = {0, 1, 2, 3};
+
+        QuizCreateData data = new QuizCreateData("TestName", questionId);
+
+        quizController.createQuiz(data);
+
+        ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
 
     }
 

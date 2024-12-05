@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +18,13 @@ import java.util.stream.Collectors;
 public class QuizController {
 
     private final QuizRepository quizRepository;
-
+    private final QuizRunRepository quizRunRepository;
     private final QuizQuestionRepository quizQuestionRepository;
 
     @Autowired
-    public QuizController(QuizRepository quizRepository, QuizQuestionRepository quizQuestionRepository) {
+    public QuizController(QuizRepository quizRepository, QuizRunRepository quizRunRepository, QuizQuestionRepository quizQuestionRepository) {
         this.quizRepository = quizRepository;
+        this.quizRunRepository = quizRunRepository;
         this.quizQuestionRepository = quizQuestionRepository;
     }
 
@@ -68,9 +70,28 @@ public class QuizController {
     }
 
     @Transactional
+    @GetMapping("/quiz/all")
+    public ResponseEntity<List<QuizData>> getAllQuizes() {
+        List<Quiz> quizes = quizRepository.findAll();
+
+        if (quizes.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        List<QuizData> quizesData = new ArrayList<QuizData>();
+        for (Quiz quiz : quizes) {
+            quizesData.add(QuizData.builder()
+            .id(quiz.getId())
+            .name(quiz.getName() == null ? "" : quiz.getName()).build());
+        }
+        return ResponseEntity.ok(quizesData); 
+    }
+
+    @Transactional
     @PostMapping("/quiz_run/{id}")
     public ResponseEntity<Integer> runQuiz(@PathVariable Integer id) {
         return ResponseEntity.notFound().build();
         
+        //Integer quizRunId = quizRunRepository.save(quiz).getId();
     }
 }
