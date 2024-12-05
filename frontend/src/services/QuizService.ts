@@ -12,7 +12,7 @@ export const createQuiz = async (quizObj: Quiz) =>
 export const getQuizMaster = async (quizId: string | number) => await fetchJson<SingleQuiz>(`/api/quiz/${quizId}`)
 
 export const createQuizRun = async (quizId: string) =>
-    await fetchJson<void>(`/api/quiz/${quizId}/run`, {
+    await fetchJson<void>(`/api/quizRun/${quizId}`, {
         body: quizId.toString(),
         method: 'POST',
         headers: {
