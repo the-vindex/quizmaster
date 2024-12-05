@@ -4,9 +4,9 @@ import { createSignal, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 
 import type { SingleQuiz } from 'model/quiz-question.ts'
-import * as api from 'api.ts'
 import { Spinner } from '../components/Spinner.tsx'
 import { Layout } from '../components/Layout.tsx'
+import { getQuizMaster } from '../services/QuizService.ts'
 
 export const IntroPageContent = (props: { quiz: SingleQuiz | null }) => {
     if (!props.quiz) {
@@ -28,7 +28,7 @@ export const QuizIntro = () => {
 
     const [quiz, setQuiz] = createSignal<SingleQuiz | null>(null)
 
-    onMount(async () => setQuiz(await api.getQuizMaster(questionId)))
+    onMount(async () => setQuiz(await getQuizMaster(questionId)))
 
     return (
         <Layout>

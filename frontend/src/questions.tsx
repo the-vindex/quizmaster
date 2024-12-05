@@ -4,6 +4,7 @@ import { createSignal, For, onMount, Show } from 'solid-js'
 import type { QuizQuestion } from 'model/quiz-question.ts'
 import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
+import { createQuiz } from './services/QuizService.ts'
 
 const Feedback = (id: number) => {
     if (id) {
@@ -28,7 +29,7 @@ const Questions = (list: QuizQuestion[]) => {
             questionIds: selectedQuestions(),
         }
 
-        api.createQuiz(quizObj).then(id => {
+        createQuiz(quizObj).then(id => {
             setSubmitted(true)
             setQuizId(id)
         })
