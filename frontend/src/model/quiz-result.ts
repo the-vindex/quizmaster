@@ -1,4 +1,4 @@
-import {Quiz, QuizQuestion} from "./quiz-question.ts";
+import type {Quiz, QuizQuestion} from "./quiz-question.ts";
 
 export interface QuizQuestionResult {
     readonly selectedAnswers: number[]
