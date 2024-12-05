@@ -1,6 +1,15 @@
 import './QuizFeedbackSummary.css'
+import { createSignal, onMount } from 'solid-js'
+import type { QuizRunResult } from '../../model/quiz-result.ts'
+import { getResults } from '../../services/QuizResultService.ts'
 
 export const QuizFeedbackSummary = () => {
+    const [result, setResult] = createSignal<QuizRunResult | null>(null)
+
+    onMount(() => {
+        setResult(getResults())
+    })
+
     return (
         <div id="feedback-summary">
             <table id="results-table" class="feedback-summary-table">
@@ -11,18 +20,15 @@ export const QuizFeedbackSummary = () => {
                         <th>Correct Answer</th>
                         <th>Explanation</th>
                     </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>B</td>
-                        <td>C</td>
-                        <td>D</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>D</td>
-                        <td>D</td>
-                        <td>D</td>
-                    </tr>
+
+                    {result()?.questionResults.map(q => (
+                        <tr>
+                            <td>{q.question.question}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

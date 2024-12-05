@@ -15,7 +15,9 @@ export function QuizResult() {
         <>
             <h1 id="quiz-result-page">Quiz Result Page</h1>
             <h2 id="quiz-title">{result()?.quiz.name}</h2>
-            <p id="quiz-id">{result()?.quizId}</p>
+            <div>
+                Quiz Id: <span id="quiz-id">{result()?.quizId}</span>
+            </div>
 
             <QuizScore />
             <QuizFeedbackSummary />

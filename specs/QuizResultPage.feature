@@ -17,9 +17,9 @@ Feature: Display Results Page
       | Correct Answer |
       | Explanation    |
     And the table should display the following data:
-      | Question | Answer | Correct Answers | Explanation |
-      | A        | B      | C               | D           |
-      | D        | D      | D               | D           |
+      | Question                       | Answer | Correct Answers | Explanation |
+      | What is the capital of France? | -      | -               | -           |
+      | What is 2 + 2?                 | -      | -               | -           |
 
   Scenario: Score check
     When I finish quiz
