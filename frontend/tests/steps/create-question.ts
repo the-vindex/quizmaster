@@ -32,6 +32,7 @@ const activeQuestion = () => world.bookmarks[world.activeBookmark]
 Before(() => {
     world.createQuestionPage = new CreateQuestionPage(world.page)
     world.quizTakingPage = new TakeQuestionPage(world.page)
+    world.bookmarks = {}
 })
 
 Given('a question {string}', async (question: string) => {
