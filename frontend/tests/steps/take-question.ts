@@ -1,6 +1,6 @@
-import { Before, Then, When } from '@cucumber/cucumber'
+import { Before, DataTable, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import { expectTextToBe, worldAs } from './common.ts'
+import { expectTextToBe, expectThatIsNotVisible, worldAs } from './common.ts'
 import type { Question } from './question.ts'
 import { TakeQuestionPage } from '../pages'
 
@@ -56,6 +56,16 @@ Then('I see the question explanation', async () => {
     await expectTextToBe(world.quizTakingPage.questionExplanationLocator(), activeQuestion().explanation)
 })
 
-Then(/^I see the answer explanation (.*) for answer (.*)$/, async (answerExplanation, answer) => {
-    await expectTextToBe(world.quizTakingPage.answerExplanationLocatorForAnswer(answer), answerExplanation)
+Then(/^I see the answer explanations for answers$/, async (data: DataTable) => {
+    console.log(data)
+
+    for (const row of data.rows()) {
+        console.log(row)
+        console.log(row[0])
+        if (row[1]) await expectTextToBe(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]), row[1])
+        else {
+            console.log(`${row[0]} should not be there`)
+            await expectThatIsNotVisible(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]))
+        }
+    }
 })

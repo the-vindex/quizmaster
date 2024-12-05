@@ -84,7 +84,11 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
                     />
                     <label for={answerId}>
                         {answer}
-                        <Show when={true} children={Explanation(false, explanations[idx()])} keyed />
+                        <Show
+                            when={submitted() && (idx() === 0 || idx() === 2)}
+                            children={Explanation(false, explanations[idx()])}
+                            keyed
+                        />
                     </label>
                 </li>
             )
