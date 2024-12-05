@@ -9,6 +9,10 @@ export default class QuestionCreationPage {
 
     enterQuestion = (question: string) => this.questionLocator().fill(question)
 
+    multipleChoiceLocator = () => this.page.locator('.multipleQuestionsRow > input')
+
+    setMultipleChoice = () => this.multipleChoiceLocator().check()
+
     enterAnswer = async (index: number, value: string, correct: boolean, explanation: string) => {
         const value1 = index + 1
         await this.page.fill(`#answer-text-${String(value1)}`, value)

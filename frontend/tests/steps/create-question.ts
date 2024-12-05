@@ -43,6 +43,10 @@ Given('a question {string}', async (question: string) => {
 
 Given('with answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
     const raw = answerRawTable.raw()
+    const isMultipleChoice = raw.filter(([_, correct]) => correct === '*').length > 1
+
+    if (isMultipleChoice) await world.createQuestionPage.setMultipleChoice()
+
     for (let i = 0; i < raw.length; i++) {
         const [answer, correct, explanation] = raw[i]
         const isCorrect = correct === '*'
@@ -81,16 +85,19 @@ Then('I see the question and the answers', async () => {
     }
 })
 
-When('I answer {string}', async (answer: string) => {
-    await world.quizTakingPage.selectAnswer(answer)
+When('I answer {string}', async (answerList: string) => {
+    const answers = answerList.split(',').map(answer => answer.trim())
+    for (const answer of answers) {
+        await world.quizTakingPage.selectAnswer(answer)
+    }
     await world.quizTakingPage.submit()
 })
 
-Then('I see feedback {string}', async (feedback) => {
+Then('I see feedback {string}', async feedback => {
     await expectTextToBe(world.quizTakingPage.feedbackLocator(), feedback)
 })
 
-Then('I see the answer explanation {string}', async (answerExplanation) => {
+Then('I see the answer explanation {string}', async answerExplanation => {
     await expectTextToBe(world.quizTakingPage.answerExplanationLocator(), answerExplanation)
 })
 
