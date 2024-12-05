@@ -20,6 +20,7 @@ public class QuizQuestionControllerTest {
         return QuizQuestion.builder()
             .question("What is the capital of Italy?")
             .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
+            .explanations(new String[]{"Nope", "Never", "You wish", "Bleh"} )
             .correctAnswer(1)
             .build();
     }
