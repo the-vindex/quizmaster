@@ -6,6 +6,7 @@ import { useParams } from '@solidjs/router'
 import type { SingleQuiz } from 'model/quiz-question.ts'
 import * as api from 'api.ts'
 import { Spinner } from '../components/Spinner.tsx'
+import { Layout } from '../components/Layout.tsx'
 
 export const IntroPageContent = (props: { quiz: SingleQuiz | null }) => {
     if (!props.quiz) {
@@ -30,10 +31,10 @@ export const QuizIntro = () => {
     onMount(async () => setQuiz(await api.getQuizMaster(questionId)))
 
     return (
-        <>
+        <Layout>
             <Show when={!quiz()} fallback={<IntroPageContent quiz={quiz()} />}>
                 <Spinner />
             </Show>
-        </>
+        </Layout>
     )
 }
