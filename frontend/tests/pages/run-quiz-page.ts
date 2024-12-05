@@ -9,4 +9,8 @@ export class QuizIntroPage {
     goto = () => this.page.goto(`/quizmaster/${this.quizId}/intro`)
 
     quizLocator = () => this.page.locator('#quiz-intro-page')
+
+    startQuiz = async () => {
+        await this.page.locator('#start-quiz-button').click()
+    }
 }
