@@ -87,4 +87,9 @@ the backend:
 | Linux   | `export FEATURE_FLAG=true` |
 
 
-test
+# Push access
+
+sudo apt-get install gh
+gh auth login
+generate personal access token in github (your profile, developer settings) and paste it to gh login
+
