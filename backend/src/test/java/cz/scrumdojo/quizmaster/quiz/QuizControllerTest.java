@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class QuizControllerTest {
-
+    // test
     @Autowired
     private QuizQuestionRepository quizQuestionRepository;
 
