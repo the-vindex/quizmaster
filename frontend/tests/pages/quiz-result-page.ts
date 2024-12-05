@@ -10,4 +10,6 @@ export class QuizResultPage {
     feedbackLocator = () => this.page.locator('#feedback-summary')
 
     scoreLocator = () => this.page.locator('#quiz-score')
+
+    resultsTableLocator = () => this.page.locator('#results-table')
 }
