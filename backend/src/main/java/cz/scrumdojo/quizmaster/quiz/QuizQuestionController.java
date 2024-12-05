@@ -48,15 +48,17 @@ public class QuizQuestionController {
     @PostMapping("/quiz-question/{id}/answer")
     public ResponseEntity<Boolean> answerQuestionV2(@PathVariable Integer id, @RequestBody List<Integer> answers) {
         int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
-        return response(findQuestion(id).map(QuizQuestion.isCorrectAnswers(answersArray)));
+        Optional<List<Integer>> wrongAnswers = findQuestion(id).map(QuizQuestion.getWrongAnswers(answersArray));
+        return response(Optional.of(wrongAnswers.get().isEmpty()));
     }
 
     @Transactional
     @PostMapping("/quiz-question/{id}/answerv3")
     public ResponseEntity<MultipleAnswersResult> answerQuestionV3(@PathVariable Integer id, @RequestBody List<Integer> answers) {
         int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
-        var answeredCorrectly = findQuestion(id).map(QuizQuestion.isCorrectAnswers(answersArray)).orElse(false);
-        return response(Optional.of(new MultipleAnswersResult(answeredCorrectly, List.of())));
+        Optional<List<Integer>> wrongAnswers = findQuestion(id).map(QuizQuestion.getWrongAnswers(answersArray));
+        var answeredCorrectly = wrongAnswers.get().isEmpty();
+        return response(Optional.of(new MultipleAnswersResult(answeredCorrectly, wrongAnswers.get() )));
     }
 
     @Transactional

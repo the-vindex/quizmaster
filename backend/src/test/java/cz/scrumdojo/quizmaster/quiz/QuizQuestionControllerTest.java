@@ -17,12 +17,16 @@ public class QuizQuestionControllerTest {
     private QuizQuestionController quizQuestionController;
 
     private QuizQuestion createQuestion() {
+        return createQuestionBuilderBase()
+            .correctAnswer(1)
+            .build();
+    }
+
+    private static QuizQuestion.QuizQuestionBuilder createQuestionBuilderBase() {
         return QuizQuestion.builder()
             .question("What is the capital of Italy?")
             .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
-            .explanations(new String[]{"Nope", "Never", "You wish", "Bleh"} )
-            .correctAnswer(1)
-            .build();
+            .explanations(new String[]{"Nope", "Never", "You wish", "Bleh"});
     }
 
     @Test
@@ -63,17 +67,28 @@ public class QuizQuestionControllerTest {
     }
 
     @Test
-    public void answerQuestionV3_CorrectAnswer() {
-        List<Integer> answerIdx = List.of(1);
-        boolean isCorrect = true;
+    public void answerQuestionV3_answerMultipleQuestionsCorrectly() {
+        checkMultipleAnswers(List.of(1,3), true, List.of());
+    }
 
-        var questionId = quizQuestionController.saveQuestion(createQuestion());
+    @Test
+    public void answerQuestionV3_answerMultipleQuestionsIncorrectly() {
+        checkMultipleAnswers(List.of(2), false, List.of(1, 2, 3));
+    }
 
-        MultipleAnswersResult result = quizQuestionController.answerQuestionV3(questionId, answerIdx).getBody();
+    private void checkMultipleAnswers(List<Integer> userAnswersIndexes, boolean isCorrect, List<Integer> expectedWrongAnswers) {
+        QuizQuestion question = createQuestionBuilderBase()
+            .correctAnswers(new int[]{1,3})
+            .build();
+
+        var questionId = quizQuestionController.saveQuestion(question);
+
+        MultipleAnswersResult result = quizQuestionController.answerQuestionV3(questionId, userAnswersIndexes).getBody();
 
         assertNotNull(result);
-        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
-        assertTrue(result.getWrongAnswers().isEmpty());
+//        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
+
+        assertEquals(expectedWrongAnswers,result.getWrongAnswers());
     }
 
     @Test

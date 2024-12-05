@@ -40,13 +40,9 @@ public class QuizQuestion {
             && quizQuestion.getCorrectAnswers()[0] == index;
     }
 
-    public static Function<QuizQuestion, Boolean> isCorrectAnswers(int[] userAnswers) {
+    public static Function<QuizQuestion, List<Integer>> getWrongAnswers(int[] userAnswers) {
         return quizQuestion -> {
             int[] correctAnswers = quizQuestion.getCorrectAnswers();
-
-            if (correctAnswers.length != userAnswers.length) {
-                return false;
-            }
 
             Set<Integer> correctAnswerSet = Arrays.stream(correctAnswers)
                 .boxed()
@@ -56,7 +52,17 @@ public class QuizQuestion {
                 .boxed()
                 .collect(Collectors.toSet());
 
-            return correctAnswerSet.equals(userAnswerSet);
+            return xorSet(correctAnswerSet, userAnswerSet).stream().toList();
         };
+    }
+
+    // Returns numbers present only in one of the sets
+    public static Set<Integer> xorSet(Set<Integer> set1, Set<Integer> set2) {
+        Set<Integer> xor = new HashSet<>(set1);
+        xor.addAll(set2);
+        Set<Integer> intersection = new HashSet<>(set1);
+        intersection.retainAll(set2);
+        xor.removeAll(intersection);
+        return xor;
     }
 }
