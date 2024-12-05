@@ -46,7 +46,7 @@ Given('with answers:', async (answerRawTable: TableOf<AnswerRaw>) => {
     for (let i = 0; i < raw.length; i++) {
         const [answer, correct, explanation] = raw[i]
         const isCorrect = correct === '*'
-        await world.createQuestionPage.enterAnswer(i, answer, isCorrect, explanation)
+        await world.createQuestionPage.enterAnswer(i, answer, isCorrect, explanation || '')
         world.questionWip.answers[i] = { answer, isCorrect, explanation }
     }
 })

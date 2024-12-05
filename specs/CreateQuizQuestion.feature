@@ -1,7 +1,15 @@
 Feature: Create a quiz question
 
   Background:
-    Given a question "What is capital of Italy?"
+    Given a question "What is capital of France?"
+    * with answers:
+      | Marseille |   |
+      | Lyon      |   |
+      | Paris     | * |
+      | Toulouse  |   |
+    * saved and bookmarked as "France"
+
+    And a question "What is capital of Italy?"
     * with answers:
       | Rome     | * | Rome is the capital of Italy         |
       | Naples   |   | Naples is not the capital of Italy   |
@@ -13,6 +21,15 @@ Feature: Create a quiz question
   Scenario: Question is created and available to be taken
     Given I take question "Italy"
     Then I see the question and the answers
+
+  Scenario Outline:
+    Given I take question "France"
+    When I answer "<answer>"
+    Then I see feedback "<feedback>"
+    Examples:
+      | answer | feedback   |
+      | Paris  | Correct!   |
+      | Lyon   | Incorrect! |
 
   Scenario Outline:
     Given I take question "Italy"
