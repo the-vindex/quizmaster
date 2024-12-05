@@ -8,6 +8,6 @@ export class QuizResultPage {
     quizLocator = () => this.page.locator('#quiz-result-page')
 
     feedbackLocator = () => this.page.locator('#feedback-summary')
-    
+
     scoreLocator = () => this.page.locator('#quiz-score')
 }

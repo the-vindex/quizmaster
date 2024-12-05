@@ -1,7 +1,6 @@
 import { Before, Then, When } from '@cucumber/cucumber'
 import { expectTextToBe, expectThatIsVisible, worldAs } from './common.ts'
 import { QuizResultPage } from '../pages/quiz-result-page.ts'
-import { expectThatIsVisible } from './common'
 
 interface CreateQuizWorld {
     quizResultPage: QuizResultPage
