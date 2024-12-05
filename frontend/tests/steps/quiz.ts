@@ -27,6 +27,10 @@ Then('I see feedback summary', async () => {
     await expectThatIsVisible(world.quizResultPage.feedbackLocator())
 })
 
+Then('I see quiz name', async () => {
+    await expectThatIsVisible(world.quizResultPage.quizTitle())
+})
+
 Then('I see score', async () => {
     await expectThatIsVisible(world.quizResultPage.scoreLocator())
 })

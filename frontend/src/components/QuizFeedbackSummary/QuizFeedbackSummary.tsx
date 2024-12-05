@@ -1,7 +1,9 @@
+import './QuizFeedbackSummary.css'
+
 export const QuizFeedbackSummary = () => {
     return (
         <div id="feedback-summary">
-            <table id="results-table">
+            <table id="results-table" class="feedback-summary-table">
                 <tbody>
                     <tr>
                         <th>Question</th>

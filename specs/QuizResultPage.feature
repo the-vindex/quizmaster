@@ -3,6 +3,7 @@ Feature: Display Results Page
   Scenario: Simple Check
     When I finish quiz
     Then I see the page identifier
+    And  I see quiz name
     And I see feedback summary
     And I see score
 
