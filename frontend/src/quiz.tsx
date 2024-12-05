@@ -4,9 +4,9 @@ import { type Accessor, createSignal, For, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 
 import type { QuizQuestion } from 'model/quiz-question.ts'
-import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
 import { transformObjectToArray } from './utils/transformObjectToArray.ts'
+import { getQuestion, isMultipleAnswersCorrect } from './services/QuizQuestionService.ts'
 
 const Feedback = (correct: boolean) => <p class="feedback">{correct ? 'Correct!' : 'Incorrect!'}</p>
 
@@ -37,7 +37,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()
         if (selectedAnswerIdx === null) return
-        api.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
+        isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
             setSubmitted(true)
             setIsAnswerCorrect(isCorrect)
             setExplanation(explanations[selectedAnswerIdx])
@@ -50,8 +50,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
 
         const payload = transformObjectToArray(selectedAnswers())
 
-        api.isMultipleAnswersCorrect(id, payload).then(result => {
-
+        isMultipleAnswersCorrect(id, payload).then(result => {
             setSubmitted(true)
             setIsAnswerCorrect(result.questionAnsweredCorrectly)
         })
@@ -129,7 +128,7 @@ export const Quiz = () => {
 
     const [quizQuestion, setQuizQuestion] = createSignal<QuizQuestion | null>(null)
 
-    onMount(async () => setQuizQuestion(await api.getQuestion(questionId)))
+    onMount(async () => setQuizQuestion(await getQuestion(questionId)))
 
     return <Show when={quizQuestion()} children={Question} keyed />
 }
