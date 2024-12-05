@@ -3,10 +3,10 @@ import { createSignal, onMount } from 'solid-js'
 import type { QuizRunResult } from '../../model/quiz-result.ts'
 import { getResults } from '../../services/QuizResultService.ts'
 
-const getAnswers = (ids: number[], list: string[]) => {
+const getAnswers = (ids: readonly number[], list: readonly string[]) => {
     return (
         <>
-            {ids.map((id, index) => {
+            {ids.map((id, _index) => {
                 return (
                     <div>
                         <span>{list[id]}</span>
