@@ -57,11 +57,7 @@ Then('I see the question explanation', async () => {
 })
 
 Then(/^I see the answer explanations for answers$/, async (data: DataTable) => {
-    console.log(data)
-
     for (const row of data.rows()) {
-        console.log(row)
-        console.log(row[0])
         if (row[1]) await expectTextToBe(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]), row[1])
         else {
             console.log(`${row[0]} should not be there`)
