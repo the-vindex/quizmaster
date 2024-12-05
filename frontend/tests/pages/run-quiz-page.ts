@@ -6,7 +6,7 @@ export class QuizIntroPage {
         private quizId: string,
     ) {}
 
-    goto = () => this.page.goto(`/quizmaster/${this.quizId}/intro`)
+    goto = () => this.page.goto(`/quiz/${this.quizId}/intro`)
 
     quizLocator = () => this.page.locator('#quiz-intro-page')
 

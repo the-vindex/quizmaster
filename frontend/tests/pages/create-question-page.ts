@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 export class CreateQuestionPage {
     constructor(private page: Page) {}
 
-    goto = () => this.page.goto('/create-question')
+    goto = () => this.page.goto('/question/new')
 
     questionLocator = () => this.page.locator('#question-text-area')
 

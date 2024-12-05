@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 export class TakeQuestionPage {
     constructor(private page: Page) {}
 
-    goto = async (id: number) => this.page.goto(`/quiz/${id}`)
+    goto = async (id: number) => this.page.goto(`/question/${id}`)
 
     questionLocator = () => this.page.locator('h1')
 

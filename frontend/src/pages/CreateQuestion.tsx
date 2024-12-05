@@ -42,8 +42,8 @@ export function CreateQuestionForm() {
                 }
                 return response.json() // Parse JSON response
             })
-            .then(data => {
-                setLinkToQuestion(`${location.origin}/quiz/${data}`)
+            .then(questionId => {
+                setLinkToQuestion(`${location.origin}/question/${questionId}`)
             })
             .catch(error => {
                 console.error('Error:', error) // Handle errors
