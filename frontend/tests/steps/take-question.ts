@@ -1,4 +1,4 @@
-import { Before, DataTable, Then, When } from '@cucumber/cucumber'
+import { Before, type DataTable, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { expectTextToBe, expectThatIsNotVisible, worldAs } from './common.ts'
 import type { Question } from './question.ts'
