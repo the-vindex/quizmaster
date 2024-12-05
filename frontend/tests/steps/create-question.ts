@@ -1,8 +1,7 @@
 import { Before, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { expectTextToBe, type TableOf, worldAs } from './common.ts'
-import CreateQuestionPage from '../pages/question-creation-page.ts'
-import QuizTakingPage from '../pages/quiz-taking-page.ts'
+import { CreateQuestionPage, TakeQuestionPage } from '../pages'
 
 type AnswerRaw = [string, '*' | '', string]
 
@@ -21,7 +20,7 @@ interface Question {
 
 interface QuizQuestionWorld {
     createQuestionPage: CreateQuestionPage
-    quizTakingPage: QuizTakingPage
+    quizTakingPage: TakeQuestionPage
     questionWip: Question
     bookmarks: Record<string, Question>
     activeBookmark: string
@@ -32,7 +31,7 @@ const activeQuestion = () => world.bookmarks[world.activeBookmark]
 
 Before(() => {
     world.createQuestionPage = new CreateQuestionPage(world.page)
-    world.quizTakingPage = new QuizTakingPage(world.page)
+    world.quizTakingPage = new TakeQuestionPage(world.page)
 })
 
 Given('a question {string}', async (question: string) => {

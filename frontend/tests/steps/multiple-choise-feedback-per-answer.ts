@@ -1,10 +1,10 @@
 import { Then } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { worldAs } from './common.ts'
-import type QuizTakingPage from '../pages/quiz-taking-page'
+import type { TakeQuestionPage } from '../pages'
 
 interface MultipleChoiceWorld {
-    quizTakingPage: QuizTakingPage
+    quizTakingPage: TakeQuestionPage
 }
 
 const world = worldAs<MultipleChoiceWorld>()

@@ -2,7 +2,7 @@ import { Before, Given, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 import { expectTextToBe, type TableOf, worldAs } from './common.ts'
 import { type AnswerRaw, toAnswers, toCorrectAnswers, toExplanations } from './question-parse.ts'
-import QuizTakingPage from '../pages/quiz-taking-page'
+import { TakeQuestionPage } from '../pages'
 
 interface QuizQuestionData {
     readonly question: string
@@ -18,7 +18,7 @@ interface QuizQuestion {
 }
 
 interface QuizQuestionWorld {
-    quizTakingPage: QuizTakingPage
+    quizTakingPage: TakeQuestionPage
     questionWip: QuizQuestionData
     bookmarks: Record<string, QuizQuestion>
     activeBookmark: string
@@ -45,7 +45,7 @@ const bookmarkQuizQuestion = async (bookmark: string, quizQuestion: QuizQuestion
 const activeQuizQuestion = () => world.bookmarks[world.activeBookmark].quizQuestion
 
 Before(() => {
-    world.quizTakingPage = new QuizTakingPage(world.page)
+    world.quizTakingPage = new TakeQuestionPage(world.page)
     world.bookmarks = {}
 })
 

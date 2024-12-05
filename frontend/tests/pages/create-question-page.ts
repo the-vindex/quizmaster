@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 
-export default class QuestionCreationPage {
+export class CreateQuestionPage {
     constructor(private page: Page) {}
 
     goto = async () => this.page.goto('/create-question')
