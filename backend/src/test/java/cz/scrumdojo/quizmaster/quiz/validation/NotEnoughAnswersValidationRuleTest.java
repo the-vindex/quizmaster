@@ -5,48 +5,49 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AtLeastOneCorrectAnswerValidationRuleTest {
+class NotEnoughAnswersValidationRuleTest {
 
-    private final AtLeastOneCorrectAnswerValidationRule validationRule = new AtLeastOneCorrectAnswerValidationRule();
+    private final NotEnoughAnswersValidationRule validationRule = new NotEnoughAnswersValidationRule();
 
     @ParameterizedTest
     @MethodSource("provideDataForValidQuestion")
     void validQuestion(
-        int[] correctAnswers
+        List<String> answers
     ) {
         QuizQuestion question = new QuizQuestion();
-        question.setAnswers(new String[] {"Rome", "Paris", "Prague"});
-        question.setCorrectAnswers(correctAnswers);
+        question.setAnswers(answers.toArray(new String[0]));
         assertTrue(validationRule.isValid(question));
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForInvalidQuestion")
     void invalidQuestion(
-        int[] correctAnswers
+        List<String> answers
     ) {
         QuizQuestion question = new QuizQuestion();
-        question.setAnswers(new String[] {"Rome", "Paris", "Prague"});
-        question.setCorrectAnswers(correctAnswers);
+        question.setAnswers(answers.toArray(new String[0]));
         assertFalse(validationRule.isValid(question));
     }
 
     private static Stream<Arguments> provideDataForValidQuestion() {
         return Stream.of(
-            Arguments.of(new int[] {0}),
-            Arguments.of(new int[] {0, 1}),
-            Arguments.of(new int[] {0, 1, 2})
+            Arguments.of(List.of("Rome", "Paris")),
+            Arguments.of(List.of("Rome", "Paris", "London")),
+            Arguments.of(List.of("Rome", "Paris", "London", "Prague"))
         );
     }
 
     private static Stream<Arguments> provideDataForInvalidQuestion() {
         return Stream.of(
-            Arguments.of(new int[] {})
+            Arguments.of(List.of("Rome")),
+            Arguments.of(new ArrayList<String>())
         );
     }
 
