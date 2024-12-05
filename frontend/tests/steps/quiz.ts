@@ -1,5 +1,5 @@
 import { Before, Then, When } from '@cucumber/cucumber'
-import { expectTextToBe, worldAs } from './common.ts'
+import { expectTextToBe, expectThatIsVisible, worldAs } from './common.ts'
 import { QuizResultPage } from '../pages/quiz-result-page.ts'
 
 interface CreateQuizWorld {
@@ -19,4 +19,8 @@ When('I finish quiz', async () => {
 
 Then('I see the page identifier', async () => {
     await expectTextToBe(world.quizResultPage.quizLocator(), 'Quiz Result Page')
+})
+
+Then('I see feedback summary', async () => {
+    await expectThatIsVisible(world.quizResultPage.feedbackLocator())
 })
