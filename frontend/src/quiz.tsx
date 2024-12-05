@@ -73,6 +73,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
 
         if (isMultiple) {
             return (
+
                 <li class="answerOption">
                     <input
                         type={'checkbox'}
@@ -82,14 +83,21 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
                         checked={selectedAnswers()?.[idx()]}
                         onInput={handleCheckboxChange}
                     />
-                    <label for={answerId}>{answer}</label>
+                    <label for={answerId}>
+                        {answer}
+                        <Show
+                            when={true}
+                            children={Explanation(false, explanations[idx()])}
+                            keyed
+                        />
+                    </label>
                 </li>
             )
         }
 
         return (
             <li>
-                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())} />
+                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx())}/>
                 <label for={answerId}>
                     {answer}
                     <Show
@@ -101,8 +109,9 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
             </li>
         )
     }
-
+    console.log(explanations)
     return (
+
         <form onSubmit={isMultiple ? submitMultiple : submit}>
             <h1>{question}</h1>
             <ul>

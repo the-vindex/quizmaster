@@ -22,3 +22,13 @@ Feature: Answering a quiz question with multiple choice
       | Italy, France, Morocco        | Incorrect! |
       | Italy, France, Spain          | Correct!   |
       | Italy, France, Morocco, Spain | Incorrect! |
+
+    @focus
+  Scenario Outline:
+    When I take question "Europe"
+    And I answer "Italy, France, Morocco"
+    Then I see the answer explanation <feedback> for answer <answer>
+    Examples:
+      | answer                        | feedback   |
+      | Italy                         | And where is it? |
+
