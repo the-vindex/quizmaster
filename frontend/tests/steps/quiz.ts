@@ -1,7 +1,7 @@
-import {Before, Then, When, Given} from '@cucumber/cucumber'
-import {expectTextToBe, expectThatIsVisible, worldAs} from './common.ts'
-import {QuizResultPage} from '../pages/quiz-result-page.ts'
-import {expect, type Locator} from '@playwright/test'
+import { Before, Then, When, Given } from '@cucumber/cucumber'
+import { expectTextToBe, expectThatIsVisible, worldAs } from './common.ts'
+import { QuizResultPage } from '../pages/quiz-result-page.ts'
+import { expect, type Locator } from '@playwright/test'
 
 interface CreateQuizWorld {
     quizResultPage: QuizResultPage
@@ -47,7 +47,7 @@ Then('the table should have the following columns:', async function (dataTable) 
     expect(actualColumns).toEqual(expectedColumns)
 })
 
-Then('the table should display the following data:', async (dataTable) => {
+Then('the table should display the following data:', async dataTable => {
     const hashes = dataTable.hashes()
 
     for (let i = 0; i < hashes.length; i++) {
