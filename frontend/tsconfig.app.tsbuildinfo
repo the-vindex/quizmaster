@@ -1,0 +1,1 @@
+{"root":["./src/api.ts","./src/app.tsx","./src/global.d.ts","./src/helpers.ts","./src/index.tsx","./src/questions.tsx","./src/quiz.tsx","./src/quizmaster.tsx","./src/model/quiz-question.ts","./src/pages/CreateQuestion.tsx","./src/utils/transformObjectToArray.ts"],"version":"5.7.2"}

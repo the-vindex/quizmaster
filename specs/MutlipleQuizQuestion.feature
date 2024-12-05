@@ -1,14 +1,16 @@
 Feature: Answering a quiz question with multiple choice
 
-  Scenario Outline:
+  Background:
     Given a question "What countries are in Europe?"
     * with answers:
-      | Italy   | * |
-      | France  | * |
-      | Morocco |   |
-      | Spain   | * |
+      | Italy   | * | And where is it? |
+      | France  | * | You wish!        |
+      | Morocco |   | Almost :D        |
+      | Spain   | * | Manana!          |
     * with explanation "Italy, France, and Spain are in Europe. Morocco is in Africa."
     * saved and bookmarked as "Europe"
+
+  Scenario Outline:
     When I take question "Europe"
     And I answer "<answer>"
     Then I see feedback "<feedback>"
