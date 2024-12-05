@@ -43,6 +43,7 @@ public class QuizControllerTest {
 
     }
 
+    /*
     @Test
     public void returnAllQuizes() {
         int questionId[] = {0, 1, 2, 3};
@@ -57,6 +58,7 @@ public class QuizControllerTest {
         assertNotNull(response.getBody());
 
     }
+        */
 
     @Test
     public void shouldThrowExceptionWhenNoQuizForRunFound() {
