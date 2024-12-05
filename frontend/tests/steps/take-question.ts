@@ -56,6 +56,6 @@ Then('I see the question explanation', async () => {
     await expectTextToBe(world.quizTakingPage.questionExplanationLocator(), activeQuestion().explanation)
 })
 
-Then(/^I see the answer explanation (.*) for answer (.*)$/, async (answerExplanation, answer) =>{
+Then(/^I see the answer explanation (.*) for answer (.*)$/, async (answerExplanation, answer) => {
     await expectTextToBe(world.quizTakingPage.answerExplanationLocatorForAnswer(answer), answerExplanation)
-});
+})

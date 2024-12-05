@@ -15,9 +15,10 @@ export class TakeQuestionPage {
         this.page.locator(`input[type="checkbox"][value="${answer}"],input[type="radio"][value="${answer}"]`)
 
     answerExplanationLocatorForAnswer = (answer: string) =>
-        this.page.locator(`input[type="checkbox"][value="${answer}"],input[type="radio"][value="${answer}"]`)
-            .locator("..")
-            .locator("span.explanation")
+        this.page
+            .locator(`input[type="checkbox"][value="${answer}"],input[type="radio"][value="${answer}"]`)
+            .locator('..')
+            .locator('span.explanation')
 
     selectAnswer = (answer: string) => this.answerLocator(answer).check()
 
