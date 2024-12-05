@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 export class CreateQuestionPage {
     constructor(private page: Page) {}
 
-    goto = async () => this.page.goto('/create-question')
+    goto = () => this.page.goto('/create-question')
 
     questionLocator = () => this.page.locator('#question-text-area')
 
@@ -24,7 +24,7 @@ export class CreateQuestionPage {
 
     enterGeneralExplanation = (question: string) => this.page.fill('textArea.generalExplanation', question)
 
-    submit = async () => this.page.locator('button.submitButton').click()
+    submit = () => this.page.locator('button.submitButton').click()
 
     questionUrlLocator = () => this.page.locator('#question-link')
 
