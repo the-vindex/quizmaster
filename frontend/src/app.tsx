@@ -5,6 +5,7 @@ import { QuestionList } from 'questions.tsx'
 import { QuizMaster } from 'quizmaster.tsx'
 import { QuizResult } from './pages/QuizResult.tsx'
 import type { Component } from 'solid-js'
+import { QuizIntro } from './pages/QuizIntro.tsx'
 
 // TODO placeholders for new pages
 const Question: Component<RouteSectionProps<unknown>> | undefined = undefined
@@ -15,7 +16,7 @@ export const App = () => (
     <Router>
         {/* New refactored routes */}
         {/* Quiz run */}
-        <Route path="/quiz/:id" component={Quiz} />
+        <Route path="/quiz/:id" component={QuizIntro} />
         <Route path="/quiz/:id/run/:runId/question/:questionId" component={Question} />
         <Route path="/quiz/:id/run/:runId/result" component={QuizResult} />
 
