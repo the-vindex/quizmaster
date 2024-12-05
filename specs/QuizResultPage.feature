@@ -17,9 +17,9 @@ Feature: Display Results Page
       | Correct Answer |
       | Explanation    |
     And the table should display the following data:
-      | Question                       | Answer | Correct Answers | Explanation |
-      | What is the capital of France? | -      | -               | -           |
-      | What is 2 + 2?                 | -      | -               | -           |
+      | Question                       | Answer   | Correct Answers | Explanation                                                                |
+      | What is the capital of France? | Paris    | Paris           | Paris is the capital of France.                                            |
+      | What are the primary colors?   | Red Blue | Red Blue Green  | Red is a primary color. Blue is a primary color. Green is a primary color. |
 
   Scenario: Score check
     When I finish quiz

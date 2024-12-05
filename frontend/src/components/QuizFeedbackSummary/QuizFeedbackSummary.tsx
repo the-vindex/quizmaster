@@ -3,6 +3,14 @@ import { createSignal, onMount } from 'solid-js'
 import type { QuizRunResult } from '../../model/quiz-result.ts'
 import { getResults } from '../../services/QuizResultService.ts'
 
+const getAnswers = (ids: number[], list: string[]) => {
+    return (<>
+        {ids.map((id, index) => {
+            return (<div key={index}><span>{list[id]}</span><br/></div>)
+        })}
+    </>)
+}
+
 export const QuizFeedbackSummary = () => {
     const [result, setResult] = createSignal<QuizRunResult | null>(null)
 
@@ -24,9 +32,9 @@ export const QuizFeedbackSummary = () => {
                     {result()?.questionResults.map(q => (
                         <tr>
                             <td>{q.question.question}</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{getAnswers(q.selectedAnswers, q.question.answers)}</td>
+                            <td>{getAnswers(q.question.correctAnswers, q.question.answers)}</td>
+                            <td>{getAnswers(q.explanationToShowIds, q.question.explanations)}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -3,12 +3,12 @@
     "quizId": 101,
     "quiz": {
         "name": "Sample Quiz",
-        "questionIds": [1, 2, 3, 4, 6, 7, 8]
+        "questionIds": [1, 2]
     },
     "questionResults": [
         {
-            "selectedAnswers": [0, 2],
-            "explanationToShowIds": [0, 2],
+            "selectedAnswers": [0],
+            "explanationToShowIds": [0],
             "question": {
                 "id": 1,
                 "question": "What is the capital of France?",
@@ -24,106 +24,22 @@
             }
         },
         {
-            "selectedAnswers": [2],
-            "explanationToShowIds": [1, 2],
+            "selectedAnswers": [0, 2],
+            "explanationToShowIds": [0, 2, 3],
             "question": {
                 "id": 2,
-                "question": "What is 2 + 2?",
-                "answers": ["3", "4", "5", "6"],
-                "explanations": [
-                    "3 is incorrect.",
-                    "4 is correct.",
-                    "5 is incorrect.",
-                    "6 is incorrect."
-                ],
-                "questionExplanation": "This question tests basic arithmetic.",
-                "correctAnswers": [1]
-            }
-        },
-        {
-            "selectedAnswers": [2],
-            "explanationToShowIds": [2],
-            "question": {
-                "id": 3,
-                "question": "Which planet is known as the Red Planet?",
-                "answers": ["Earth", "Venus", "Mars", "Jupiter"],
-                "explanations": [
-                    "Earth is known as the Blue Planet.",
-                    "Venus is known as the Morning Star.",
-                    "Mars is known as the Red Planet due to its reddish appearance.",
-                    "Jupiter is the largest planet in the solar system."
-                ],
-                "questionExplanation": "This question tests your knowledge of the solar system.",
-                "correctAnswers": [2]
-            }
-        },
-        {
-            "selectedAnswers": [0, 2],
-            "explanationToShowIds": [0, 2],
-            "question": {
-                "id": 4,
                 "question": "What are the primary colors?",
-                "answers": ["Red", "Green", "Blue", "Yellow"],
+                "answers": ["Red", "Yellow", "Blue", "Green"],
                 "explanations": [
                     "Red is a primary color.",
-                    "Green is not a primary color.",
+                    "Yellow is not a primary color.",
                     "Blue is a primary color.",
-                    "Yellow is a primary color."
+                    "Green is a primary color."
                 ],
                 "questionExplanation": "Primary colors are the basic colors that can be combined to create other colors.",
                 "correctAnswers": [0, 2, 3]
             }
-        },
-        {
-            "selectedAnswers": [0, 3],
-            "explanationToShowIds": [0, 3],
-            "question": {
-                "id": 6,
-                "question": "Select the mammals.",
-                "answers": ["Dog", "Crocodile", "Eagle", "Whale"],
-                "explanations": [
-                    "Dogs are mammals.",
-                    "Crocodiles are reptiles.",
-                    "Eagles are birds.",
-                    "Whales are mammals."
-                ],
-                "questionExplanation": "Mammals are warm-blooded vertebrates with hair or fur.",
-                "correctAnswers": [0, 3]
-            }
-        },
-        {
-            "selectedAnswers": [0, 2],
-            "explanationToShowIds": [0, 2],
-            "question": {
-                "id": 7,
-                "question": "Which of the following are programming languages?",
-                "answers": ["Python", "HTML", "Java", "CSS"],
-                "explanations": [
-                    "Python is a programming language.",
-                    "HTML is a markup language.",
-                    "Java is a programming language.",
-                    "CSS is a style sheet language."
-                ],
-                "questionExplanation": "Programming languages are used to write software.",
-                "correctAnswers": [0, 2]
-            }
-        },
-        {
-            "selectedAnswers": [1],
-            "explanationToShowIds": [1],
-            "question": {
-                "id": 8,
-                "question": "What is the boiling point of water at sea level?",
-                "answers": ["90°C", "100°C", "110°C", "120°C"],
-                "explanations": [
-                    "90°C is below the boiling point.",
-                    "100°C is the boiling point of water at sea level.",
-                    "110°C is above the boiling point.",
-                    "120°C is above the boiling point."
-                ],
-                "questionExplanation": "The boiling point of water is 100°C at sea level.",
-                "correctAnswers": [1]
-            }
         }
+
     ]
 }
