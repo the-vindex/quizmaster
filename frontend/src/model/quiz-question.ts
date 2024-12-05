@@ -14,7 +14,6 @@ export interface QuizQuestionProps extends QuizQuestion {
 export interface Quiz {
     readonly name: string
     readonly questionIds: number[]
-    readonly successThreshold: number // success percentage
 }
 
 export interface SingleQuestion {
