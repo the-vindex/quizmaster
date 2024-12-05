@@ -9,4 +9,13 @@ export const createQuiz = async (quizObj: Quiz) =>
             'Content-Type': 'application/json',
         },
     })
-export const getQuizMaster = async (quizId: number) => await fetchJson<SingleQuiz>(`/api/quiz/${quizId}`)
+export const getQuizMaster = async (quizId: string | number) => await fetchJson<SingleQuiz>(`/api/quiz/${quizId}`)
+
+export const createQuizRun = async (quizId: string) =>
+    await fetchJson<void>(`/api/quiz/${quizId}/run`, {
+        body: quizId.toString(),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })

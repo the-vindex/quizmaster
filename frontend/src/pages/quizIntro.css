@@ -1,0 +1,12 @@
+.btn-row {
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-btn {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
