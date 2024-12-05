@@ -14,7 +14,7 @@ Feature: Validation create question input
 # Then 'Question must be filled.' message is shown
 #
 # @focus
-# Scenario: Question is empty
+# Scenario: No answer added
 # Given visit create question form
 # When enter question
 # * click submit button
