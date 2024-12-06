@@ -88,10 +88,17 @@ public class QuizController {
     }
 
     @Transactional
-    @PostMapping("/quiz_run/{id}")
+    @PostMapping("/quizRun/{id}")
     public ResponseEntity<Integer> runQuiz(@PathVariable Integer id) {
-        return ResponseEntity.notFound().build();
+
+        Quiz quiz = quizRepository.findById(id).orElse(null);
+        if (quiz == null) {
+            return ResponseEntity.notFound().build();
+        }
         
-        //Integer quizRunId = quizRunRepository.save(quiz).getId();
+        QuizRun quizRun = QuizRun.builder().quizId(id).build();
+        Integer quizRunId = quizRunRepository.save(quizRun).getId();
+
+        return ResponseEntity.ok(quizRunId); 
     }
 }

@@ -12,13 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
 public class QuizControllerTest {
     // test
     @Autowired
-    private QuizQuestionRepository quizQuestionRepository;
+    private QuizRepository quizRepository;
 
     @Autowired
     private QuizController quizController;
@@ -43,22 +44,23 @@ public class QuizControllerTest {
 
     }
 
-    /*
-    @Test
+    @Test    
     public void returnAllQuizes() {
+
         int questionId[] = {0, 1, 2, 3};
-
-        QuizCreateData data = new QuizCreateData("TestName", questionId);
-
-        quizController.createQuiz(data);
-
+        QuizCreateData quizData = new QuizCreateData("TestName", questionId);
+        Quiz quiz = Quiz.builder()
+        .name(quizData.getName())
+        .questions(Arrays.stream( questionId ).boxed().toArray( Integer[]::new ))
+        .build();
+        
+        quizRepository.save(quiz).getId();
+        
         ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-
-    }
-        */
+    }    
 
     @Test
     public void shouldThrowExceptionWhenNoQuizForRunFound() {
@@ -66,7 +68,13 @@ public class QuizControllerTest {
 
         assertNotNull(response);
         assertTrue(response.getStatusCode().is4xxClientError());
-
     }
 
+    @Test
+    public void runQuizCreated() {
+        ResponseEntity<Integer> response = quizController.runQuiz(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
 }
