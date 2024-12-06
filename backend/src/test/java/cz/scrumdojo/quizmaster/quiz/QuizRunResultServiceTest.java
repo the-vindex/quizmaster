@@ -8,10 +8,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Example;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +30,9 @@ class QuizRunResultServiceTest {
 
     @Mock
     private QuizAnswerRepository quizAnswerRepository;
+
+    @Mock
+    private QuizAnswerService quizAnswerService;
 
     @InjectMocks
     private QuizRunResultService quizRunResultService;
@@ -112,6 +117,11 @@ class QuizRunResultServiceTest {
         when(quizAnswerRepository.findAll(Example.of(answerSearchExample)))
             .thenReturn(Arrays.asList(answer1, answer2));
 
+        var feedback = new MultipleAnswersResult(false, List.of(1));
+
+        when(quizAnswerService.getAnswerFeedback(any(Integer.class), anyList()))
+            .thenReturn(feedback);
+
         // act
         var result = quizRunResultService.getRunResult(runId);
 
@@ -136,7 +146,9 @@ class QuizRunResultServiceTest {
         assertEquals(1, questionResult1.getSelectedAnswers().length);
         assertEquals(1, questionResult1.getSelectedAnswers()[0]);
 
-        // TODO explanations
+        // explanation 1 served by mock
+        assertEquals(1, questionResult1.getExplanationsToShow().length);
+        assertEquals(1, questionResult1.getExplanationsToShow()[0]);
 
         var questionResult2 = result.getQuestionResults().get(1);
         assertEquals(questionId2, questionResult2.getQuestion().getId());
@@ -157,6 +169,8 @@ class QuizRunResultServiceTest {
         assertEquals(2, questionResult2.getSelectedAnswers()[1]);
         assertEquals(4, questionResult2.getSelectedAnswers()[2]);
 
-        // TODO explanations
+        // explanation 1 served by mock
+        assertEquals(1, questionResult2.getExplanationsToShow().length);
+        assertEquals(1, questionResult2.getExplanationsToShow()[0]);
     }
 }

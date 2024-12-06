@@ -7,6 +7,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,8 @@ public class QuizRunResultService {
     private final QuizRepository quizRepository;
 
     private final QuizRunRepository quizRunRepository;
+
+    private final QuizAnswerService quizAnswerService;
 
     public QuizRunResult getRunResult(Integer runId) {
 
@@ -63,7 +66,8 @@ public class QuizRunResultService {
             questionResult.setQuestion(question);
             questionResult.setSelectedAnswers(selectedAnswers);
 
-            // TODO fill explanations based on existing business logic
+            var feedback = quizAnswerService.getAnswerFeedback(questionId, Arrays.stream(selectedAnswers).boxed().toList());
+            questionResult.setExplanationsToShow(feedback.getAnswersRequiringFeedback().stream().mapToInt(i->i).toArray());
 
             questionResults.add(questionResult);
 
