@@ -1,6 +1,6 @@
 import { Before, type DataTable, Then, When } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import { expectTextToBe, expectThatIsNotVisible, worldAs } from './common.ts'
+import { expectTextToBe, expectTextToContain, expectThatIsNotVisible, worldAs } from './common.ts'
 import type { Question } from './question.ts'
 import { TakeQuestionPage } from '../pages'
 
@@ -64,4 +64,8 @@ Then(/^I see the answer explanations for answers$/, async (data: DataTable) => {
             await expectThatIsNotVisible(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]))
         }
     }
+})
+
+Then('I see the {string} question for the quiz', async (questionName: string) => {
+    await expectTextToContain(world.quizTakingPage.questionLocator(), questionName)
 })

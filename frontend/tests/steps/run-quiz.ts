@@ -1,29 +1,37 @@
 import { Before, Given, When } from '@cucumber/cucumber'
-import { expectTextToBe, worldAs } from './common.ts'
-import { QuizIntroPage } from '../pages'
+import { expectTextToContain, worldAs } from './common.ts'
+import { QuizRun } from '../pages'
 
-interface QuizIntroWorld {
-    QuizIntroPage: QuizIntroPage
-    QuizName: string
-    QuizId: number
+interface QuizRunWorld {
+    QuizRunPages: QuizRun
 }
 
-const world = worldAs<QuizIntroWorld>()
-
-const quizNameToIdMap: { [key: string]: number } = {
-    'Dummy Quiz Name': 1,
-}
+const world = worldAs<QuizRunWorld>()
+const IntroHeader = 'Welcome to quiz'
+const IntroDescription =
+    'Už jste někdy slyšeli o Test Driven Developmentu nebo Trunk-Based Developmentu? Používáte techniky jako Specification by Example či Pair Programming?'
+const ButtonText = 'Start the quiz'
 
 Before(() => {
-    world.QuizIntroPage = new QuizIntroPage(world.page, world.QuizName)
+    world.QuizRunPages = new QuizRun(world.page)
 })
 
-Given('I am on the Intro page of {string} quiz', async (quizName: string) => {
-    world.QuizId = quizNameToIdMap[quizName]
-    await world.QuizIntroPage.goto()
-    await expectTextToBe(world.QuizIntroPage.quizLocator(), quizName)
+Given('I create a new quiz {string}', async (quizName: string) => {
+    await world.QuizRunPages.goto()
+    await world.QuizRunPages.CreateQuizInputLocator().type(quizName)
+    await world.QuizRunPages.PickItalyLocator().click()
+    await world.QuizRunPages.PickFranceLocator().click()
+    await world.QuizRunPages.CreateQuizButtonLocator().click()
+    // below line is failing and unable to see why, another group can check and fix
+    await world.QuizRunPages.GoToQuizRunLocator().click()
 })
 
-When('When I start the quiz', async () => {
-    await world.QuizIntroPage.startQuiz()
+Given('I am on the Intro page of quiz', async () => {
+    await expectTextToContain(world.QuizRunPages.HeaderLocator(), IntroHeader)
+    await expectTextToContain(world.QuizRunPages.DescriptionLocator(), IntroDescription)
+    await expectTextToContain(world.QuizRunPages.ButtonLocator(), ButtonText)
+})
+
+When('I start the quiz', async () => {
+    await world.QuizRunPages.startQuiz()
 })
