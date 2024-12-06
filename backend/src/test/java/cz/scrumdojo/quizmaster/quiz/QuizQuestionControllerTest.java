@@ -57,15 +57,6 @@ public class QuizQuestionControllerTest {
         assertEquals(isCorrect, result);
     }
 
-    public void answerQuestionV2(List<Integer> answerIdx, boolean isCorrect) {
-        var questionId = quizQuestionController.saveQuestion(createQuestion());
-
-        Boolean result = quizQuestionController.answerQuestionV2(questionId, answerIdx).getBody();
-
-        assertNotNull(result);
-        assertEquals(isCorrect, result);
-    }
-
     @Test
     public void answerQuestionV3_answerMultipleQuestionsCorrectly() {
         checkMultipleAnswers(List.of(1,3), true, List.of());
@@ -86,29 +77,14 @@ public class QuizQuestionControllerTest {
         MultipleAnswersResult result = quizQuestionController.answerQuestionV3(questionId, userAnswersIndexes).getBody();
 
         assertNotNull(result);
-//        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
+        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
 
         assertEquals(expectedWrongAnswers,result.getWrongAnswers());
     }
 
     @Test
-    public void answerQuestionCorrectly() {
+    public void answerSingleChoiceQuestionCorrectly() {
         answerQuestion(1, true);
-    }
-
-    @Test
-    public void answerQuestionIncorrectly() {
-        answerQuestionV2(List.of(0), false);
-    }
-
-    @Test
-    public void answerMultipleQuestionsCorrectly() {
-        answerQuestionV2(List.of(1), true);
-    }
-
-    @Test
-    public void answerMultipleQuestionsIncorrectly() {
-        answerQuestionV2(List.of(0), false);
     }
 
     @Test
