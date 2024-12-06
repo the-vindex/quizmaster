@@ -1,0 +1,25 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 1em 0;
+
+    li input[type="radio"] {
+        margin-right: 0.5em;
+    }
+}
+
+.explanation {
+    color: dodgerblue;
+}
+
+.greenSpan {
+    color: green;
+}
+
+.redSpan {
+    color: red;
+}
+
+.debugBorder {
+    border: 1px solid red;
+}
