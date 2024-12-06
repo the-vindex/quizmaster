@@ -60,7 +60,7 @@ Then(/^I see the answer explanations for answers$/, async (data: DataTable) => {
     for (const row of data.rows()) {
         if (row[1]) await expectTextToBe(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]), row[1])
         else {
-            console.log(`${row[0]} should not be there`)
+            // console.log(`${row[0]} should not be there`)
             await expectThatIsNotVisible(world.quizTakingPage.answerExplanationLocatorForAnswer(row[0]))
         }
     }
