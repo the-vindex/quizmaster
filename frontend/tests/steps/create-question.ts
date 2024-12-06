@@ -1,5 +1,5 @@
-import { Before, Given } from '@cucumber/cucumber'
-import { type TableOf, worldAs } from './common.ts'
+import { Before, Given, When, Then } from '@cucumber/cucumber'
+import { type TableOf, worldAs, expectTextToBe } from './common.ts'
 import type { Question } from './question.ts'
 import { CreateQuestionPage } from '../pages'
 
@@ -48,4 +48,16 @@ Given('saved and bookmarked as {string}', async (bookmark: string) => {
     await world.createQuestionPage.submit()
     world.questionWip.url = (await world.createQuestionPage.questionUrl()) || ''
     world.bookmarks[bookmark] = world.questionWip
+})
+
+Given('visit create question form', async () => {
+    await world.createQuestionPage.goto()
+})
+
+When('click submit button', async () => {
+    await world.createQuestionPage.submit()
+})
+
+Then('{string} message is displayed', async (errorMessage: string) => {
+    await expectTextToBe(world.createQuestionPage.questionUrlLocator(), errorMessage)
 })
