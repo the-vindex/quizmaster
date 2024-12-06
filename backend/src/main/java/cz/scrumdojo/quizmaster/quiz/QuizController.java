@@ -1,9 +1,6 @@
 package cz.scrumdojo.quizmaster.quiz;
 
-import cz.scrumdojo.quizmaster.model.QuizCreateData;
-import cz.scrumdojo.quizmaster.model.QuizData;
-import cz.scrumdojo.quizmaster.model.QuizScore;
-import cz.scrumdojo.quizmaster.model.QuizRunState;
+import cz.scrumdojo.quizmaster.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,12 +21,20 @@ public class QuizController {
     private final QuizRepository quizRepository;
     private final QuizRunRepository quizRunRepository;
     private final QuizQuestionRepository quizQuestionRepository;
+    private final QuizRunResultService quizRunResultService;
 
     @Autowired
-    public QuizController(QuizRepository quizRepository, QuizRunRepository quizRunRepository, QuizQuestionRepository quizQuestionRepository) {
+    public QuizController(
+        QuizRepository quizRepository,
+        QuizRunRepository quizRunRepository,
+        QuizQuestionRepository quizQuestionRepository,
+        QuizRunResultService quizRunResultService) {
+
         this.quizRepository = quizRepository;
         this.quizRunRepository = quizRunRepository;
         this.quizQuestionRepository = quizQuestionRepository;
+        this.quizRunResultService = quizRunResultService;
+
     }
 
     @Transactional
@@ -88,7 +93,7 @@ public class QuizController {
             .id(quiz.getId())
             .name(quiz.getName() == null ? "" : quiz.getName()).build());
         }
-        return ResponseEntity.ok(quizesData); 
+        return ResponseEntity.ok(quizesData);
     }
 
     @Transactional
@@ -99,7 +104,7 @@ public class QuizController {
         if (quiz == null) {
             return ResponseEntity.notFound().build();
         }
-        
+
         QuizRun quizRun = QuizRun.builder()
         .quizId(id)
         .runState(QuizRunState.RUNNING.name())
@@ -107,7 +112,7 @@ public class QuizController {
         .build();
         Integer quizRunId = quizRunRepository.save(quizRun).getId();
 
-        return ResponseEntity.ok(quizRunId); 
+        return ResponseEntity.ok(quizRunId);
     }
 
     @Transactional
@@ -115,7 +120,16 @@ public class QuizController {
     public ResponseEntity<QuizScore> QuizScore(@PathVariable Integer runId) {
         QuizScore quizScore = new QuizScore(6, 5);
 
-        return ResponseEntity.ok(quizScore); 
+        return ResponseEntity.ok(quizScore);
+    }
+
+    @Transactional
+    @GetMapping("/quizRun/{runId}/result")
+    public ResponseEntity<QuizRunResult> GetRunResult(@PathVariable Integer runId) {
+
+        var result = quizRunResultService.getRunResult(runId);
+
+        return ResponseEntity.ok(result);
     }
 
     @Transactional
@@ -130,11 +144,11 @@ public class QuizController {
         if (!quizRun.getRunState().equals(QuizRunState.RUNNING.name())) {
             return ResponseEntity.badRequest().build();
         }
-        
+
         quizRun.setRunState(QuizRunState.COMPLETED.name());
         quizRun.setCompletionDate(new Timestamp(System.currentTimeMillis()));
         Integer quizRunId = quizRunRepository.save(quizRun).getId();
 
-        return ResponseEntity.ok(quizRunId); 
+        return ResponseEntity.ok(quizRunId);
     }
 }

@@ -45,7 +45,7 @@ public class QuizRunResultService {
 
             var question = quizQuestionRepository
                 .findById(questionId)
-                .orElseThrow(() -> new NotFoundException("Question not found"));
+                .orElseThrow(() -> new NotFoundException("Question with ID " + questionId + " not found"));
 
             var answer = answers.stream()
                 .filter(x -> x.getQuestionId().equals(questionId))
@@ -53,9 +53,8 @@ public class QuizRunResultService {
 
             if (answer.isEmpty()) {
 
-                // TODO handle null answer properly
-
                 var defaultAnswer = new QuizAnswer();
+                defaultAnswer.setAnswers(new int[0]);
 
                 answer = Optional.of(defaultAnswer);
             }
