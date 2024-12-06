@@ -33,7 +33,7 @@ public class QuizQuestionController {
     @PostMapping("/quiz-question")
     public Integer saveQuestion(@RequestBody QuizQuestion question) {
         if (question.getCorrectAnswers() == null) {
-            question.setCorrectAnswers(new int[] {question.getCorrectAnswer()});
+            question.setCorrectAnswers(new int[]{question.getCorrectAnswer()});
         }
         return quizQuestionService.saveQuestion(question);
     }
@@ -45,12 +45,22 @@ public class QuizQuestionController {
     }
 
     @Transactional
-    @PostMapping("/quiz-question/{id}/answerv3")
-    public ResponseEntity<MultipleAnswersResult> answerQuestionV3(@PathVariable Integer id, @RequestBody List<Integer> answers) {
-        int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
-        Optional<List<Integer>> wrongAnswers = findQuestion(id).map(QuizQuestion.getWrongAnswers(answersArray));
-        var answeredCorrectly = wrongAnswers.get().isEmpty();
-        return response(Optional.of(new MultipleAnswersResult(answeredCorrectly, wrongAnswers.get() )));
+    @PostMapping("/quiz-question/{id}/answer")
+    public ResponseEntity<MultipleAnswersResult> answerMultipleChoice(@PathVariable Integer id, @RequestBody List<Integer> answers) {
+        int[] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
+
+        var wrongAnswers = findQuestion(id).map(QuizQuestion.getWrongAnswers(answersArray)).orElse(List.of());
+
+        var isAnsweredCorrectly = wrongAnswers.isEmpty();
+
+        return response(
+            Optional.of(
+                new MultipleAnswersResult(
+                    isAnsweredCorrectly,
+                    wrongAnswers
+                )
+            )
+        );
     }
 
     @Transactional

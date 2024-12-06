@@ -13,7 +13,7 @@ type MultipleAnswerResult = {
 }
 
 export const isMultipleAnswersCorrect = async (questionId: number, answersList: number[]) => {
-    return await fetchJson<MultipleAnswerResult>(`/api/quiz-question/${questionId}/answerv3`, {
+    return await fetchJson<MultipleAnswerResult>(`/api/quiz-question/${questionId}/answer`, {
         method: 'POST',
         body: JSON.stringify(answersList),
         headers: {

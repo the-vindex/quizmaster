@@ -58,12 +58,12 @@ public class QuizQuestionControllerTest {
     }
 
     @Test
-    public void answerQuestionV3_answerMultipleQuestionsCorrectly() {
+    public void answerMultipleQuestionsCorrectly() {
         checkMultipleAnswers(List.of(1,3), true, List.of());
     }
 
     @Test
-    public void answerQuestionV3_answerMultipleQuestionsIncorrectly() {
+    public void answerMultipleQuestionsIncorrectly() {
         checkMultipleAnswers(List.of(2), false, List.of(1, 2, 3));
     }
 
@@ -74,7 +74,7 @@ public class QuizQuestionControllerTest {
 
         var questionId = quizQuestionController.saveQuestion(question);
 
-        MultipleAnswersResult result = quizQuestionController.answerQuestionV3(questionId, userAnswersIndexes).getBody();
+        MultipleAnswersResult result = quizQuestionController.answerMultipleChoice(questionId, userAnswersIndexes).getBody();
 
         assertNotNull(result);
         assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
