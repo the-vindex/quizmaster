@@ -82,6 +82,6 @@ When('check <correctAnswers> correct answer:', async dataTable => {
     }
 })
 
-Then('enter question', async () => {console.log('...........F.......')
+Then('enter question', async () => {
     await world.page.fill('#question-text-area', 'Je toto školení užitečné?')
 })
