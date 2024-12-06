@@ -2,6 +2,7 @@ package cz.scrumdojo.quizmaster.quiz;
 
 import cz.scrumdojo.quizmaster.model.QuizCreateData;
 import cz.scrumdojo.quizmaster.model.QuizData;
+import cz.scrumdojo.quizmaster.model.QuizScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,5 +106,13 @@ public class QuizController {
         Integer quizRunId = quizRunRepository.save(quizRun).getId();
 
         return ResponseEntity.ok(quizRunId); 
+    }
+
+    @Transactional
+    @GetMapping("/quiz/score/{runId}")
+    public ResponseEntity<QuizScore> QuizScore(@PathVariable Integer runId) {
+        QuizScore quizScore = new QuizScore(6, 5);
+
+        return ResponseEntity.ok(quizScore); 
     }
 }
