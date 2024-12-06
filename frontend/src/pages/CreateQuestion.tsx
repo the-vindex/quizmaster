@@ -77,11 +77,7 @@ export function CreateQuestionForm() {
             setLinkToQuestion('Question must have at least 2 answers')
             return true
         }
-        if (formData.quizType == 'SINGLE' && formData.correctAnswers!.length > 1) {
-            setLinkToQuestion('Multiple answers are checked but the test is considered as a single answer only.')
-            return true
-        }
-        if (formData.quizType == 'SINGLE' && formData.correctAnswers!.length > 1) {
+        if (formData.quizType === 'SINGLE' && formData.correctAnswers !== null && formData.correctAnswers.length > 1) {
             setLinkToQuestion('Multiple answers are checked but the test is considered as a single answer only.')
             return true
         }
@@ -152,7 +148,12 @@ export function CreateQuestionForm() {
                         />
                     </div>
                     <div class="multipleQuestionsRow">
-                        <input id='multiple-possible-answers' type="checkbox" checked={isMultipleAnswer()} onChange={toggleMultipleAnswers} />
+                        <input
+                            id="multiple-possible-answers"
+                            type="checkbox"
+                            checked={isMultipleAnswer()}
+                            onChange={toggleMultipleAnswers}
+                        />
                         Is this question with multiple possible answers?
                         <br />
                     </div>
@@ -210,4 +211,4 @@ export function CreateQuestionForm() {
             </div>
         )
     }
-} 
+}

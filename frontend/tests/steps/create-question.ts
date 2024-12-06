@@ -88,7 +88,7 @@ Then('enter question', async () => {
 })
 
 When('mark the question as multiple possible answers', async () => {
-    await world.page.click('#multiple-possible-answers');
+    await world.page.click('#multiple-possible-answers')
 })
 
 Then('enter <explanations> for answer', async function (dataTable) {
@@ -99,11 +99,11 @@ Then('enter <explanations> for answer', async function (dataTable) {
 })
 
 When('enter general explanation for the entire question', async function () {
-    await this.page.fill('#general-explanation', 'Explanation');
-});
+    await this.page.fill('#general-explanation', 'Explanation')
+})
 
 When('link to the question is created', async () => {
-    const linkElement = world.page.locator('#question-link');
-    const linkText = await linkElement.textContent();
-    expect(linkText).toContain('/question/');
-});
+    const linkElement = world.page.locator('#question-link')
+    const linkText = await linkElement.textContent()
+    expect(linkText).toContain('/question/')
+})
