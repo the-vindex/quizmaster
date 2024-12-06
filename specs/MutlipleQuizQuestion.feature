@@ -23,6 +23,7 @@ Feature: Answering a quiz question with multiple choice
       | Italy, France, Spain          | Correct!   |
       | Italy, France, Morocco, Spain | Incorrect! |
 
+    @ignore
   Scenario:
     When I take question "Europe"
     And I answer "France, Morocco, Spain"

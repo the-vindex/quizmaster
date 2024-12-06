@@ -7,7 +7,7 @@ export const getQuestion = async (questionId: number) =>
 export const isAnswerCorrect = async (questionId: number, answerIdx: number) =>
     await fetchJson<boolean>(`/api/quiz-question/${questionId}/answer/${answerIdx}`)
 
-type MultipleAnswerResult = {
+export type MultipleAnswerResult = {
     questionAnsweredCorrectly: boolean
     wrongAnswers: number[]
 }
