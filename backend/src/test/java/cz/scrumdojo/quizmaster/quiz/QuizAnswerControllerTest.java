@@ -28,7 +28,7 @@ public class QuizAnswerControllerTest {
     @Test
     public void shouldThrowExceptionWhenNoQuizFound() {
         when(quizAnswerService.addAnswer(VALID_RUN_ID, INVALID_QUESTION_ID, VALID_ANSWERS_ID))
-            .thenThrow(new NotFoundException());
+            .thenThrow(new NotFoundException("Not found"));
 
         ResponseEntity<Integer> response = quizAnswerController.postAnswer(
             VALID_RUN_ID,
