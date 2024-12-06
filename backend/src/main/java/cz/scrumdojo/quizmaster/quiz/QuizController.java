@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,7 +97,11 @@ public class QuizController {
             return ResponseEntity.notFound().build();
         }
         
-        QuizRun quizRun = QuizRun.builder().quizId(id).build();
+        QuizRun quizRun = QuizRun.builder()
+        .quizId(id)
+        .runState("RUNNING")
+        .creationDate(new Timestamp(System.currentTimeMillis()))
+        .build();
         Integer quizRunId = quizRunRepository.save(quizRun).getId();
 
         return ResponseEntity.ok(quizRunId); 

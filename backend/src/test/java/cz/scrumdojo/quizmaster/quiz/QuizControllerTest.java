@@ -46,25 +46,13 @@ public class QuizControllerTest {
 
     @Test    
     public void returnAllQuizes() {
-
         createQuiz();
         
         ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-    }
-
-    private void createQuiz() {
-        int questionId[] = {0, 1, 2, 3};
-        QuizCreateData quizData = new QuizCreateData("TestName", questionId);
-        Quiz quiz = Quiz.builder()
-        .name(quizData.getName())
-        .questions(Arrays.stream( questionId ).boxed().toArray( Integer[]::new ))
-        .build();
-        
-        quizRepository.save(quiz).getId();
-    }    
+    }  
 
     @Test
     public void shouldThrowExceptionWhenNoQuizForRunFound() {
@@ -83,4 +71,16 @@ public class QuizControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
     }
+    
+    private void createQuiz() {
+        int questionId[] = {0, 1, 2, 3};
+        QuizCreateData quizData = new QuizCreateData("TestName", questionId);
+
+        Quiz quiz = Quiz.builder()
+        .name(quizData.getName())
+        .questions(Arrays.stream( questionId ).boxed().toArray( Integer[]::new ))
+        .build();
+        
+        quizRepository.save(quiz).getId();
+    }  
 }
