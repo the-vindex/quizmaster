@@ -20,6 +20,9 @@ export function CreateQuestionForm() {
     const [isMultipleAnswer, setIsMultipleAnswer] = createSignal<boolean>(false)
 
     const postData = (formData: Question) => {
+        if (validationIsFailing(formData)) {
+            return
+        }
         const data = {
             question: formData.question,
             answers: formData.answers,
@@ -53,6 +56,14 @@ export function CreateQuestionForm() {
             })
     }
 
+    const validationIsFailing = (formData: Question) => {
+        if (formData.question === '' && formData.answers[0] === '' && formData.correctAnswers?.length === 0) {
+            setLinkToQuestion('Fill all required fields.')
+            return true
+        }
+        return false
+    }
+
     const updateAnswer = (index: number, value: string) => {
         setAnswers(prev => {
             const newAnswers = [...prev]
@@ -60,6 +71,7 @@ export function CreateQuestionForm() {
             return newAnswers
         })
     }
+
     const updateExplanation = (index: number, value: string) => {
         setQuestionExplanations(prev => {
             const newExplanations = [...prev]
