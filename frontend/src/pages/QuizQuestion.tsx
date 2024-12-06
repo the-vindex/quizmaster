@@ -19,19 +19,6 @@ export const QuizQuestionDetail = () => {
     const [question, setQuestion] = createSignal<QuizQuestion | null>(null)
     const [formProps, setFormProps] = createSignal<QuizQuestionProps | null>(null)
 
-    // TODO resolve page rerender
-    // const location = useLocation()
-    // const [urlQuestionId, setUrlQuestionId] = createSignal<string | null>(null)
-    // setUrlQuestionId(questionId)
-    /*createEffect(async () => {
-        if (location.pathname) console.log('current URL', location.pathname)
-
-        const currQuestionId = urlQuestionId()
-        if (currQuestionId) {
-            setQuestion(await getQuestion(currQuestionId))
-        }
-    })*/
-
     onMount(async () => setQuiz(await getQuizMaster(quizId)))
     onMount(async () => setQuestion(await getQuestion(questionId)))
 
@@ -42,19 +29,23 @@ export const QuizQuestionDetail = () => {
             const isFinalQuestion = currentQuestionIdx + 1 === quiz()?.questions?.length
 
             if (isFinalQuestion) {
+                console.log('IS FINAL QUESTION')
                 navigate(`/quiz/${quizId}/run/${quizRunId}/result`)
             } else {
                 const nextQuestionIdx = currentQuestionIdx > -1 ? currentQuestionIdx + 1 : -1
-                nextQuestionIdx > -1 &&
+                console.log('NEXT QUESTION IDX: ', nextQuestionIdx)
+                console.log('QUESTION', quiz()?.questions)
+                if (nextQuestionIdx > -1) {
                     navigate(`/quiz/${quizId}/run/${quizRunId}/question/${quiz()?.questions[nextQuestionIdx].id}`)
-                setTimeout(() => window.location.reload())
+                    setTimeout(() => window.location.reload())
+                }
             }
         }
     }
 
     createEffect(() => {
         if (question()) {
-            // @ts-ignore
+            // @ts-ignore TODO fix eslint
             setFormProps({
                 ...question(),
                 quizId,

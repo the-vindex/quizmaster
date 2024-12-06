@@ -13,9 +13,6 @@ import type { QuizQuestionProps } from '../../model/quiz-question.ts'
 export const QuestionFormV2 = (props: QuizQuestionProps) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
-    const [isAnswerCorrect] = createSignal(false)
-    const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
-    const [answersRequiringFeedback] = createSignal<number[]>([])
 
     const [submitted, setSubmitted] = createSignal(false)
 
@@ -28,7 +25,6 @@ export const QuestionFormV2 = (props: QuizQuestionProps) => {
         QuestionService.setAnswer(props.quizRunId, props.id, [selectedAnswerIdx])
             .then(() => {
                 setSubmitted(true)
-                setExplanationIdx(selectedAnswerIdx)
             })
             .then(() => props.onSuccessfulSubmit())
     })
@@ -98,14 +94,7 @@ export const QuestionFormV2 = (props: QuizQuestionProps) => {
         return (
             <li>
                 <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx)} />
-                <label for={answerId}>
-                    {answer}
-                    <Show
-                        when={explanationIdx() === idx}
-                        children={Explanation(isAnswerCorrect, explanation, () => true)}
-                        keyed
-                    />
-                </label>
+                <label for={answerId}>{answer}</label>
             </li>
         )
     }
@@ -116,13 +105,12 @@ export const QuestionFormV2 = (props: QuizQuestionProps) => {
             <ul>
                 <For each={props.answers}>
                     {(answer, idx) => {
-                        const isFeedbackRequired = createMemo(() => answersRequiringFeedback().some(id => id === idx()))
                         return (
                             <Answer
                                 answer={answer}
                                 idx={idx()}
                                 explanation={props.explanations ? props.explanations[idx()] : 'not defined'}
-                                isFeedbackRequired={isFeedbackRequired}
+                                isFeedbackRequired={createMemo(() => false)}
                             />
                         )
                     }}
