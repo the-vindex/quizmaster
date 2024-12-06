@@ -1,25 +1,22 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import cz.scrumdojo.quizmaster.quiz.validation.PostQuizAnswerValidator;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QuizAnswerService {
 
     private final QuizAnswerRepository quizAnswerRepository;
-    private final QuizRunRepository quizRunRepository;
-    private final QuizQuestionRepository quizQuestionRepository;
+    private final PostQuizAnswerValidator postQuizAnswerValidator;
 
     public QuizAnswerService(QuizAnswerRepository quizAnswerRepository,
-                             QuizRunRepository quizRunRepository,
-                             QuizQuestionRepository quizQuestionRepository) {
+                             PostQuizAnswerValidator postQuizAnswerValidator) {
         this.quizAnswerRepository = quizAnswerRepository;
-        this.quizRunRepository = quizRunRepository;
-        this.quizQuestionRepository = quizQuestionRepository;
+        this.postQuizAnswerValidator = postQuizAnswerValidator;
     }
 
     public Integer addAnswer(Integer runId, Integer questionId, int[] answers) {
-        quizRunRepository.findById(runId).orElseThrow(() -> new NotFoundException("Quiz run with id " + runId + "not found"));
-        quizQuestionRepository.findById(questionId).orElseThrow(() -> new NotFoundException("Quiz question with id " + questionId + " not found"));
+        postQuizAnswerValidator.validate(runId, questionId);
 
         QuizAnswer quizAnswer = new QuizAnswer();
         quizAnswer.setQuestionId(questionId);

@@ -11,6 +11,7 @@ import org.hibernate.type.SqlTypes;
 @AllArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode
 public class Quiz {
 
     @Id

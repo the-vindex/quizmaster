@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode
 public class QuizRun {
 
     @Id
