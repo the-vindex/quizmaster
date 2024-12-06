@@ -16,7 +16,7 @@ export const QuestionForm = ({
     questionExplanation,
 }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
-    const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
+    const [selectedAnswers, setSelectedAnswers] = createSignal<{ [idx: number]: boolean } | Record<number, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
     //const [setExplanation] = createSignal<string | ''>('')
     const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
@@ -50,16 +50,21 @@ export const QuestionForm = ({
         })
     })
 
-    const selectAnswer = (answerIdx: number) => () => {
-        setSelectedAnswer(answerIdx)
+    const handleAnswerChange = (event: UserAnswer) => {
+        const { index, value } = event
+        if (isMultiple) {
+            setSelectedAnswers(prevState => ({
+                ...prevState,
+                [index]: value,
+            }))
+        } else {
+            setSelectedAnswer(index)
+        }
     }
 
-    const handleCheckboxChange = (event: InputEvent) => {
-        const { name, checked } = event.target as HTMLInputElement
-        setSelectedAnswers(prevState => ({
-            ...prevState,
-            [name]: checked,
-        }))
+    type UserAnswer = {
+        index: number
+        value: boolean
     }
 
     type AnswerProps = {
@@ -67,10 +72,34 @@ export const QuestionForm = ({
         idx: number
         explanation: string
         isFeedbackRequired: Accessor<boolean>
+        isMultiple: boolean
+        handleAnswerChange: (value: UserAnswer) => void
     }
 
-    const Answer: Component<AnswerProps> = ({ answer, idx, explanation, isFeedbackRequired }) => {
+    const Answer: Component<AnswerProps> = ({
+        answer,
+        idx,
+        explanation,
+        isMultiple,
+        isFeedbackRequired,
+        handleAnswerChange,
+    }) => {
         const answerId: string = `answer-${idx}`
+
+        const handleCheckboxChange = (event: InputEvent) => {
+            const { checked } = event.target as HTMLInputElement
+            handleAnswerChange({
+                index: idx,
+                value: checked,
+            })
+        }
+
+        const handleRadioChange = () => {
+            handleAnswerChange({
+                index: idx,
+                value: true,
+            })
+        }
 
         if (isMultiple) {
             return (
@@ -97,7 +126,7 @@ export const QuestionForm = ({
 
         return (
             <li>
-                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx)} />
+                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={handleRadioChange} />
                 <label for={answerId}>
                     {answer}
                     <Show
@@ -122,6 +151,8 @@ export const QuestionForm = ({
                                 answer={answer}
                                 idx={idx()}
                                 explanation={explanations[idx()]}
+                                isMultiple={isMultiple}
+                                handleAnswerChange={handleAnswerChange}
                                 isFeedbackRequired={isFeedbackRequired}
                             />
                         )
