@@ -47,6 +47,15 @@ public class QuizControllerTest {
     @Test    
     public void returnAllQuizes() {
 
+        createQuiz();
+        
+        ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    private void createQuiz() {
         int questionId[] = {0, 1, 2, 3};
         QuizCreateData quizData = new QuizCreateData("TestName", questionId);
         Quiz quiz = Quiz.builder()
@@ -55,11 +64,6 @@ public class QuizControllerTest {
         .build();
         
         quizRepository.save(quiz).getId();
-        
-        ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
     }    
 
     @Test
@@ -72,6 +76,8 @@ public class QuizControllerTest {
 
     @Test
     public void runQuizCreated() {
+        createQuiz();
+
         ResponseEntity<Integer> response = quizController.runQuiz(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
