@@ -82,8 +82,6 @@ When('check <correctAnswers> correct answer:', async dataTable => {
     }
 })
 
-// When('check {int[]} correct answer', async (correctAnswers: number[]) => {
-//     for (let i = 0; i < correctAnswers.length; i++) {
-//         await world.page.check(`#correct-answer-${correctAnswers[i]}`);
-//     }
-// })
+Then('enter question', async () => {console.log('...........F.......')
+    await world.page.fill('#question-text-area', 'Je toto školení užitečné?')
+})

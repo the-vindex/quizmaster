@@ -65,6 +65,10 @@ export function CreateQuestionForm() {
             setLinkToQuestion('Question must be filled.')
             return true
         }
+        if (formData.question !== '' && formData.answers[0] === '' && formData.correctAnswers?.length === 0) {
+            setLinkToQuestion('At least 2 answers must be filled.')
+            return true
+        }
         return false
     }
 

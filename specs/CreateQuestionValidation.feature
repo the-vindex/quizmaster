@@ -18,12 +18,12 @@ Feature: Validation create question input
         * click submit button
         Then 'Question must be filled.' message is displayed
 
-#     @focus
-#     Scenario: No answer added
-#         Given visit create question form
-#         When enter question
-#         * click submit button
-#         Then 'Answers must be filled' message is shown
+    @focus
+    Scenario: No answer added
+        Given visit create question form
+        When enter question
+        * click submit button
+        Then 'At least 2 answers must be filled.' message is displayed
 
 #     @focus
 #     Scenario: No answer is marked as the correct one
