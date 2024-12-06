@@ -8,10 +8,16 @@ import { getQuestions } from './services/QuizQuestionService.ts'
 
 const Feedback = (id: number) => {
     if (id) {
+        window.scroll(0, 0)
         return (
-            <p class="feedback">
-                Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
-            </p>
+            <>
+                <p class="feedback">
+                    Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
+                </p>
+                <p class="feedback">
+                    <a href={`/quiz/${id}/intro`}>Link to the Quiz Run {id}</a>
+                </p>
+            </>
         )
     }
     return <p class="feedback">{'Oops..something went wrong :('}</p>
