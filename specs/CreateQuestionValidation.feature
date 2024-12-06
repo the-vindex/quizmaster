@@ -1,9 +1,9 @@
 Feature: Validation create question input
-#     @focus
-#     Scenario: All required fields are empty
-#         Given visit create question form
-#         When click submit button
-#         Then 'Fill all required fields.' message is displayed
+    @focus
+    Scenario: All required fields are empty
+        Given visit create question form
+        When click submit button
+        Then 'Fill all required fields.' message is displayed
 
 #     @focus
 #     Scenario: Question is empty
