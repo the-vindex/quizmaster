@@ -29,8 +29,8 @@ export const IntroPageContent = (props: {
         <div>
             <h1>Welcome to quiz "{props.quiz.name}"</h1>
             <p>
-                Už jste někdy slyšeli o Test Driven Developmentu nebo Trunk-Based Developmentu?
-                Používáte techniky jako Specification by Example či Pair Programming?
+                Už jste někdy slyšeli o Test Driven Developmentu nebo Trunk-Based Developmentu? Používáte techniky jako
+                Specification by Example či Pair Programming?
             </p>
             <div class="btn-row">
                 <button type="button" class="start-btn" onClick={startQuiz}>
