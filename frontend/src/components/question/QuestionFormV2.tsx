@@ -92,7 +92,11 @@ export const QuestionFormV2 = ({
                         {answer}
                         <Show
                             when={submitted() && isFeedbackRequired()}
-                            children={Explanation(false, explanation)}
+                            children={Explanation(
+                                createMemo(() => false),
+                                explanation,
+                                isFeedbackRequired,
+                            )}
                             keyed
                         />
                     </label>
@@ -107,7 +111,7 @@ export const QuestionFormV2 = ({
                     {answer}
                     <Show
                         when={explanationIdx() === idx}
-                        children={Explanation(isAnswerCorrect(), explanation)}
+                        children={Explanation(isAnswerCorrect, explanation, () => true)}
                         keyed
                     />
                 </label>
