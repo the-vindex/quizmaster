@@ -2,6 +2,7 @@ import { Before, Given, When, Then, type DataTable } from '@cucumber/cucumber'
 import { type TableOf, worldAs, expectTextToBe } from './common.ts'
 import type { Question } from './question.ts'
 import { CreateQuestionPage } from '../pages'
+import { expect } from '@playwright/test'
 
 type AnswerRaw = [string, '*' | '', string]
 
@@ -85,3 +86,24 @@ When('check <correctAnswers> correct answer:', async dataTable => {
 Then('enter question', async () => {
     await world.page.fill('#question-text-area', 'Je toto školení užitečné?')
 })
+
+When('mark the question as multiple possible answers', async () => {
+    await world.page.click('#multiple-possible-answers');
+})
+
+Then('enter <explanations> for answer', async function (dataTable) {
+    const explanations = dataTable.rawTable.slice(1).map((row: string[]) => Number.parseInt(row[0], 10))
+    for (const explanation of explanations) {
+        await this.page.fill(`#answer-explanation-${explanation}`, 'Explanation_1')
+    }
+})
+
+When('enter general explanation for the entire question', async function () {
+    await this.page.fill('#general-explanation', 'Explanation');
+});
+
+When('link to the question is created', async () => {
+    const linkElement = world.page.locator('#question-link');
+    const linkText = await linkElement.textContent();
+    expect(linkText).toContain('/question/');
+});
