@@ -1,7 +1,7 @@
 import type { QuizQuestion } from '../model/quiz-question.ts'
 import { fetchJson } from '../utils/apiUtils.ts'
 
-export const getQuestion = async (questionId: number) =>
+export const getQuestion = async (questionId: number | string) =>
     await fetchJson<QuizQuestion>(`/api/quiz-question/${questionId}`)
 
 export const isAnswerCorrect = async (questionId: number, answerIdx: number) =>
@@ -23,3 +23,6 @@ export const isMultipleAnswersCorrect = async (questionId: number, answersList: 
 }
 
 export const getQuestions = async () => await fetchJson<QuizQuestion[]>('/api/quiz-question/all')
+
+// TODO set correct url for quiz run
+export const setAnswer = async (quizId: string) => await fetchJson(`api/quiz-question/${quizId}/answer`)

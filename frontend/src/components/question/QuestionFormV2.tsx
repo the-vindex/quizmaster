@@ -8,7 +8,11 @@ import { Explanation, QuestionExplanation } from './explanation/Explanation.tsx'
 import { Feedback } from './feedback/Feedback.tsx'
 import './questionForm.css'
 
-export const QuestionForm = ({
+/**
+ * TODO Merge with V1, not enough of SolidJS knowledge to do so now.
+ * Thanks and sorry.
+ */
+export const QuestionFormV2 = ({
     id,
     question,
     answers,
@@ -17,7 +21,7 @@ export const QuestionForm = ({
     questionExplanation,
 }: QuizQuestion) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
-    const [selectedAnswers, setSelectedAnswers] = createSignal<{ [idx: number]: boolean } | Record<number, boolean>>({})
+    const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
     //const [setExplanation] = createSignal<string | ''>('')
     const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
@@ -51,21 +55,16 @@ export const QuestionForm = ({
         })
     })
 
-    const handleAnswerChange = (event: UserAnswer) => {
-        const { index, value } = event
-        if (isMultiple) {
-            setSelectedAnswers(prevState => ({
-                ...prevState,
-                [index]: value,
-            }))
-        } else {
-            setSelectedAnswer(index)
-        }
+    const selectAnswer = (answerIdx: number) => () => {
+        setSelectedAnswer(answerIdx)
     }
 
-    type UserAnswer = {
-        index: number
-        value: boolean
+    const handleCheckboxChange = (event: InputEvent) => {
+        const { name, checked } = event.target as HTMLInputElement
+        setSelectedAnswers(prevState => ({
+            ...prevState,
+            [name]: checked,
+        }))
     }
 
     type AnswerProps = {
@@ -73,34 +72,10 @@ export const QuestionForm = ({
         idx: number
         explanation: string
         isFeedbackRequired: Accessor<boolean>
-        isMultiple: boolean
-        handleAnswerChange: (value: UserAnswer) => void
     }
 
-    const Answer: Component<AnswerProps> = ({
-        answer,
-        idx,
-        explanation,
-        isMultiple,
-        isFeedbackRequired,
-        handleAnswerChange,
-    }) => {
+    const Answer: Component<AnswerProps> = ({ answer, idx, explanation, isFeedbackRequired }) => {
         const answerId: string = `answer-${idx}`
-
-        const handleCheckboxChange = (event: InputEvent) => {
-            const { checked } = event.target as HTMLInputElement
-            handleAnswerChange({
-                index: idx,
-                value: checked,
-            })
-        }
-
-        const handleRadioChange = () => {
-            handleAnswerChange({
-                index: idx,
-                value: true,
-            })
-        }
 
         if (isMultiple) {
             return (
@@ -127,7 +102,7 @@ export const QuestionForm = ({
 
         return (
             <li>
-                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={handleRadioChange} />
+                <input type={'radio'} name={'answer'} id={answerId} value={answer} onClick={selectAnswer(idx)} />
                 <label for={answerId}>
                     {answer}
                     <Show
@@ -152,8 +127,6 @@ export const QuestionForm = ({
                                 answer={answer}
                                 idx={idx()}
                                 explanation={explanations ? explanations[idx()] : 'not defined'}
-                                isMultiple={isMultiple}
-                                handleAnswerChange={handleAnswerChange}
                                 isFeedbackRequired={isFeedbackRequired}
                             />
                         )
@@ -161,7 +134,9 @@ export const QuestionForm = ({
                 </For>
             </ul>
             <div class="btn-row">
-                <input type="submit" class="submit-btn" value={'Submit'} />
+                <button type="submit" class="submit-btn">
+                    Submit
+                </button>
             </div>
             <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
             <Show when={submitted()} children={QuestionExplanation(questionExplanation)} />

@@ -7,6 +7,10 @@ export interface QuizQuestion {
     readonly correctAnswers: number[]
 }
 
+export interface QuizQuestionProps extends QuizQuestion {
+    onSuccessfulSubmit: () => void
+}
+
 export interface Quiz {
     readonly name: string
     readonly questionIds: number[]

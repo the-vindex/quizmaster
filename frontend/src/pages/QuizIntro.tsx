@@ -1,13 +1,12 @@
 import './quizIntro.css'
 
 import { createSignal, onMount, Show } from 'solid-js'
-import { useParams } from '@solidjs/router'
+import { useNavigate, useParams } from '@solidjs/router'
 
 import type { SingleQuiz } from 'model/quiz-question.ts'
 import { Spinner } from '../components/Spinner.tsx'
 import { Layout } from '../components/Layout.tsx'
 import { createQuizRun, getQuizMaster } from '../services/QuizService.ts'
-import { useNavigate } from '@solidjs/router'
 
 export const IntroPageContent = (props: {
     quiz: SingleQuiz | null
@@ -49,8 +48,8 @@ export const QuizIntro = () => {
 
     return (
         <Layout>
-            <Show when={!quiz()} fallback={<IntroPageContent quiz={quiz()} quizId={quizId} />}>
-                <Spinner />
+            <Show when={quiz()} fallback={<Spinner />}>
+                <IntroPageContent quiz={quiz()} quizId={quizId} />
             </Show>
         </Layout>
     )
