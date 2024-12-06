@@ -8,8 +8,10 @@ interface QuizRunWorld {
 
 const world = worldAs<QuizRunWorld>()
 const IntroHeader = 'Welcome to quiz'
-const IntroDescription =
-    'Už jste někdy slyšeli o Test Driven Developmentu nebo Trunk-Based Developmentu? Používáte techniky jako Specification by Example či Pair Programming?'
+const IntroDescriptionPart1 =
+    'Už jste někdy slyšeli o Test Driven Developmentu nebo Trunk-Based Developmentu? Používáte techniky jako Specification by Example či Pair Programming? Případně další trendy v software engineeringu?'
+const IntroDescriptionPart2 =
+    'Vyzkoušejte si své znalosti! Ale nebude to jednoduché. Tento test si klade za cíl podívat se na témata zábavnou formou, tedy s humorem a odlehčením. Výsledné score není až tak podstatné, důležité je zúčastnit se!'
 const ButtonText = 'Start the quiz'
 
 Before(() => {
@@ -28,7 +30,8 @@ Given('I create a new quiz {string}', async (quizName: string) => {
 
 Given('I am on the Intro page of quiz', async () => {
     await expectTextToContain(world.QuizRunPages.HeaderLocator(), IntroHeader)
-    await expectTextToContain(world.QuizRunPages.DescriptionLocator(), IntroDescription)
+    await expectTextToContain(world.QuizRunPages.DescriptionLocatorPart1(), IntroDescriptionPart1)
+    await expectTextToContain(world.QuizRunPages.DescriptionLocatorPart2(), IntroDescriptionPart2)
     await expectTextToContain(world.QuizRunPages.ButtonLocator(), ButtonText)
 })
 

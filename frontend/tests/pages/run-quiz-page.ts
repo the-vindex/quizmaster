@@ -17,7 +17,9 @@ export class QuizRun {
 
     HeaderLocator = () => this.page.locator('h1')
 
-    DescriptionLocator = () => this.page.locator('p')
+    DescriptionLocatorPart1 = () => this.page.locator('p').nth(0)
+
+    DescriptionLocatorPart2 = () => this.page.locator('p').nth(1)
 
     ButtonLocator = () => this.page.locator('button')
 
