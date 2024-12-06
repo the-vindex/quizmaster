@@ -61,6 +61,10 @@ export function CreateQuestionForm() {
             setLinkToQuestion('Fill all required fields.')
             return true
         }
+        else if (formData.question === '' && formData.answers[0] !== '' && formData.correctAnswers?.length !== 0) {
+            setLinkToQuestion('Question must be filled.')
+            return true
+        }
         return false
     }
 

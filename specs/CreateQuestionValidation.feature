@@ -5,13 +5,18 @@ Feature: Validation create question input
         When click submit button
         Then 'Fill all required fields.' message is displayed
 
-#     @focus
-#     Scenario: Question is empty
-#         Given visit create question form
-#         When enter [1, 2] answers
-#         * check [1] correct answer
-#         * click submit button
-#         Then 'Question must be filled.' message is shown
+    @focus
+    Scenario: Question is empty
+        Given visit create question form
+        When enter <answer> answers:
+            | answer |
+            | 1      |
+            | 2      |
+        * check <correctAnswers> correct answer:
+            | correctAnswers |
+            | 2 |
+        * click submit button
+        Then 'Question must be filled.' message is displayed
 
 #     @focus
 #     Scenario: No answer added
