@@ -1,6 +1,6 @@
 import './quiz.scss'
 
-import { type Component, createSignal, For, onMount, Show } from 'solid-js'
+import { type Component, createSignal, For, onMount, Show, type Accessor, createMemo } from 'solid-js'
 import { useParams } from '@solidjs/router'
 
 import type { QuizQuestion } from 'model/quiz-question.ts'
@@ -30,6 +30,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
     const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
     //const [setExplanation] = createSignal<string | ''>('')
     const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
+    const [answersRequiringFeedback, setAnswersRequiringFeedback] = createSignal<number[]>([])
 
     const [submitted, setSubmitted] = createSignal(false)
 
@@ -55,6 +56,7 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
             setSubmitted(true)
 
             setIsAnswerCorrect(result.questionAnsweredCorrectly)
+            setAnswersRequiringFeedback(result.answersRequiringFeedback)
         })
     })
 
@@ -74,9 +76,10 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
         answer: string // Adjust type based on the actual answer object
         idx: number
         explanation: string
+        isFeedbackRequired: Accessor<boolean>
     }
 
-    const Answer: Component<AnswerProps> = ({ answer, idx, explanation }) => {
+    const Answer: Component<AnswerProps> = ({ answer, idx, explanation, isFeedbackRequired }) => {
         const answerId: string = `answer-${idx}`
 
         if (isMultiple) {
@@ -93,8 +96,8 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
                     <label for={answerId}>
                         {answer}
                         <Show
-                            when={submitted() /*&& (isFeedbackRequired())*/}
-                            children={Explanation(false, explanation /*explanations[idx()]*/)}
+                            when={submitted() && isFeedbackRequired()}
+                            children={Explanation(false, explanation)}
                             keyed
                         />
                     </label>
@@ -122,7 +125,17 @@ const Question = ({ id, question, answers, explanations, correctAnswers, questio
             <h1>{question}</h1>
             <ul>
                 <For each={answers}>
-                    {(answer, idx) => <Answer answer={answer} idx={idx()} explanation={explanations[idx()]} />}
+                    {(answer, idx) => {
+                        const isFeedbackRequired = createMemo(() => answersRequiringFeedback().some(id => id === idx()))
+                        return (
+                            <Answer
+                                answer={answer}
+                                idx={idx()}
+                                explanation={explanations[idx()]}
+                                isFeedbackRequired={isFeedbackRequired}
+                            />
+                        )
+                    }}
                 </For>
             </ul>
             <input type="submit" value={'Submit'} />
