@@ -35,6 +35,12 @@ Then('I see score', async () => {
     await expectThatIsVisible(world.quizResultPage.scoreLocator())
 })
 
+Then('I see attribute {string} with value {string}', async (element: string, value: string) => {
+    const attributeLocator = world.quizResultPage.attributeLocator(element)
+    await expectThatIsVisible(attributeLocator)
+    await expectTextToBe(attributeLocator, value)
+})
+
 Given('I am on the results page', async function () {
     await this.quizResultPage.goto() // Replace with your actual URL
 })

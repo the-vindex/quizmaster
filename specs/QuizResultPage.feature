@@ -20,3 +20,9 @@ Feature: Display Results Page
       | A        | B      | C               | D           |
       | D        | D      | D               | D           |
 
+  Scenario: Score check
+    When I finish quiz
+    Then I see the page identifier
+    And I see score
+    And I see attribute 'success_count' with value '5 z 6'
+    And I see attribute 'success_score' with value '83%'

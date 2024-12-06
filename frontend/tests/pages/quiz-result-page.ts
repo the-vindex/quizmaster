@@ -14,4 +14,6 @@ export class QuizResultPage {
     scoreLocator = () => this.page.locator('#quiz-score')
 
     resultsTableLocator = () => this.page.locator('#results-table')
+
+    attributeLocator = (attr: string) => this.page.locator(`[data-test="${attr}"]`)
 }
