@@ -16,10 +16,18 @@ public class QuizQuestionController {
 
     private final QuizQuestionService quizQuestionService;
 
+    private final QuizAnswerService quizAnswerService;
+
     @Autowired
-    public QuizQuestionController(QuizQuestionRepository quizQuestionRepository, QuizQuestionService quizQuestionService) {
+    public QuizQuestionController(
+        QuizQuestionRepository quizQuestionRepository,
+        QuizQuestionService quizQuestionService,
+        QuizAnswerService quizAnswerService) {
+
         this.quizQuestionRepository = quizQuestionRepository;
         this.quizQuestionService = quizQuestionService;
+        this.quizAnswerService = quizAnswerService;
+
     }
 
     @Transactional
@@ -47,20 +55,10 @@ public class QuizQuestionController {
     @Transactional
     @PostMapping("/quiz-question/{id}/answer")
     public ResponseEntity<MultipleAnswersResult> answerMultipleChoice(@PathVariable Integer id, @RequestBody List<Integer> answers) {
-        int[] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
 
-        var wrongAnswersIndexes = findQuestion(id).map(QuizQuestion.getWrongAnswersIndexes(answersArray)).orElse(List.of());
+        var result = quizAnswerService.getAnswerFeedback(id, answers);
 
-        var isAnsweredCorrectly = wrongAnswersIndexes.isEmpty();
-
-        return response(
-            Optional.of(
-                new MultipleAnswersResult(
-                    isAnsweredCorrectly,
-                    wrongAnswersIndexes
-                )
-            )
-        );
+        return response(Optional.of(result));
     }
 
     @Transactional
