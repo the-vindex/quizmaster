@@ -3,6 +3,8 @@ package cz.scrumdojo.quizmaster.quiz;
 import cz.scrumdojo.quizmaster.model.QuizCreateData;
 import cz.scrumdojo.quizmaster.model.QuizData;
 import cz.scrumdojo.quizmaster.model.QuizScore;
+import cz.scrumdojo.quizmaster.model.QuizRunState;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,7 +102,7 @@ public class QuizController {
         
         QuizRun quizRun = QuizRun.builder()
         .quizId(id)
-        .runState("RUNNING")
+        .runState(QuizRunState.RUNNING.name())
         .creationDate(new Timestamp(System.currentTimeMillis()))
         .build();
         Integer quizRunId = quizRunRepository.save(quizRun).getId();
@@ -114,5 +116,25 @@ public class QuizController {
         QuizScore quizScore = new QuizScore(6, 5);
 
         return ResponseEntity.ok(quizScore); 
+    }
+
+    @Transactional
+    @PostMapping("/quizRun/{id}/complete")
+    public ResponseEntity<Integer> completeQuiz(@PathVariable Integer id) {
+
+        QuizRun quizRun = quizRunRepository.findById(id).orElse(null);
+        if (quizRun == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!quizRun.getRunState().equals(QuizRunState.RUNNING.name())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        quizRun.setRunState(QuizRunState.COMPLETED.name());
+        quizRun.setCompletionDate(new Timestamp(System.currentTimeMillis()));
+        Integer quizRunId = quizRunRepository.save(quizRun).getId();
+
+        return ResponseEntity.ok(quizRunId); 
     }
 }

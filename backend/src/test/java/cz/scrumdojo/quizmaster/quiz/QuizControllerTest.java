@@ -2,6 +2,8 @@ package cz.scrumdojo.quizmaster.quiz;
 
 import cz.scrumdojo.quizmaster.model.QuizCreateData;
 import cz.scrumdojo.quizmaster.model.QuizData;
+import cz.scrumdojo.quizmaster.model.QuizRunState;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,10 +23,10 @@ public class QuizControllerTest {
     // test
     @Autowired
     private QuizRepository quizRepository;
-
+    @Autowired
+    private QuizRunRepository quizRunRepository;
     @Autowired
     private QuizController quizController;
-
 
     @Test
     public void shouldThrowErrorWhenNoQuestions() {
@@ -45,13 +48,17 @@ public class QuizControllerTest {
     }
 
     @Test    
-    public void returnAllQuizes() {
-        createQuiz();
+    public void returnAllCreatedQuizes() {
+        var firstQuizId = createQuiz();
+        var secondQuizId = createQuiz();
         
         ResponseEntity<List<QuizData>> response = quizController.getAllQuizes();
+        var responseBody = response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
+        assertNotNull(responseBody);
+        assertTrue(responseBody.stream().anyMatch(a -> a.getId() == firstQuizId));
+        assertTrue(responseBody.stream().anyMatch(a -> a.getId() == secondQuizId));
     }  
 
     @Test
@@ -63,24 +70,45 @@ public class QuizControllerTest {
     }
 
     @Test
-    public void runQuizCreated() {
-        createQuiz();
+    public void canRunQuizForQuestion() {
+        var quizId = createQuiz();
+        
+        var response = quizController.runQuiz(quizId);
 
-        ResponseEntity<Integer> response = quizController.runQuiz(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void canCompletedRunningQuiz() {
+        var quizId = createQuiz();
+        var quizRunId = createQuizRun(quizId);
+        
+        var response = quizController.completeQuiz(quizRunId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
     }
     
-    private void createQuiz() {
+    private int createQuiz() {
         int questionId[] = {0, 1, 2, 3};
-        QuizCreateData quizData = new QuizCreateData("TestName", questionId);
+        var quizData = new QuizCreateData("TestName", questionId);
 
-        Quiz quiz = Quiz.builder()
+        var quiz = Quiz.builder()
         .name(quizData.getName())
         .questions(Arrays.stream( questionId ).boxed().toArray( Integer[]::new ))
         .build();
         
-        quizRepository.save(quiz).getId();
+        return quizRepository.save(quiz).getId();
     }  
+
+    private int createQuizRun(Integer quizId) {
+        var quizRun = QuizRun.builder()
+        .quizId(quizId)
+        .runState(QuizRunState.RUNNING.name())
+        .creationDate(new Timestamp(System.currentTimeMillis()))
+        .build();
+        
+        return quizRunRepository.save(quizRun).getId();
+    }
 }
