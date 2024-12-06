@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 public class MultipleAnswersResult {
     private final Boolean questionAnsweredCorrectly;
-    private final List<Integer> wrongAnswers;
+    private final List<Integer> answersRequiringFeedback;
 
 }

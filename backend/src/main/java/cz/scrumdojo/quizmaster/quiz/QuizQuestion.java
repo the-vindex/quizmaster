@@ -40,7 +40,7 @@ public class QuizQuestion {
             && quizQuestion.getCorrectAnswers()[0] == index;
     }
 
-    public static Function<QuizQuestion, List<Integer>> getWrongAnswers(int[] userAnswers) {
+    public static Function<QuizQuestion, List<Integer>> getWrongAnswersIndexes(int[] userAnswers) {
         return quizQuestion -> {
             int[] correctAnswers = quizQuestion.getCorrectAnswers();
 

@@ -9,7 +9,7 @@ export const isAnswerCorrect = async (questionId: number, answerIdx: number) =>
 
 export type MultipleAnswerResult = {
     questionAnsweredCorrectly: boolean
-    wrongAnswers: number[]
+    answersRequiringFeedback: number[]
 }
 
 export const isMultipleAnswersCorrect = async (questionId: number, answersList: number[]) => {

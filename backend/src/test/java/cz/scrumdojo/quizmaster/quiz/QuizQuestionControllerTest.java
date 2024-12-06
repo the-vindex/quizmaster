@@ -79,7 +79,7 @@ public class QuizQuestionControllerTest {
         assertNotNull(result);
         assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
 
-        assertEquals(expectedWrongAnswers,result.getWrongAnswers());
+        assertEquals(expectedWrongAnswers,result.getAnswersRequiringFeedback());
     }
 
     @Test

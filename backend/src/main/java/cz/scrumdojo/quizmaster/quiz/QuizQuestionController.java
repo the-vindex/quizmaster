@@ -49,15 +49,15 @@ public class QuizQuestionController {
     public ResponseEntity<MultipleAnswersResult> answerMultipleChoice(@PathVariable Integer id, @RequestBody List<Integer> answers) {
         int[] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
 
-        var wrongAnswers = findQuestion(id).map(QuizQuestion.getWrongAnswers(answersArray)).orElse(List.of());
+        var wrongAnswersIndexes = findQuestion(id).map(QuizQuestion.getWrongAnswersIndexes(answersArray)).orElse(List.of());
 
-        var isAnsweredCorrectly = wrongAnswers.isEmpty();
+        var isAnsweredCorrectly = wrongAnswersIndexes.isEmpty();
 
         return response(
             Optional.of(
                 new MultipleAnswersResult(
                     isAnsweredCorrectly,
-                    wrongAnswers
+                    wrongAnswersIndexes
                 )
             )
         );
