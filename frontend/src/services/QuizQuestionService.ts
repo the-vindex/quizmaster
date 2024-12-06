@@ -24,5 +24,11 @@ export const isMultipleAnswersCorrect = async (questionId: number, answersList: 
 
 export const getQuestions = async () => await fetchJson<QuizQuestion[]>('/api/quiz-question/all')
 
-// TODO set correct url for quiz run
-export const setAnswer = async (quizId: string) => await fetchJson(`api/quiz-question/${quizId}/answer`)
+export const setAnswer = async (runId: string, questionId: string | number, answers: number[]) =>
+    await fetchJson(`/api/quizRun/${runId}/question/${questionId}/answer`, {
+        method: 'POST',
+        body: JSON.stringify({ answerIds: answers }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })

@@ -1,3 +1,4 @@
+// TODO refactor optional params
 export interface QuizQuestion {
     readonly id: number
     readonly question: string
@@ -8,7 +9,9 @@ export interface QuizQuestion {
 }
 
 export interface QuizQuestionProps extends QuizQuestion {
-    onSuccessfulSubmit: () => void
+    readonly quizId: string
+    readonly quizRunId: string
+    readonly onSuccessfulSubmit: () => void
 }
 
 export interface Quiz {

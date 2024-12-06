@@ -1,58 +1,49 @@
-import type { QuizQuestion } from '../../model/quiz-question.ts'
 import { type Accessor, type Component, createMemo, createSignal, For, Show } from 'solid-js'
 import { preventDefault } from '../../helpers.ts'
 import * as QuestionService from '../../services/QuizQuestionService.ts'
-import { isMultipleAnswersCorrect, type MultipleAnswerResult } from '../../services/QuizQuestionService.ts'
 import { transformObjectToArray } from '../../utils/transformObjectToArray.ts'
-import { Explanation, QuestionExplanation } from './explanation/Explanation.tsx'
-import { Feedback } from './feedback/Feedback.tsx'
+import { Explanation } from './explanation/Explanation.tsx'
 import './questionForm.css'
+import type { QuizQuestionProps } from '../../model/quiz-question.ts'
 
 /**
  * TODO Merge with V1, not enough of SolidJS knowledge to do so now.
  * Thanks and sorry.
  */
-export const QuestionFormV2 = ({
-    id,
-    question,
-    answers,
-    explanations,
-    correctAnswers,
-    questionExplanation,
-}: QuizQuestion) => {
+export const QuestionFormV2 = (props: QuizQuestionProps) => {
     const [selectedAnswer, setSelectedAnswer] = createSignal<number | null>(null)
     const [selectedAnswers, setSelectedAnswers] = createSignal<{ [key: string]: boolean } | Record<string, boolean>>({})
-    const [isAnswerCorrect, setIsAnswerCorrect] = createSignal(false)
-    //const [setExplanation] = createSignal<string | ''>('')
+    const [isAnswerCorrect] = createSignal(false)
     const [explanationIdx, setExplanationIdx] = createSignal<number | null>(null)
-    const [answersRequiringFeedback, setAnswersRequiringFeedback] = createSignal<number[]>([])
+    const [answersRequiringFeedback] = createSignal<number[]>([])
 
     const [submitted, setSubmitted] = createSignal(false)
 
-    const isMultiple = correctAnswers.length > 1
+    const isMultiple = props.correctAnswers.length > 1
 
     const submit = preventDefault(async () => {
         const selectedAnswerIdx = selectedAnswer()
         if (selectedAnswerIdx === null) return
-        QuestionService.isAnswerCorrect(id, selectedAnswerIdx).then(isCorrect => {
-            setSubmitted(true)
-            setIsAnswerCorrect(isCorrect)
-            //setExplanation(explanations[selectedAnswerIdx])
-            setExplanationIdx(selectedAnswerIdx)
-        })
+
+        QuestionService.setAnswer(props.quizRunId, props.id, [selectedAnswerIdx])
+            .then(() => {
+                setSubmitted(true)
+                setExplanationIdx(selectedAnswerIdx)
+            })
+            .then(() => props.onSuccessfulSubmit())
     })
 
     const submitMultiple = preventDefault(async () => {
-        if (Object.keys(selectedAnswers()).length === 0) return
+        const answers = Object.keys(selectedAnswers())
+        if (answers.length === 0) return
 
         const payload = transformObjectToArray(selectedAnswers())
 
-        isMultipleAnswersCorrect(id, payload).then((result: MultipleAnswerResult) => {
-            setSubmitted(true)
-
-            setIsAnswerCorrect(result.questionAnsweredCorrectly)
-            setAnswersRequiringFeedback(result.answersRequiringFeedback)
-        })
+        QuestionService.setAnswer(props.quizId, props.id, payload)
+            .then(() => {
+                setSubmitted(true)
+            })
+            .then(() => props.onSuccessfulSubmit())
     })
 
     const selectAnswer = (answerIdx: number) => () => {
@@ -121,16 +112,16 @@ export const QuestionFormV2 = ({
 
     return (
         <form onSubmit={isMultiple ? submitMultiple : submit}>
-            <h1>{question}</h1>
+            <h1>{props.question}</h1>
             <ul>
-                <For each={answers}>
+                <For each={props.answers}>
                     {(answer, idx) => {
                         const isFeedbackRequired = createMemo(() => answersRequiringFeedback().some(id => id === idx()))
                         return (
                             <Answer
                                 answer={answer}
                                 idx={idx()}
-                                explanation={explanations ? explanations[idx()] : 'not defined'}
+                                explanation={props.explanations ? props.explanations[idx()] : 'not defined'}
                                 isFeedbackRequired={isFeedbackRequired}
                             />
                         )
@@ -142,8 +133,6 @@ export const QuestionFormV2 = ({
                     Submit
                 </button>
             </div>
-            <Show when={submitted()} children={Feedback(isAnswerCorrect())} keyed />
-            <Show when={submitted()} children={QuestionExplanation(questionExplanation)} />
         </form>
     )
 }
