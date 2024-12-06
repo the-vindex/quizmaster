@@ -1,4 +1,4 @@
-import { Before, Given, When, Then, DataTable } from '@cucumber/cucumber'
+import { Before, Given, When, Then, type DataTable } from '@cucumber/cucumber'
 import { type TableOf, worldAs, expectTextToBe } from './common.ts'
 import type { Question } from './question.ts'
 import { CreateQuestionPage } from '../pages'
@@ -63,25 +63,24 @@ Then('{string} message is displayed', async (errorMessage: string) => {
 })
 
 When(/^enter <answer> answers$/, async (answers: DataTable) => {
-    for (const answer of answers.rows()){
-        await (world.page.fill(`#answer-text-${answer}`, 'Answer1'))
+    for (const answer of answers.rows()) {
+        await world.page.fill(`#answer-text-${answer}`, 'Answer1')
     }
 })
 
 When('enter <answer> answers:', async function (dataTable) {
-    const answers = dataTable.rawTable.slice(1).map((row: string[]) => parseInt(row[0], 10));
+    const answers = dataTable.rawTable.slice(1).map((row: string[]) => Number.parseInt(row[0], 10))
     for (const answer of answers) {
-        await this.page.fill(`#answer-text-${answer}`, 'Answer1');
+        await this.page.fill(`#answer-text-${answer}`, 'Answer1')
     }
-});
+})
 
-When('check <correctAnswers> correct answer:', async function (dataTable) {
-    const correctAnswers = dataTable.rawTable.slice(1).map((row: string[]) => parseInt(row[0], 10));
+When('check <correctAnswers> correct answer:', async dataTable => {
+    const correctAnswers = dataTable.rawTable.slice(1).map((row: string[]) => Number.parseInt(row[0], 10))
     for (const correctAnswer of correctAnswers) {
-        await world.page.check(`#answer-checkbox-${correctAnswer}`);
+        await world.page.check(`#answer-checkbox-${correctAnswer}`)
     }
-});
-
+})
 
 // When('check {int[]} correct answer', async (correctAnswers: number[]) => {
 //     for (let i = 0; i < correctAnswers.length; i++) {
