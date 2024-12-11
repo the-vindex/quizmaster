@@ -4,7 +4,7 @@ import { createSignal, For, onMount, Show } from 'solid-js'
 import { useParams } from '@solidjs/router'
 
 import type { SingleQuestion, SingleQuiz } from 'model/quiz-question.ts'
-import * as api from 'api.ts'
+import { getQuizMaster } from './services/QuizService.ts'
 
 const Quiz = ({ name, questions }: SingleQuiz) => {
     const Single = ({ id, question }: SingleQuestion) => {
@@ -29,7 +29,7 @@ export const QuizMaster = () => {
 
     const [quizQuestions, setQuizQuestions] = createSignal<SingleQuiz | null>(null)
 
-    onMount(async () => setQuizQuestions(await api.getQuizMaster(quizId)))
+    onMount(async () => setQuizQuestions(await getQuizMaster(quizId)))
 
     return <Show when={quizQuestions()} children={Quiz} keyed />
 }

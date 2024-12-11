@@ -2,15 +2,22 @@ import './questions.scss'
 
 import { createSignal, For, onMount, Show } from 'solid-js'
 import type { QuizQuestion } from 'model/quiz-question.ts'
-import * as api from 'api.ts'
 import { preventDefault } from 'helpers.ts'
+import { createQuiz } from './services/QuizService.ts'
+import { getQuestions } from './services/QuizQuestionService.ts'
 
 const Feedback = (id: number) => {
     if (id) {
+        window.scroll(0, 0)
         return (
-            <p class="feedback">
-                Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
-            </p>
+            <>
+                <p class="feedback">
+                    Congratulation, <a href={`/quizmaster/${id}`}>Quiz ID is {id}</a>
+                </p>
+                <p class="feedback">
+                    <a href={`/quiz/${id}/intro`}>Link to the Quiz Run {id}</a>
+                </p>
+            </>
         )
     }
     return <p class="feedback">{'Oops..something went wrong :('}</p>
@@ -28,7 +35,7 @@ const Questions = (list: QuizQuestion[]) => {
             questionIds: selectedQuestions(),
         }
 
-        api.createQuiz(quizObj).then(id => {
+        createQuiz(quizObj).then(id => {
             setSubmitted(true)
             setQuizId(id)
         })
@@ -91,7 +98,7 @@ const Questions = (list: QuizQuestion[]) => {
 export const QuestionList = () => {
     const [quizQuestions, setQuizQuestions] = createSignal<QuizQuestion[]>([])
 
-    onMount(async () => setQuizQuestions(await api.getQuestions()))
+    onMount(async () => setQuizQuestions(await getQuestions()))
 
     return <Show when={quizQuestions()} children={Questions} keyed />
 }

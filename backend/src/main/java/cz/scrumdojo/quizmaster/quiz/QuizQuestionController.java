@@ -16,10 +16,18 @@ public class QuizQuestionController {
 
     private final QuizQuestionService quizQuestionService;
 
+    private final QuizAnswerService quizAnswerService;
+
     @Autowired
-    public QuizQuestionController(QuizQuestionRepository quizQuestionRepository, QuizQuestionService quizQuestionService) {
+    public QuizQuestionController(
+        QuizQuestionRepository quizQuestionRepository,
+        QuizQuestionService quizQuestionService,
+        QuizAnswerService quizAnswerService) {
+
         this.quizQuestionRepository = quizQuestionRepository;
         this.quizQuestionService = quizQuestionService;
+        this.quizAnswerService = quizAnswerService;
+
     }
 
     @Transactional
@@ -33,7 +41,7 @@ public class QuizQuestionController {
     @PostMapping("/quiz-question")
     public Integer saveQuestion(@RequestBody QuizQuestion question) {
         if (question.getCorrectAnswers() == null) {
-            question.setCorrectAnswers(new int[] {question.getCorrectAnswer()});
+            question.setCorrectAnswers(new int[]{question.getCorrectAnswer()});
         }
         return quizQuestionService.saveQuestion(question);
     }
@@ -46,9 +54,11 @@ public class QuizQuestionController {
 
     @Transactional
     @PostMapping("/quiz-question/{id}/answer")
-    public ResponseEntity<Boolean> answerQuestionV2(@PathVariable Integer id, @RequestBody List<Integer> answers) {
-        int [] answersArray = answers.stream().mapToInt(Integer::intValue).toArray();
-        return response(findQuestion(id).map(QuizQuestion.isCorrectAnswers(answersArray)));
+    public ResponseEntity<MultipleAnswersResult> answerMultipleChoice(@PathVariable Integer id, @RequestBody List<Integer> answers) {
+
+        var result = quizAnswerService.getAnswerFeedback(id, answers);
+
+        return response(Optional.of(result));
     }
 
     @Transactional

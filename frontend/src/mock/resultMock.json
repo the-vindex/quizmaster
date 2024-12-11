@@ -1,0 +1,45 @@
+{
+    "runId": 1,
+    "quizId": 101,
+    "quiz": {
+        "name": "Sample Quiz",
+        "questionIds": [1, 2]
+    },
+    "questionResults": [
+        {
+            "selectedAnswers": [0],
+            "explanationToShowIds": [0],
+            "question": {
+                "id": 1,
+                "question": "What is the capital of France?",
+                "answers": ["Paris", "London", "Berlin", "Madrid"],
+                "explanations": [
+                    "Paris is the capital of France.",
+                    "London is the capital of the United Kingdom.",
+                    "Berlin is the capital of Germany.",
+                    "Madrid is the capital of Spain."
+                ],
+                "questionExplanation": "This question tests your knowledge of European capitals.",
+                "correctAnswers": [0]
+            }
+        },
+        {
+            "selectedAnswers": [0, 2],
+            "explanationToShowIds": [0, 2, 3],
+            "question": {
+                "id": 2,
+                "question": "What are the primary colors?",
+                "answers": ["Red", "Yellow", "Blue", "Green"],
+                "explanations": [
+                    "Red is a primary color.",
+                    "Yellow is not a primary color.",
+                    "Blue is a primary color.",
+                    "Green is a primary color."
+                ],
+                "questionExplanation": "Primary colors are the basic colors that can be combined to create other colors.",
+                "correctAnswers": [0, 2, 3]
+            }
+        }
+
+    ]
+}

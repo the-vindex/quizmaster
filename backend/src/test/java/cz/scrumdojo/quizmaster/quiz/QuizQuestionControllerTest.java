@@ -17,11 +17,16 @@ public class QuizQuestionControllerTest {
     private QuizQuestionController quizQuestionController;
 
     private QuizQuestion createQuestion() {
+        return createQuestionBuilderBase()
+            .correctAnswer(1)
+            .build();
+    }
+
+    private static QuizQuestion.QuizQuestionBuilder createQuestionBuilderBase() {
         return QuizQuestion.builder()
             .question("What is the capital of Italy?")
             .answers(new String[]{"Naples", "Rome", "Florence", "Palermo"})
-            .correctAnswer(1)
-            .build();
+            .explanations(new String[]{"Nope", "Never", "You wish", "Bleh"});
     }
 
     @Test
@@ -52,33 +57,34 @@ public class QuizQuestionControllerTest {
         assertEquals(isCorrect, result);
     }
 
-    public void answerQuestionV2(List<Integer> answerIdx, boolean isCorrect) {
-        var questionId = quizQuestionController.saveQuestion(createQuestion());
-
-        var result = quizQuestionController.answerQuestionV2(questionId, answerIdx).getBody();
-
-        assertNotNull(result);
-        assertEquals(isCorrect, result);
-    }
-
-    @Test
-    public void answerQuestionCorrectly() {
-        answerQuestion(1, true);
-    }
-
-    @Test
-    public void answerQuestionIncorrectly() {
-        answerQuestionV2(List.of(0), false);
-    }
-
     @Test
     public void answerMultipleQuestionsCorrectly() {
-        answerQuestionV2(List.of(1), true);
+        checkMultipleAnswers(List.of(1,3), true, List.of());
     }
 
     @Test
     public void answerMultipleQuestionsIncorrectly() {
-        answerQuestionV2(List.of(0), false);
+        checkMultipleAnswers(List.of(2), false, List.of(1, 2, 3));
+    }
+
+    private void checkMultipleAnswers(List<Integer> userAnswersIndexes, boolean isCorrect, List<Integer> expectedWrongAnswers) {
+        QuizQuestion question = createQuestionBuilderBase()
+            .correctAnswers(new int[]{1,3})
+            .build();
+
+        var questionId = quizQuestionController.saveQuestion(question);
+
+        MultipleAnswersResult result = quizQuestionController.answerMultipleChoice(questionId, userAnswersIndexes).getBody();
+
+        assertNotNull(result);
+        assertEquals(isCorrect, result.getQuestionAnsweredCorrectly());
+
+        assertEquals(expectedWrongAnswers,result.getAnswersRequiringFeedback());
+    }
+
+    @Test
+    public void answerSingleChoiceQuestionCorrectly() {
+        answerQuestion(1, true);
     }
 
     @Test

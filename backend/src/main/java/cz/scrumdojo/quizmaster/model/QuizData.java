@@ -13,6 +13,8 @@ import java.util.List;
 @Builder
 public class QuizData {
 
+    private Integer id;
+    
     private String name;
 
     private List<QuizQuestion> questions;

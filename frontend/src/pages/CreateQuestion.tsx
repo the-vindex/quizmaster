@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import './createQuestion.css'
 
 type Question = {
@@ -20,6 +20,9 @@ export function CreateQuestionForm() {
     const [isMultipleAnswer, setIsMultipleAnswer] = createSignal<boolean>(false)
 
     const postData = (formData: Question) => {
+        if (validationIsFailing(formData)) {
+            return
+        }
         const data = {
             question: formData.question,
             answers: formData.answers,
@@ -42,8 +45,8 @@ export function CreateQuestionForm() {
                 }
                 return response.json() // Parse JSON response
             })
-            .then(data => {
-                setLinkToQuestion(`${location.origin}/quiz/${data}`)
+            .then(questionId => {
+                setLinkToQuestion(`${location.origin}/question/${questionId}`)
             })
             .catch(error => {
                 console.error('Error:', error) // Handle errors
@@ -53,6 +56,34 @@ export function CreateQuestionForm() {
             })
     }
 
+    const validationIsFailing = (formData: Question) => {
+        if (formData.question === '' && formData.answers[0] === '' && formData.correctAnswers?.length === 0) {
+            setLinkToQuestion('Fill all required fields.')
+            return true
+        }
+        if (formData.question === '' && formData.answers[0] !== '' && formData.correctAnswers?.length !== 0) {
+            setLinkToQuestion('Question must be filled.')
+            return true
+        }
+        if (formData.question !== '' && formData.answers[0] === '' && formData.correctAnswers?.length === 0) {
+            setLinkToQuestion('At least 2 answers must be filled.')
+            return true
+        }
+        if (formData.question !== '' && formData.answers[0] !== '' && formData.correctAnswers?.length === 0) {
+            setLinkToQuestion('At least one answer must be selected as correct answer.')
+            return true
+        }
+        if (formData.question !== '' && formData.answers[1] === '' && formData.correctAnswers?.length === 1) {
+            setLinkToQuestion('Question must have at least 2 answers')
+            return true
+        }
+        if (formData.quizType === 'SINGLE' && formData.correctAnswers !== null && formData.correctAnswers.length > 1) {
+            setLinkToQuestion('Multiple answers are checked but the test is considered as a single answer only.')
+            return true
+        }
+        return false
+    }
+
     const updateAnswer = (index: number, value: string) => {
         setAnswers(prev => {
             const newAnswers = [...prev]
@@ -60,6 +91,7 @@ export function CreateQuestionForm() {
             return newAnswers
         })
     }
+
     const updateExplanation = (index: number, value: string) => {
         setQuestionExplanations(prev => {
             const newExplanations = [...prev]
@@ -106,7 +138,7 @@ export function CreateQuestionForm() {
                 <form class="question-create-form" onSubmit={handleSubmit}>
                     {/* Question input */}
                     <div>
-                        <label>Enter your question:</label>
+                        <label for="question-text-area">Enter your question:</label>
                         <textarea
                             id="question-text-area"
                             class="textarea"
@@ -116,7 +148,12 @@ export function CreateQuestionForm() {
                         />
                     </div>
                     <div class="multipleQuestionsRow">
-                        <input type="checkbox" checked={isMultipleAnswer()} onChange={toggleMultipleAnswers} />
+                        <input
+                            id="multiple-possible-answers"
+                            type="checkbox"
+                            checked={isMultipleAnswer()}
+                            onChange={toggleMultipleAnswers}
+                        />
                         Is this question with multiple possible answers?
                         <br />
                     </div>
@@ -152,8 +189,9 @@ export function CreateQuestionForm() {
                     ))}
                     {
                         <div class="generalExplanationWrapper">
-                            <label>General explanation for the entire question:</label>
+                            <label for="general-explanation">General explanation for the entire question:</label>
                             <textarea
+                                id="general-explanation"
                                 class="generalExplanation"
                                 value={answerExplanation()}
                                 onInput={e => setAnswerExplanation((e.target as HTMLTextAreaElement).value)}
@@ -166,7 +204,9 @@ export function CreateQuestionForm() {
                         Submit
                     </button>{' '}
                     <br />
-                    <span id="question-link">{linkToQuestion()}</span>
+                    <Show when={linkToQuestion()}>
+                        <span id="question-link">{linkToQuestion()}</span>
+                    </Show>
                 </form>
             </div>
         )

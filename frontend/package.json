@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "packageManager": "pnpm@9.8.0",
+    "packageManager": "pnpm@9.14.4",
     "scripts": {
         "playwright:install": "playwright install --with-deps",
         "dev": "vite",
@@ -15,24 +15,25 @@
         "preview": "vite preview",
         "test:e2e": "wait-on tcp:8080 && cucumber-js --tags \"not @ignore\"",
         "test:e2e:focus": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"@focus\"",
-        "test:e2e:vite": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"not @ignore\""
+        "test:e2e:vite": "wait-on tcp:5173 && cross-env FE_PORT=5173 cucumber-js --tags \"not @ignore\"",
+        "test:e2e:watch": "npx nodemon --watch ./frontend/src/**.* --watch ./specs/**.* --ext tsx,css,feature --exec \"wait-on tcp:5173 && npx cross-env FE_PORT=5173 cucumber-js --tags 'not @ignore'\""
     },
     "dependencies": {
-        "@solidjs/router": "0.14.3",
-        "solid-js": "1.8.21"
+        "@solidjs/router": "0.15.1",
+        "solid-js": "1.9.3"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.8.3",
-        "@cucumber/cucumber": "10.9.0",
-        "@playwright/test": "1.46.1",
-        "@types/node": "22.5.0",
-        "cross-env": "^7.0.3",
+        "@biomejs/biome": "1.9.4",
+        "@cucumber/cucumber": "11.1.0",
+        "@playwright/test": "1.49.0",
+        "@types/node": "22.10.1",
+        "cross-env": "7.0.3",
         "esbuild-register": "3.6.0",
-        "sass": "1.77.8",
-        "typescript": "5.5.4",
-        "vite": "5.4.2",
-        "vite-plugin-solid": "2.10.2",
-        "vite-tsconfig-paths": "5.0.1",
-        "wait-on": "8.0.0"
+        "sass": "1.82.0",
+        "typescript": "5.7.2",
+        "vite": "6.0.2",
+        "vite-plugin-solid": "2.11.0",
+        "vite-tsconfig-paths": "5.1.3",
+        "wait-on": "8.0.1"
     }
 }
